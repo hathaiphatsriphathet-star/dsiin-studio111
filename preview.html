@@ -1,0 +1,1366 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ทดลองพิมพ์ฟอนต์ — สถานีฟอนต์ | Dsiin Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Thai:wght@100;200;300;400;500;600;700;800;900&family=Sarabun:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,700&family=Mitr:wght@200;300;400;500;600;700&family=Itim&family=Pridi:wght@200;300;400;500;600;700&family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .preview-page { min-height: 100vh; background: var(--bg); }
+
+    /* Tool Layout */
+    .tool-layout {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 0;
+      min-height: calc(100vh - 65px);
+    }
+
+    /* Sidebar Panel */
+    .tool-sidebar {
+      background: white;
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      position: sticky;
+      top: 65px;
+      height: calc(100vh - 65px);
+    }
+
+    .sidebar-section {
+      padding: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .sidebar-section:last-child { border-bottom: none; }
+
+    .sidebar-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-light);
+      margin-bottom: 12px;
+    }
+
+    /* Font List */
+    .font-list { display: flex; flex-direction: column; gap: 6px; }
+
+    .font-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: var(--transition);
+      border: 1.5px solid transparent;
+    }
+
+    .font-item:hover { background: var(--bg); }
+    .font-item.selected { border-color: var(--pink-dark); background: var(--pink-light); }
+
+    .font-item-preview {
+      font-size: 1.4rem;
+      line-height: 1;
+      color: var(--text-dark);
+      min-width: 48px;
+    }
+
+    .font-item-info { flex: 1; min-width: 0; }
+    .font-item-name { font-size: 0.82rem; font-weight: 700; color: var(--text-dark); }
+    .font-item-meta { font-size: 0.72rem; color: var(--text-light); }
+
+    .font-item-check {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 1.5px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.6rem;
+      color: white;
+      transition: var(--transition);
+      flex-shrink: 0;
+    }
+
+    .font-item.selected .font-item-check {
+      background: var(--pink-dark);
+      border-color: var(--pink-dark);
+    }
+
+    /* Swatch Grid */
+    .color-swatches {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .swatch {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: var(--transition);
+      border: 2px solid transparent;
+      position: relative;
+    }
+
+    .swatch:hover { transform: scale(1.15); }
+    .swatch.active { border-color: var(--text-dark); }
+    .swatch.active::after {
+      content: '✓';
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      color: white;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+    }
+
+    .color-input-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .color-picker {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      padding: 2px;
+      cursor: pointer;
+      background: white;
+    }
+
+    .hex-input {
+      flex: 1;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 8px 12px;
+      font-size: 0.82rem;
+      font-family: monospace;
+      color: var(--text-dark);
+      background: var(--bg);
+      outline: none;
+    }
+
+    .hex-input:focus { border-color: var(--pink); background: white; }
+
+    /* BG Swatches */
+    .bg-swatches {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .bg-swatch {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      cursor: pointer;
+      border: 1.5px solid var(--border);
+      transition: var(--transition);
+      position: relative;
+    }
+
+    .bg-swatch:hover { transform: scale(1.1); border-color: var(--text-mid); }
+    .bg-swatch.active { border-color: var(--pink-dark); border-width: 2px; }
+
+    /* Range Inputs */
+    .range-group { display: flex; flex-direction: column; gap: 6px; }
+
+    .range-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.82rem;
+      color: var(--text-mid);
+    }
+
+    .range-row input[type="range"] {
+      flex: 1;
+      accent-color: var(--pink-dark);
+      height: 4px;
+    }
+
+    .range-val {
+      min-width: 44px;
+      text-align: right;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-dark);
+    }
+
+    /* Weight selector */
+    .weight-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+    }
+
+    .weight-btn {
+      padding: 7px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: white;
+      cursor: pointer;
+      font-size: 0.78rem;
+      text-align: center;
+      transition: var(--transition);
+      color: var(--text-mid);
+      font-family: var(--font-body);
+    }
+
+    .weight-btn:hover { border-color: var(--pink); color: var(--pink-dark); }
+    .weight-btn.active { background: var(--pink-light); border-color: var(--pink-dark); color: var(--pink-dark); font-weight: 700; }
+
+    /* Align buttons */
+    .align-btns {
+      display: flex;
+      gap: 6px;
+    }
+
+    .align-btn {
+      flex: 1;
+      padding: 8px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: white;
+      cursor: pointer;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+    }
+
+    .align-btn:hover { border-color: var(--pink); background: var(--pink-light); }
+    .align-btn.active { background: var(--pink-light); border-color: var(--pink-dark); }
+
+    /* Main Preview Area */
+    .tool-main {
+      display: flex;
+      flex-direction: column;
+      padding: 28px;
+      gap: 20px;
+      flex: 1;
+    }
+
+    /* Text Input Area */
+    .text-input-card {
+      background: white;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .text-input-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg);
+    }
+
+    .text-input-label {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--text-mid);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .text-input-actions {
+      display: flex;
+      gap: 6px;
+    }
+
+    .text-input-main {
+      position: relative;
+    }
+
+    textarea#mainInput {
+      width: 100%;
+      border: none;
+      outline: none;
+      padding: 20px;
+      font-size: 1rem;
+      font-family: var(--font-body);
+      color: var(--text-dark);
+      background: white;
+      resize: none;
+      height: 100px;
+      line-height: 1.6;
+    }
+
+    .char-count {
+      position: absolute;
+      bottom: 10px;
+      right: 16px;
+      font-size: 0.72rem;
+      color: var(--text-light);
+    }
+
+    /* Preview Canvas */
+    .preview-canvas-card {
+      background: white;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      flex: 1;
+    }
+
+    .canvas-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 20px;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg);
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .canvas-info {
+      font-size: 0.8rem;
+      color: var(--text-mid);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .canvas-info span {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .canvas-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .preview-canvas {
+      padding: 60px 48px;
+      min-height: 360px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #previewText {
+      transition: all 0.2s ease;
+      word-break: break-word;
+      max-width: 100%;
+      outline: none;
+    }
+
+    /* Multi-font Comparison */
+    .compare-section {
+      background: white;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .compare-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg);
+    }
+
+    .compare-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 0;
+    }
+
+    .compare-item {
+      padding: 28px 24px;
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      transition: var(--transition);
+      position: relative;
+    }
+
+    .compare-item:hover { background: var(--bg); }
+
+    .compare-item-text {
+      font-size: 2rem;
+      line-height: 1.3;
+      margin-bottom: 12px;
+      color: var(--text-dark);
+      transition: all 0.2s ease;
+    }
+
+    .compare-item-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .compare-font-name { font-size: 0.8rem; font-weight: 700; color: var(--text-dark); }
+    .compare-font-style { font-size: 0.72rem; color: var(--text-light); }
+
+    .compare-use-btn {
+      font-size: 0.75rem;
+      padding: 5px 12px;
+      opacity: 0;
+      transition: var(--transition);
+    }
+
+    .compare-item:hover .compare-use-btn { opacity: 1; }
+
+    /* Waterfall View */
+    .waterfall-section {
+      background: white;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .waterfall-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg);
+    }
+
+    .waterfall-list { padding: 24px; display: flex; flex-direction: column; gap: 12px; }
+
+    .waterfall-row {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .waterfall-row:last-child { border-bottom: none; }
+
+    .waterfall-size {
+      font-size: 0.72rem;
+      color: var(--text-light);
+      min-width: 40px;
+      flex-shrink: 0;
+      font-family: monospace;
+    }
+
+    .waterfall-text { line-height: 1.2; color: var(--text-dark); }
+
+    /* Quick text presets */
+    .presets-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+    }
+
+    .preset-btn {
+      padding: 7px 10px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: white;
+      cursor: pointer;
+      font-size: 0.78rem;
+      text-align: center;
+      color: var(--text-mid);
+      transition: var(--transition);
+      font-family: var(--font-body);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .preset-btn:hover { background: var(--pink-light); color: var(--pink-dark); border-color: var(--pink); }
+
+    /* Tabs */
+    .view-tabs {
+      display: flex;
+      gap: 4px;
+      background: var(--bg);
+      border-radius: var(--radius-sm);
+      padding: 4px;
+    }
+
+    .view-tab {
+      padding: 7px 16px;
+      border: none;
+      border-radius: 8px;
+      background: transparent;
+      cursor: pointer;
+      font-size: 0.82rem;
+      font-family: var(--font-body);
+      color: var(--text-mid);
+      transition: var(--transition);
+      font-weight: 500;
+    }
+
+    .view-tab.active { background: white; color: var(--text-dark); font-weight: 700; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+
+    /* Toggle switch */
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.82rem;
+      color: var(--text-mid);
+      margin-bottom: 8px;
+    }
+
+    .toggle {
+      width: 36px;
+      height: 20px;
+      background: var(--border);
+      border-radius: 100px;
+      cursor: pointer;
+      position: relative;
+      transition: var(--transition);
+      flex-shrink: 0;
+      border: none;
+    }
+
+    .toggle::after {
+      content: '';
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      background: white;
+      border-radius: 50%;
+      top: 3px;
+      left: 3px;
+      transition: var(--transition);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+
+    .toggle.on { background: var(--pink-dark); }
+    .toggle.on::after { left: 19px; }
+
+    /* Export Panel */
+    .export-panel {
+      background: var(--text-dark);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .export-info { color: rgba(255,255,255,0.7); font-size: 0.85rem; }
+    .export-info strong { color: white; }
+
+    .export-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+
+    @media (max-width: 1024px) {
+      .tool-layout { grid-template-columns: 260px 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      .tool-layout { grid-template-columns: 1fr; }
+      .tool-sidebar {
+        position: static;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
+      .sidebar-section { border-bottom: 1px solid var(--border); border-right: 1px solid var(--border); }
+      .preview-canvas { padding: 32px 20px; min-height: 240px; }
+      .tool-main { padding: 16px; }
+      .compare-grid { grid-template-columns: 1fr; }
+    }
+
+  /* ===== Local Font Faces ===== */
+  @font-face { font-family: 'DSPetnoi';    src: url('รวมฟอนต์/TKPetnoi.ttf'); }
+  @font-face { font-family: 'DSKamin';     src: url('รวมฟอนต์/TKKamin.ttf'); }
+  @font-face { font-family: 'DSKhanomtan'; src: url('รวมฟอนต์/DSKhanomtan.ttf'); }
+  @font-face { font-family: 'DSBluewhale'; src: url('รวมฟอนต์/TKBluewhale.ttf'); }
+  @font-face { font-family: 'DSLookpeach'; src: url('รวมฟอนต์/DSLookpeach.ttf'); }
+  @font-face { font-family: 'DSPasta';     src: url('รวมฟอนต์/DSPasta.ttf'); }
+  @font-face { font-family: 'DSMaphrao';   src: url('รวมฟอนต์/TKMaphrao.ttf'); }
+  @font-face { font-family: 'DSMatoer';    src: url('รวมฟอนต์/DSMatoer.ttf'); }
+  @font-face { font-family: 'DSOilpastel'; src: url('รวมฟอนต์/DSOilpastel.ttf'); }
+  @font-face { font-family: 'DSNangsue';   src: url('รวมฟอนต์/DSNangsue.ttf'); }
+  @font-face { font-family: 'DSKhaiwan';   src: url('รวมฟอนต์/DSKhaiwan.ttf'); }
+  @font-face { font-family: 'DSGoodday';   src: url('รวมฟอนต์/DSGoodday.ttf'); }
+  @font-face { font-family: 'DSInter';     src: url('รวมฟอนต์/DSInter.ttf'); }
+  @font-face { font-family: 'DSCalcium';   src: url('รวมฟอนต์/DSCalcium.ttf'); }
+  @font-face { font-family: 'DSCharlotte'; src: url('รวมฟอนต์/DScharlotte.ttf'); }
+  @font-face { font-family: 'DSNewyear';   src: url('รวมฟอนต์/DSNewyear.ttf'); }
+  @font-face { font-family: 'DSLandokmai'; src: url('รวมฟอนต์/DSlandokmai.ttf'); }
+  @font-face { font-family: 'DSChaingmai'; src: url('รวมฟอนต์/DSChaingmai.ttf'); }
+  @font-face { font-family: 'DSNoodle';    src: url('รวมฟอนต์/DSNoodle.ttf'); }
+  </style>
+</head>
+<body class="preview-page">
+
+<div class="page-loader" id="pageLoader">
+  <div class="loader-logo">Aa</div>
+  <div class="loader-dots">
+    <div class="loader-dot"></div><div class="loader-dot"></div><div class="loader-dot"></div>
+  </div>
+</div>
+
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-icon"><img src="รูปโปร/LOGO.png" alt="Dsiin Studio Logo"></div>
+      <div><div>สถานีฟอนต์</div><div class="logo-text-en">Dsiin Studio</div></div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">หน้าแรก</a></li>
+      <li><a href="shop.html">ฟอนต์ทั้งหมด</a></li>
+      <li><a href="contact.html">ติดต่อ</a></li>
+      <li><a href="shop.html" class="nav-cta">เลือกซื้อฟอนต์</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<div class="mobile-nav" id="mobileNav">
+  <div class="mobile-nav-panel">
+    <button class="mobile-nav-close" id="mobileNavClose">✕</button>
+    <ul class="mobile-nav-links" style="margin-top:24px;">
+      <li><a href="index.html">🏠 หน้าแรก</a></li>
+      <li><a href="shop.html">🛍️ ฟอนต์ทั้งหมด</a></li>
+      <li><a href="contact.html">📩 ติดต่อ</a></li>
+    </ul>
+  </div>
+</div>
+
+<!-- Tool Layout -->
+<div class="tool-layout">
+
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="tool-sidebar">
+
+    <!-- Font Selector -->
+    <div class="sidebar-section">
+      <div class="sidebar-label">🔤 เลือกฟอนต์</div>
+      <div class="font-list" id="fontList">
+
+        <div class="font-item selected" data-font="'DSPetnoi', sans-serif" data-name="ฟอนต์ เป็ดน้อย">
+          <div class="font-item-preview" style="font-family:'DSPetnoi',sans-serif;">สวั</div>
+          <div class="font-item-info">
+            <div class="font-item-name">ฟอนต์ เป็ดน้อย</div>
+            <div class="font-item-meta">ไทย · TKPetnoi</div>
+          </div>
+          <div class="font-item-check">✓</div>
+        </div>
+
+        <div class="font-item" data-font="'DSKamin', sans-serif" data-name="ฟอนต์ คามิน">
+          <div class="font-item-preview" style="font-family:'DSKamin',sans-serif;">สวั</div>
+          <div class="font-item-info">
+            <div class="font-item-name">ฟอนต์ คามิน</div>
+            <div class="font-item-meta">ไทย · TKKamin</div>
+          </div>
+          <div class="font-item-check"></div>
+        </div>
+
+        <div class="font-item" data-font="'DSKhanomtan', sans-serif" data-name="ฟอนต์ ขนมตาล">
+          <div class="font-item-preview" style="font-family:'DSKhanomtan',sans-serif;">สวั</div>
+          <div class="font-item-info">
+            <div class="font-item-name">ฟอนต์ ขนมตาล</div>
+            <div class="font-item-meta">ไทย · DSKhanomtan</div>
+          </div>
+          <div class="font-item-check"></div>
+        </div>
+
+        <div class="font-item" data-font="'DSBluewhale', sans-serif" data-name="ฟอนต์ บลูวาฬ">
+          <div class="font-item-preview" style="font-family:'DSBluewhale',sans-serif;">สวั</div>
+          <div class="font-item-info">
+            <div class="font-item-name">ฟอนต์ บลูวาฬ</div>
+            <div class="font-item-meta">ไทย · TKBluewhale</div>
+          </div>
+          <div class="font-item-check"></div>
+        </div>
+
+        <div class="font-item" data-font="'DSLookpeach', sans-serif" data-name="ฟอนต์ ลูกพีช">
+          <div class="font-item-preview" style="font-family:'DSLookpeach',sans-serif;">สวั</div>
+          <div class="font-item-info">
+            <div class="font-item-name">ฟอนต์ ลูกพีช</div>
+            <div class="font-item-meta">ไทย · DSLookpeach</div>
+          </div>
+          <div class="font-item-check"></div>
+        </div>
+
+        <div class="font-item" data-font="'DSPasta', sans-serif" data-name="ฟอนต์ พาสต้า">
+          <div class="font-item-preview" style="font-family:'DSPasta',sans-serif;">สวั</div>
+          <div class="font-item-info">
+            <div class="font-item-name">ฟอนต์ พาสต้า</div>
+            <div class="font-item-meta">ไทย · DSPasta</div>
+          </div>
+          <div class="font-item-check"></div>
+        </div>
+
+        <div class="font-item" data-font="'DSMaphrao', sans-serif" data-name="ฟอนต์ มะพร้าว">
+          <div class="font-item-preview" style="font-family:'DSMaphrao',sans-serif;">สวั</div>
+          <div class="font-item-info">
+            <div class="font-item-name">ฟอนต์ มะพร้าว</div>
+            <div class="font-item-meta">ไทย · TKMaphrao</div>
+          </div>
+          <div class="font-item-check"></div>
+        </div>
+
+        <div class="font-item" data-font="'DSMatoer', sans-serif" data-name="ฟอนต์ ม้าเต่อ">
+          <div class="font-item-preview" style="font-family:'DSMatoer',sans-serif;">สวั</div>
+          <div class="font-item-info">
+            <div class="font-item-name">ฟอนต์ ม้าเต่อ</div>
+            <div class="font-item-meta">ไทย · DSMatoer</div>
+          </div>
+          <div class="font-item-check"></div>
+        </div>
+
+        <div class="font-item" data-font="'DSOilpastel', sans-serif" data-name="ฟอนต์ สีชอล์ค">
+          <div class="font-item-preview" style="font-family:'DSOilpastel',sans-serif;">สวั</div>
+          <div class="font-item-info">
+            <div class="font-item-name">ฟอนต์ สีชอล์ค</div>
+            <div class="font-item-meta">ไทย · DSOilpastel</div>
+          </div>
+          <div class="font-item-check"></div>
+        </div>
+
+        <div class="font-item" data-font="'DSNangsue', sans-serif" data-name="ฟอนต์ หนังสือ">
+          <div class="font-item-preview" style="font-family:'DSNangsue',sans-serif;">สวั</div>
+          <div class="font-item-info">
+            <div class="font-item-name">ฟอนต์ หนังสือ</div>
+            <div class="font-item-meta">ไทย · DSNangsue</div>
+          </div>
+          <div class="font-item-check"></div>
+        </div>
+
+        <div class="font-item" data-font="'DSKhaiwan', sans-serif" data-name="ฟอนต์ ไข่หวาน">
+          <div class="font-item-preview" style="font-family:'DSKhaiwan',sans-serif;">สวั</div>
+          <div class="font-item-info">
+            <div class="font-item-name">ฟอนต์ ไข่หวาน</div>
+            <div class="font-item-meta">ไทย · DSKhaiwan</div>
+          </div>
+          <div class="font-item-check"></div>
+        </div>
+
+        <div class="font-item" data-font="'DSGoodday', sans-serif" data-name="ฟอนต์ กู๊ดเดย์">
+          <div class="font-item-preview" style="font-family:'DSGoodday',sans-serif;">สวั</div>
+          <div class="font-item-info">
+            <div class="font-item-name">ฟอนต์ กู๊ดเดย์</div>
+            <div class="font-item-meta">ไทย · DSGoodday</div>
+          </div>
+          <div class="font-item-check"></div>
+        </div>
+
+        <div class="font-item" data-font="'DSInter', sans-serif" data-name="ฟอนต์ อินเตอร์">
+          <div class="font-item-preview" style="font-family:'DSInter',sans-serif;">สวั</div>
+          <div class="font-item-info">
+            <div class="font-item-name">ฟอนต์ อินเตอร์</div>
+            <div class="font-item-meta">ไทย · DSInter</div>
+          </div>
+          <div class="font-item-check"></div>
+        </div>
+
+        <div class="font-item" data-font="'DSCalcium', sans-serif" data-name="ฟอนต์ แคลคูลัส">
+          <div class="font-item-preview" style="font-family:'DSCalcium',sans-serif;">สวั</div>
+          <div class="font-item-info">
+            <div class="font-item-name">ฟอนต์ แคลคูลัส</div>
+            <div class="font-item-meta">ไทย · DSCalcium</div>
+          </div>
+          <div class="font-item-check"></div>
+        </div>
+
+        <div class="font-item" data-font="'DSCharlotte', sans-serif" data-name="ฟอนต์ ชาร์ลอตต์">
+          <div class="font-item-preview" style="font-family:'DSCharlotte',sans-serif;">สวั</div>
+          <div class="font-item-info">
+            <div class="font-item-name">ฟอนต์ ชาร์ลอตต์</div>
+            <div class="font-item-meta">ไทย · DScharlotte</div>
+          </div>
+          <div class="font-item-check"></div>
+        </div>
+
+        <div class="font-item" data-font="'DSNewyear', sans-serif" data-name="ฟอนต์ นิวเยียร์">
+          <div class="font-item-preview" style="font-family:'DSNewyear',sans-serif;">สวั</div>
+          <div class="font-item-info">
+            <div class="font-item-name">ฟอนต์ นิวเยียร์</div>
+            <div class="font-item-meta">ไทย · DSNewyear</div>
+          </div>
+          <div class="font-item-check"></div>
+        </div>
+
+        <div class="font-item" data-font="'DSLandokmai', sans-serif" data-name="ฟอนต์ ลานดอกไม้">
+          <div class="font-item-preview" style="font-family:'DSLandokmai',sans-serif;">สวั</div>
+          <div class="font-item-info">
+            <div class="font-item-name">ฟอนต์ ลานดอกไม้</div>
+            <div class="font-item-meta">ไทย · DSlandokmai</div>
+          </div>
+          <div class="font-item-check"></div>
+        </div>
+
+        <div class="font-item" data-font="'DSChaingmai', sans-serif" data-name="ฟอนต์ เชียงใหม่">
+          <div class="font-item-preview" style="font-family:'DSChaingmai',sans-serif;">สวั</div>
+          <div class="font-item-info">
+            <div class="font-item-name">ฟอนต์ เชียงใหม่</div>
+            <div class="font-item-meta">ไทย · DSChaingmai</div>
+          </div>
+          <div class="font-item-check"></div>
+        </div>
+
+        <div class="font-item" data-font="'DSNoodle', sans-serif" data-name="ฟอนต์ ก๋วยเตี๋ยว">
+          <div class="font-item-preview" style="font-family:'DSNoodle',sans-serif;">สวั</div>
+          <div class="font-item-info">
+            <div class="font-item-name">ฟอนต์ ก๋วยเตี๋ยว</div>
+            <div class="font-item-meta">ไทย · DSNoodle</div>
+          </div>
+          <div class="font-item-check"></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Size & Spacing -->
+    <div class="sidebar-section">
+      <div class="sidebar-label">📐 ขนาดและระยะห่าง</div>
+      <div class="range-group">
+        <div class="range-row">
+          <span>ขนาด</span>
+          <input type="range" id="fontSize" min="12" max="180" value="72">
+          <span class="range-val" id="fontSizeVal">72px</span>
+        </div>
+        <div class="range-row">
+          <span>บรรทัด</span>
+          <input type="range" id="lineHeight" min="80" max="250" value="130">
+          <span class="range-val" id="lineHeightVal">1.3</span>
+        </div>
+        <div class="range-row">
+          <span>อักษร</span>
+          <input type="range" id="letterSpacing" min="-5" max="20" value="0">
+          <span class="range-val" id="letterSpacingVal">0em</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Weight -->
+    <div class="sidebar-section">
+      <div class="sidebar-label">💪 น้ำหนักฟอนต์</div>
+      <div class="weight-grid" id="weightGrid">
+        <button class="weight-btn" data-weight="100">100 Thin</button>
+        <button class="weight-btn" data-weight="200">200 XLight</button>
+        <button class="weight-btn" data-weight="300">300 Light</button>
+        <button class="weight-btn active" data-weight="400">400 Regular</button>
+        <button class="weight-btn" data-weight="500">500 Medium</button>
+        <button class="weight-btn" data-weight="600">600 SemiBold</button>
+        <button class="weight-btn" data-weight="700">700 Bold</button>
+        <button class="weight-btn" data-weight="800">800 XBold</button>
+        <button class="weight-btn" data-weight="900">900 Black</button>
+      </div>
+    </div>
+
+    <!-- Text Color -->
+    <div class="sidebar-section">
+      <div class="sidebar-label">🎨 สีตัวอักษร</div>
+      <div class="color-swatches" id="colorSwatches">
+        <div class="swatch active" data-color="#2D2D3A" style="background:#2D2D3A;" title="ดำ"></div>
+        <div class="swatch" data-color="#FFFFFF" style="background:#FFFFFF;border:1.5px solid #ddd;" title="ขาว"></div>
+        <div class="swatch" data-color="#E8839A" style="background:#E8839A;" title="ชมพู"></div>
+        <div class="swatch" data-color="#6BA3E8" style="background:#6BA3E8;" title="ฟ้า"></div>
+        <div class="swatch" data-color="#2E9962" style="background:#2E9962;" title="เขียว"></div>
+        <div class="swatch" data-color="#7B4FCC" style="background:#7B4FCC;" title="ม่วง"></div>
+        <div class="swatch" data-color="#C47A00" style="background:#C47A00;" title="ส้ม"></div>
+        <div class="swatch" data-color="#E84A5F" style="background:#E84A5F;" title="แดง"></div>
+      </div>
+      <div class="color-input-row">
+        <input type="color" class="color-picker" id="customColor" value="#2D2D3A">
+        <input type="text" class="hex-input" id="hexInput" value="#2D2D3A" maxlength="7" placeholder="#000000">
+      </div>
+    </div>
+
+    <!-- Background -->
+    <div class="sidebar-section">
+      <div class="sidebar-label">🖼️ พื้นหลัง</div>
+      <div class="bg-swatches" id="bgSwatches">
+        <div class="bg-swatch active" data-bg="#FFFFFF" style="background:#FFFFFF;" title="ขาว"></div>
+        <div class="bg-swatch" data-bg="#FAFAF8" style="background:#FAFAF8;" title="ครีม"></div>
+        <div class="bg-swatch" data-bg="#2D2D3A" style="background:#2D2D3A;" title="ดำ"></div>
+        <div class="bg-swatch" data-bg="#FFE4EC" style="background:#FFE4EC;" title="ชมพูอ่อน"></div>
+        <div class="bg-swatch" data-bg="#E4F0FF" style="background:#E4F0FF;" title="ฟ้าอ่อน"></div>
+        <div class="bg-swatch" data-bg="#E4FAF0" style="background:#E4FAF0;" title="เขียวอ่อน"></div>
+        <div class="bg-swatch" data-bg="#F0E4FF" style="background:#F0E4FF;" title="ม่วงอ่อน"></div>
+        <div class="bg-swatch" data-bg="#FFF7E4" style="background:#FFF7E4;" title="เหลืองอ่อน"></div>
+        <div class="bg-swatch" data-bg="linear-gradient(135deg,#FFE4EC,#E4F0FF)" style="background:linear-gradient(135deg,#FFE4EC,#E4F0FF);" title="Gradient ชมพู-ฟ้า"></div>
+        <div class="bg-swatch" data-bg="linear-gradient(135deg,#E4FAF0,#F0E4FF)" style="background:linear-gradient(135deg,#E4FAF0,#F0E4FF);" title="Gradient เขียว-ม่วง"></div>
+      </div>
+    </div>
+
+    <!-- Options -->
+    <div class="sidebar-section">
+      <div class="sidebar-label">⚙️ ตัวเลือก</div>
+      <div class="toggle-row">
+        <span>ตัวเอียง (Italic)</span>
+        <button class="toggle" id="toggleItalic"></button>
+      </div>
+      <div class="toggle-row">
+        <span>ขีดเส้นใต้</span>
+        <button class="toggle" id="toggleUnderline"></button>
+      </div>
+      <div class="toggle-row">
+        <span>ตัวพิมพ์ใหญ่</span>
+        <button class="toggle" id="toggleUppercase"></button>
+      </div>
+    </div>
+
+    <!-- Alignment -->
+    <div class="sidebar-section">
+      <div class="sidebar-label">↔️ การจัดวาง</div>
+      <div class="align-btns" id="alignBtns">
+        <button class="align-btn active" data-align="left" title="ซ้าย">⬅</button>
+        <button class="align-btn" data-align="center" title="กลาง">↔</button>
+        <button class="align-btn" data-align="right" title="ขวา">➡</button>
+      </div>
+    </div>
+
+    <!-- Text Presets -->
+    <div class="sidebar-section">
+      <div class="sidebar-label">📝 ตัวอย่างข้อความ</div>
+      <div class="presets-grid">
+        <button class="preset-btn" data-text="สวัสดีค่ะ">สวัสดีค่ะ</button>
+        <button class="preset-btn" data-text="Hello World">Hello World</button>
+        <button class="preset-btn" data-text="ชื่อแบรนด์">ชื่อแบรนด์</button>
+        <button class="preset-btn" data-text="DSIIN STUDIO">STUDIO</button>
+        <button class="preset-btn" data-text="กาแฟอร่อยๆ ☕">กาแฟ ☕</button>
+        <button class="preset-btn" data-text="โลโก้ร้าน">โลโก้</button>
+        <button class="preset-btn" data-text="สุขใจทุกวัน">สุขใจ</button>
+        <button class="preset-btn" data-text="ก ข ค ง จ ฉ ช">ก–ช</button>
+        <button class="preset-btn" data-text="A B C D E F G H I J K">A–K</button>
+        <button class="preset-btn" data-text="0 1 2 3 4 5 6 7 8 9">0–9</button>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- ===== MAIN ===== -->
+  <main class="tool-main">
+
+    <!-- Text Input -->
+    <div class="text-input-card">
+      <div class="text-input-header">
+        <span class="text-input-label">✏️ พิมพ์ข้อความของคุณ</span>
+        <div class="text-input-actions">
+          <button class="btn btn-ghost" style="padding:5px 12px;font-size:0.8rem;" id="clearBtn">ล้าง</button>
+          <button class="btn btn-ghost" style="padding:5px 12px;font-size:0.8rem;" id="copyTextBtn">คัดลอก</button>
+        </div>
+      </div>
+      <div class="text-input-main">
+        <textarea id="mainInput" placeholder="พิมพ์ข้อความที่นี่... เช่น ชื่อแบรนด์ โลโก้ หรือข้อความโปรด">สวัสดีค่ะ · Hello</textarea>
+        <div class="char-count" id="charCount">14 / 500</div>
+      </div>
+    </div>
+
+    <!-- View Tabs -->
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+      <div class="view-tabs" id="viewTabs">
+        <button class="view-tab active" data-view="single">แสดงเดี่ยว</button>
+        <button class="view-tab" data-view="compare">เปรียบเทียบ</button>
+        <button class="view-tab" data-view="waterfall">ลำดับขนาด</button>
+      </div>
+      <div style="display:flex;gap:6px;align-items:center;">
+        <span style="font-size:0.8rem;color:var(--text-mid);">จัดวาง:</span>
+        <div class="align-btns" style="gap:4px;" id="alignBtns2">
+          <button class="align-btn active" data-align="left" title="ซ้าย" style="width:32px;height:32px;padding:0;">⬅</button>
+          <button class="align-btn" data-align="center" title="กลาง" style="width:32px;height:32px;padding:0;">↔</button>
+          <button class="align-btn" data-align="right" title="ขวา" style="width:32px;height:32px;padding:0;">➡</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Single Preview -->
+    <div id="viewSingle">
+      <div class="preview-canvas-card">
+        <div class="canvas-toolbar">
+          <div class="canvas-info">
+            <span>🔤 <strong id="currentFontName">ฟอนต์ เป็ดน้อย</strong></span>
+            <span>📏 <span id="infoSize">72px</span></span>
+            <span>💪 <span id="infoWeight">400</span></span>
+          </div>
+          <div class="canvas-actions">
+            <button class="btn btn-outline" style="padding:7px 14px;font-size:0.8rem;" id="screenshotBtn">📸 บันทึกภาพ</button>
+            <a href="shop.html" class="btn btn-pink" style="padding:7px 14px;font-size:0.8rem;">🛍️ ซื้อฟอนต์นี้</a>
+          </div>
+        </div>
+        <div class="preview-canvas" id="previewCanvas" style="background:#FFFFFF;">
+          <div id="previewText"
+            style="font-family:'DSPetnoi',sans-serif;font-size:72px;font-weight:400;color:#2D2D3A;text-align:left;line-height:1.3;letter-spacing:0em;transition:all 0.2s ease;">
+            สวัสดีค่ะ · Hello
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Compare View -->
+    <div id="viewCompare" style="display:none;">
+      <div class="compare-section">
+        <div class="compare-header">
+          <div style="font-size:0.9rem;font-weight:700;color:var(--text-dark);">เปรียบเทียบฟอนต์ทั้งหมด</div>
+          <div style="font-size:0.8rem;color:var(--text-mid);">คลิกฟอนต์เพื่อเลือกใช้</div>
+        </div>
+        <div class="compare-grid" id="compareGrid">
+          <!-- Generated by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Waterfall View -->
+    <div id="viewWaterfall" style="display:none;">
+      <div class="waterfall-section">
+        <div class="waterfall-header">
+          <div style="font-size:0.9rem;font-weight:700;color:var(--text-dark);">แสดงตามลำดับขนาด</div>
+          <span class="badge badge-pink" id="waterfallFontName">ฟอนต์ เป็ดน้อย</span>
+        </div>
+        <div class="waterfall-list" id="waterfallList">
+          <!-- Generated by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Export Bar -->
+    <div class="export-panel">
+      <div class="export-info">
+        <strong>ชอบฟอนต์นี้ไหม?</strong><br>
+        ซื้อเพื่อใช้งานจริงในโปรเจกต์ของคุณ — ดาวน์โหลดได้ทันที ไฟล์ครบทุก format
+      </div>
+      <div class="export-btns">
+        <a href="product.html" class="btn btn-white" style="font-size:0.9rem;">Buy Nowฟอนต์</a>
+        <button class="btn btn-pink" style="font-size:0.9rem;" id="buyNowBtn">🛒 ซื้อเลย ฿390</button>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<button class="scroll-top" id="scrollTop">↑</button>
+
+<script src="script.js"></script>
+<script src="auth.js"></script>
+<script>
+  // ===== Font Preview Tool =====
+  const fonts = [
+    { name: 'ฟอนต์ เป็ดน้อย',   family: "'DSPetnoi', sans-serif",    lang: 'ไทย',  sample: 'สวัสดี' },
+    { name: 'ฟอนต์ คามิน',      family: "'DSKamin', sans-serif",     lang: 'ไทย',  sample: 'สวัสดี' },
+    { name: 'ฟอนต์ ขนมตาล',    family: "'DSKhanomtan', sans-serif", lang: 'ไทย',  sample: 'สวัสดี' },
+    { name: 'ฟอนต์ บลูวาฬ',    family: "'DSBluewhale', sans-serif", lang: 'ไทย',  sample: 'สวัสดี' },
+    { name: 'ฟอนต์ ลูกพีช',    family: "'DSLookpeach', sans-serif", lang: 'ไทย',  sample: 'สวัสดี' },
+    { name: 'ฟอนต์ พาสต้า',    family: "'DSPasta', sans-serif",     lang: 'ไทย',  sample: 'สวัสดี' },
+    { name: 'ฟอนต์ มะพร้าว',   family: "'DSMaphrao', sans-serif",   lang: 'ไทย',  sample: 'สวัสดี' },
+    { name: 'ฟอนต์ ม้าเต่อ',   family: "'DSMatoer', sans-serif",    lang: 'ไทย',  sample: 'สวัสดี' },
+    { name: 'ฟอนต์ สีชอล์ค',   family: "'DSOilpastel', sans-serif", lang: 'ไทย',  sample: 'สวัสดี' },
+    { name: 'ฟอนต์ หนังสือ',   family: "'DSNangsue', sans-serif",   lang: 'ไทย',  sample: 'สวัสดี' },
+    { name: 'ฟอนต์ ไข่หวาน',   family: "'DSKhaiwan', sans-serif",   lang: 'ไทย',  sample: 'สวัสดี' },
+    { name: 'ฟอนต์ กู๊ดเดย์',  family: "'DSGoodday', sans-serif",   lang: 'ไทย',  sample: 'สวัสดี' },
+    { name: 'ฟอนต์ อินเตอร์',  family: "'DSInter', sans-serif",     lang: 'ไทย',  sample: 'สวัสดี' },
+    { name: 'ฟอนต์ แคลคูลัส',  family: "'DSCalcium', sans-serif",   lang: 'ไทย',  sample: 'สวัสดี' },
+    { name: 'ฟอนต์ ชาร์ลอตต์', family: "'DSCharlotte', sans-serif", lang: 'ไทย',  sample: 'สวัสดี' },
+    { name: 'ฟอนต์ นิวเยียร์',  family: "'DSNewyear', sans-serif",   lang: 'ไทย',  sample: 'สวัสดี' },
+    { name: 'ฟอนต์ ลานดอกไม้', family: "'DSLandokmai', sans-serif", lang: 'ไทย',  sample: 'สวัสดี' },
+    { name: 'ฟอนต์ เชียงใหม่',  family: "'DSChaingmai', sans-serif", lang: 'ไทย',  sample: 'สวัสดี' },
+    { name: 'ฟอนต์ ก๋วยเตี๋ยว', family: "'DSNoodle', sans-serif",   lang: 'ไทย',  sample: 'สวัสดี' },
+  ];
+
+  let state = {
+    font: fonts[0],
+    size: 72,
+    weight: 400,
+    color: '#2D2D3A',
+    bg: '#FFFFFF',
+    lineHeight: 1.3,
+    letterSpacing: 0,
+    italic: false,
+    underline: false,
+    uppercase: false,
+    align: 'left',
+    text: 'สวัสดีค่ะ · Hello',
+  };
+
+  const previewText = document.getElementById('previewText');
+  const previewCanvas = document.getElementById('previewCanvas');
+  const mainInput = document.getElementById('mainInput');
+  const charCount = document.getElementById('charCount');
+
+  function applyState() {
+    const t = previewText;
+    t.style.fontFamily = state.font.family;
+    t.style.fontSize = state.size + 'px';
+    t.style.fontWeight = state.weight;
+    t.style.color = state.color;
+    t.style.lineHeight = state.lineHeight;
+    t.style.letterSpacing = state.letterSpacing + 'em';
+    t.style.fontStyle = state.italic ? 'italic' : 'normal';
+    t.style.textDecoration = state.underline ? 'underline' : 'none';
+    t.style.textTransform = state.uppercase ? 'uppercase' : 'none';
+    t.style.textAlign = state.align;
+    t.textContent = state.text || 'Aa สวัสดี';
+    previewCanvas.style.background = state.bg;
+
+    // Info bar
+    document.getElementById('currentFontName').textContent = state.font.name;
+    document.getElementById('infoSize').textContent = state.size + 'px';
+    document.getElementById('infoWeight').textContent = state.weight;
+
+    // Update waterfall & compare
+    updateWaterfall();
+    updateCompare();
+  }
+
+  // Input text
+  mainInput.addEventListener('input', () => {
+    state.text = mainInput.value;
+    charCount.textContent = mainInput.value.length + ' / 500';
+    applyState();
+  });
+
+  // Font selection
+  document.getElementById('fontList').addEventListener('click', e => {
+    const item = e.target.closest('.font-item');
+    if (!item) return;
+    document.querySelectorAll('.font-item').forEach(i => i.classList.remove('selected'));
+    item.classList.add('selected');
+    const idx = Array.from(item.parentElement.children).indexOf(item);
+    state.font = fonts[idx];
+    applyState();
+    document.getElementById('waterfallFontName').textContent = state.font.name;
+  });
+
+  // Size
+  document.getElementById('fontSize').addEventListener('input', e => {
+    state.size = +e.target.value;
+    document.getElementById('fontSizeVal').textContent = state.size + 'px';
+    applyState();
+  });
+
+  // Line height
+  document.getElementById('lineHeight').addEventListener('input', e => {
+    state.lineHeight = (e.target.value / 100).toFixed(2);
+    document.getElementById('lineHeightVal').textContent = state.lineHeight;
+    applyState();
+  });
+
+  // Letter spacing
+  document.getElementById('letterSpacing').addEventListener('input', e => {
+    state.letterSpacing = (e.target.value / 100).toFixed(2);
+    document.getElementById('letterSpacingVal').textContent = state.letterSpacing + 'em';
+    applyState();
+  });
+
+  // Font weight
+  document.getElementById('weightGrid').addEventListener('click', e => {
+    const btn = e.target.closest('.weight-btn');
+    if (!btn) return;
+    document.querySelectorAll('.weight-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    state.weight = +btn.dataset.weight;
+    applyState();
+  });
+
+  // Text color swatches
+  document.getElementById('colorSwatches').addEventListener('click', e => {
+    const sw = e.target.closest('.swatch');
+    if (!sw) return;
+    document.querySelectorAll('.swatch').forEach(s => s.classList.remove('active'));
+    sw.classList.add('active');
+    state.color = sw.dataset.color;
+    document.getElementById('hexInput').value = state.color;
+    document.getElementById('customColor').value = state.color;
+    applyState();
+  });
+
+  document.getElementById('customColor').addEventListener('input', e => {
+    state.color = e.target.value;
+    document.getElementById('hexInput').value = state.color;
+    document.querySelectorAll('.swatch').forEach(s => s.classList.remove('active'));
+    applyState();
+  });
+
+  document.getElementById('hexInput').addEventListener('input', e => {
+    const val = e.target.value;
+    if (/^#[0-9A-Fa-f]{6}$/.test(val)) {
+      state.color = val;
+      document.getElementById('customColor').value = val;
+      applyState();
+    }
+  });
+
+  // BG swatches
+  document.getElementById('bgSwatches').addEventListener('click', e => {
+    const sw = e.target.closest('.bg-swatch');
+    if (!sw) return;
+    document.querySelectorAll('.bg-swatch').forEach(s => s.classList.remove('active'));
+    sw.classList.add('active');
+    state.bg = sw.dataset.bg;
+    applyState();
+  });
+
+  // Toggles
+  function setupToggle(id, key) {
+    const btn = document.getElementById(id);
+    btn.addEventListener('click', () => {
+      state[key] = !state[key];
+      btn.classList.toggle('on', state[key]);
+      applyState();
+    });
+  }
+  setupToggle('toggleItalic', 'italic');
+  setupToggle('toggleUnderline', 'underline');
+  setupToggle('toggleUppercase', 'uppercase');
+
+  // Alignment
+  function setupAlignBtns(groupId) {
+    document.getElementById(groupId).addEventListener('click', e => {
+      const btn = e.target.closest('.align-btn');
+      if (!btn) return;
+      document.querySelectorAll(`#${groupId} .align-btn`).forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      state.align = btn.dataset.align;
+      previewText.style.textAlign = state.align;
+      // sync both groups
+      document.querySelectorAll('#alignBtns .align-btn, #alignBtns2 .align-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.align === state.align);
+      });
+    });
+  }
+  setupAlignBtns('alignBtns');
+  setupAlignBtns('alignBtns2');
+
+  // Preset texts
+  document.querySelectorAll('.preset-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      mainInput.value = btn.dataset.text;
+      state.text = btn.dataset.text;
+      charCount.textContent = state.text.length + ' / 500';
+      applyState();
+    });
+  });
+
+  // View tabs
+  document.getElementById('viewTabs').addEventListener('click', e => {
+    const tab = e.target.closest('.view-tab');
+    if (!tab) return;
+    document.querySelectorAll('.view-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    const view = tab.dataset.view;
+    document.getElementById('viewSingle').style.display = view === 'single' ? 'block' : 'none';
+    document.getElementById('viewCompare').style.display = view === 'compare' ? 'block' : 'none';
+    document.getElementById('viewWaterfall').style.display = view === 'waterfall' ? 'block' : 'none';
+  });
+
+  // Clear
+  document.getElementById('clearBtn').addEventListener('click', () => {
+    mainInput.value = '';
+    state.text = '';
+    charCount.textContent = '0 / 500';
+    applyState();
+  });
+
+  // Copy text
+  document.getElementById('copyTextBtn').addEventListener('click', () => {
+    navigator.clipboard.writeText(state.text).then(() => {
+      const btn = document.getElementById('copyTextBtn');
+      btn.textContent = 'คัดลอกแล้ว ✓';
+      setTimeout(() => btn.textContent = 'คัดลอก', 2000);
+    });
+  });
+
+  // Screenshot (canvas approach)
+  document.getElementById('screenshotBtn').addEventListener('click', () => {
+    const el = document.getElementById('previewCanvas');
+    const btn = document.getElementById('screenshotBtn');
+    btn.textContent = '⏳ กำลังบันทึก...';
+    // Simple DOM screenshot using browser print
+    const w = window.open('', '_blank');
+    w.document.write(`
+      <html><head><title>Font Preview</title>
+      <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Thai:wght@100;400;700;900&family=Sarabun:wght@300;400;700&family=Kanit:wght@400;700&family=Mitr:wght@400;700&family=Itim&family=Pridi:wght@400;700&display=swap" rel="stylesheet">
+      <style>body{margin:0;display:flex;align-items:center;justify-content:center;min-height:100vh;background:${state.bg};}
+      .t{font-family:${state.font.family};font-size:${state.size}px;font-weight:${state.weight};color:${state.color};line-height:${state.lineHeight};letter-spacing:${state.letterSpacing}em;text-align:center;padding:60px;word-break:break-word;}</style>
+      </head><body><div class="t">${previewText.textContent}</div></body></html>`);
+    w.document.close();
+    setTimeout(() => { w.print(); btn.textContent = '📸 บันทึกภาพ'; }, 800);
+  });
+
+  // Compare Grid
+  function updateCompare() {
+    const grid = document.getElementById('compareGrid');
+    grid.innerHTML = fonts.map((f, i) => `
+      <div class="compare-item" data-idx="${i}" onclick="selectFont(${i})">
+        <div class="compare-item-text" style="font-family:${f.family};font-weight:${state.weight};color:${state.color};">
+          ${state.text || 'Aa สวัสดี'}
+        </div>
+        <div class="compare-item-footer">
+          <div>
+            <div class="compare-font-name">${f.name}</div>
+            <div class="compare-font-style">${f.lang}</div>
+          </div>
+          <button class="btn btn-pink compare-use-btn btn-card">ใช้ฟอนต์นี้</button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function selectFont(idx) {
+    state.font = fonts[idx];
+    document.querySelectorAll('.font-item').forEach((item, i) => {
+      item.classList.toggle('selected', i === idx);
+    });
+    document.getElementById('waterfallFontName').textContent = fonts[idx].name;
+    // Switch to single view
+    document.querySelectorAll('.view-tab').forEach(t => t.classList.toggle('active', t.dataset.view === 'single'));
+    document.getElementById('viewSingle').style.display = 'block';
+    document.getElementById('viewCompare').style.display = 'none';
+    document.getElementById('viewWaterfall').style.display = 'none';
+    applyState();
+  }
+
+  // Waterfall
+  const waterfallSizes = [12, 14, 16, 20, 24, 32, 40, 48, 64, 80, 96, 120];
+
+  function updateWaterfall() {
+    const list = document.getElementById('waterfallList');
+    const displayText = state.text || 'สวัสดีค่ะ Hello World';
+    list.innerHTML = waterfallSizes.map(size => `
+      <div class="waterfall-row">
+        <span class="waterfall-size">${size}px</span>
+        <div class="waterfall-text" style="font-family:${state.font.family};font-size:${size}px;font-weight:${state.weight};color:${state.color};">
+          ${displayText}
+        </div>
+      </div>
+    `).join('');
+    document.getElementById('waterfallFontName').textContent = state.font.name;
+  }
+
+  // Buy button
+  document.getElementById('buyNowBtn').addEventListener('click', () => {
+    window.location.href = 'product.html';
+  });
+
+  // Init
+  updateCompare();
+  updateWaterfall();
+  applyState();
+</script>
+</body>
+</html>

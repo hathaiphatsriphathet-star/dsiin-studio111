@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dsiin Serif Pro — สถานีฟอนต์ | Dsiin Studio</title>
+  <meta name="description" content="ฟอนต์ดิจิทัลคุณภาพสูง โดย Dsiin Studio ดาวน์โหลดได้ทันทีหลังชำระเงิน">
+  <meta property="og:type" content="product">
+  <meta property="og:title" content="Dsiin Serif Pro — สถานีฟอนต์ | Dsiin Studio">
+  <meta property="og:description" content="ฟอนต์ดิจิทัลคุณภาพสูง โดย Dsiin Studio ดาวน์โหลดได้ทันทีหลังชำระเงิน">
+  <meta property="og:image" content="รูปโปร/LOGO.png">
+  <meta property="og:locale" content="th_TH">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Dsiin Serif Pro — สถานีฟอนต์">
+  <meta name="twitter:image" content="รูปโปร/LOGO.png">
+  <link rel="icon" type="image/png" href="รูปโปร/LOGO.png">
+  <link rel="apple-touch-icon" href="รูปโปร/LOGO.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Thai:wght@300;400;700;900&family=Sarabun:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    @font-face {
+      font-family: 'DSCarrot';
+      src: url('รวมฟอนต์/DSCarrot.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+  </style>
+</head>
+<body>
+
+<div class="page-loader" id="pageLoader">
+  <div class="loader-logo">Aa</div>
+  <div class="loader-dots">
+    <div class="loader-dot"></div><div class="loader-dot"></div><div class="loader-dot"></div>
+  </div>
+</div>
+
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-icon"><img src="รูปโปร/LOGO.png" alt="Dsiin Studio Logo"></div>
+      <div><div>สถานีฟอนต์</div><div class="logo-text-en">Dsiin Studio</div></div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">หน้าแรก</a></li>
+      <li><a href="shop.html" class="active">ฟอนต์ทั้งหมด</a></li>
+      <li><a href="contact.html">ติดต่อ</a></li>
+      <li><a href="shop.html" class="nav-cta">เลือกซื้อฟอนต์</a></li>
+      <li><a href="cart.html" class="nav-cart">🛒 <span class="cart-count" style="display:none;">0</span></a></li>
+    </ul>
+    <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<div class="mobile-nav" id="mobileNav">
+  <div class="mobile-nav-panel">
+    <button class="mobile-nav-close" id="mobileNavClose">✕</button>
+    <a href="index.html" class="logo" style="margin-bottom:8px;">
+      <div class="logo-icon"><img src="รูปโปร/LOGO.png" alt="Dsiin Studio Logo"></div>
+      <div><div>สถานีฟอนต์</div><div class="logo-text-en">Dsiin Studio</div></div>
+    </a>
+    <ul class="mobile-nav-links">
+      <li><a href="index.html">🏠 หน้าแรก</a></li>
+      <li><a href="shop.html" class="active">🛍️ ฟอนต์ทั้งหมด</a></li>
+      <li><a href="contact.html">📩 ติดต่อ</a></li>
+    </ul>
+  </div>
+</div>
+
+<div class="container">
+  <!-- Breadcrumb -->
+  <div class="product-breadcrumb">
+    <a href="index.html">หน้าแรก</a>
+    <span>›</span>
+    <a href="shop.html">ฟอนต์ทั้งหมด</a>
+    <span>›</span>
+    <span style="color:var(--text-dark);">Dsiin Serif Pro</span>
+  </div>
+
+  <!-- Product Layout -->
+  <div class="product-layout">
+
+    <!-- Left: Preview -->
+    <div class="product-preview-area">
+      <div class="font-preview-large">
+        <div class="preview-display-text" id="previewDisplay" style="font-family:'DSCarrot','Noto Serif Thai',serif;">
+          ทดลองพิมพ์ฟอนต์ก่อนซื้อ
+        </div>
+      </div>
+
+      <div class="live-preview-tool">
+        <div class="preview-tool-header">
+          <span>🔤 ทดลองพิมพ์ฟอนต์</span>
+          <span style="font-size:0.78rem;font-weight:400;color:var(--text-light);">พิมพ์ข้อความด้านล่าง</span>
+        </div>
+        <textarea class="preview-textarea" id="previewTextarea" placeholder="พิมพ์ข้อความที่นี่เพื่อดูตัวอย่าง เช่น ชื่อแบรนด์ ชื่อร้าน หรือข้อความโปรด...">ทดลองพิมพ์ฟอนต์ก่อนซื้อ</textarea>
+        <div class="preview-controls">
+          <div class="size-control">
+            <span>ขนาด:</span>
+            <input type="range" id="sizeRange" min="24" max="120" value="24">
+            <span id="sizeValue">24px</span>
+          </div>
+          <div style="display:flex;gap:8px;margin-left:auto;">
+            <button class="btn btn-ghost" style="padding:6px 12px;font-size:0.8rem;" onclick="document.getElementById('previewDisplay').style.color='var(--text-dark)'">ดำ</button>
+            <button class="btn btn-ghost" style="padding:6px 12px;font-size:0.8rem;" onclick="document.getElementById('previewDisplay').style.color='var(--pink-dark)'">ชมพู</button>
+            <button class="btn btn-ghost" style="padding:6px 12px;font-size:0.8rem;" onclick="document.getElementById('previewDisplay').style.color='var(--blue-dark)'">ฟ้า</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Character set preview -->
+      <div style="background:white;border-radius:var(--radius);border:1px solid var(--border);padding:20px;margin-top:16px;">
+        <div style="font-size:0.85rem;font-weight:700;color:var(--text-mid);margin-bottom:12px;">ตัวอักษรทั้งหมด</div>
+        <div id="charSetThai" style="font-family:'DSCarrot','Noto Serif Thai',serif;font-size:1.1rem;line-height:2;color:var(--text-dark);letter-spacing:0.05em;">
+          ก ข ค ง จ ฉ ช ซ ฌ ญ ฎ ฏ ฐ ฑ ฒ ณ ด ต ถ ท ธ น บ ป ผ ฝ พ ฟ ภ ม ย ร ล ว ศ ษ ส ห ฬ อ ฮ
+        </div>
+        <div id="charSetLatin" style="font-family:'DSCarrot','Noto Serif Thai',serif;font-size:1.1rem;line-height:2;color:var(--text-dark);border-top:1px solid var(--border);padding-top:10px;margin-top:10px;">
+          A B C D E F G H I J K L M N O P Q R S T U V W X Y Z<br>
+          a b c d e f g h i j k l m n o p q r s t u v w x y z<br>
+          0 1 2 3 4 5 6 7 8 9 ! @ # $ % & * ( ) - + = , . ?
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Info -->
+    <div class="product-info">
+      <div id="productImageWrap" style="border-radius:var(--radius);overflow:hidden;margin-bottom:12px;display:none;max-width:320px;">
+        <img id="productImage" src="" alt="ภาพสินค้า" style="width:100%;display:block;border-radius:var(--radius);">
+      </div>
+
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
+        <span class="badge badge-pink">🔥 ขายดีอันดับ 1</span>
+        <span class="badge badge-mint">✓ รองรับภาษาไทย</span>
+        <span class="badge badge-blue">⚡ ดาวน์โหลดทันที</span>
+      </div>
+
+      <h1 class="product-title" style="font-family:'Noto Serif Thai',serif;">Dsiin Serif Pro</h1>
+
+      <div class="product-meta">
+        <div class="rating">
+          <span class="rating-stars" aria-label="5 ดาวจาก 5 ดาว" role="img">⭐⭐⭐⭐⭐</span>
+          <strong>4.9</strong>
+          <span>(312 รีวิว)</span>
+        </div>
+      </div>
+
+      <!-- Specs -->
+      <div class="product-specs">
+        <div class="specs-title">📋 รายละเอียดฟอนต์</div>
+        <div class="spec-row">
+          <span class="spec-key">ภาษาที่รองรับ</span>
+          <span class="spec-val" id="langVal">ภาษาไทย, อังกฤษ, ตัวเลข, สัญลักษณ์พิเศษ</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-key">จำนวน Weight</span>
+          <span class="spec-val" id="weightVal">3 น้ำหนัก (บาง, ปกติ, หนา)</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-key">รูปแบบไฟล์</span>
+          <span class="spec-val">OTF, TTF, WOFF, WOFF2</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-key">ใช้งานได้กับ</span>
+          <span class="spec-val">Photoshop, Illustrator, Figma, Canva, Word, ฯลฯ</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-key">อัปเดตล่าสุด</span>
+          <span class="spec-val">มีนาคม 2567</span>
+        </div>
+      </div>
+
+      <!-- License -->
+      <div class="license-selector">
+        <div class="license-title">🔐 เลือกประเภทใบอนุญาต</div>
+        <div class="license-options">
+          <div class="license-card selected">
+            <div class="license-check">✓</div>
+            <div class="license-name">Personal & Commercial Use</div>
+            <div class="license-desc">สำหรับใช้งานส่วนตัวและเชิงพาณิชย์</div>
+            <div class="license-price">฿149</div>
+          </div>
+          <div class="license-card">
+            <div class="license-check"></div>
+            <div class="license-name">Freelance Use</div>
+            <div class="license-desc">สำหรับฟรีแลนซ์ ไม่ผูกมัดกับองค์กร</div>
+            <div class="license-price">฿500</div>
+          </div>
+          <div class="license-card">
+            <div class="license-check"></div>
+            <div class="license-name">Sticker Line Use</div>
+            <div class="license-desc">สำหรับใช้ประกอบงานสติ๊กเกอร์ไลน์</div>
+            <div class="license-price">฿300</div>
+          </div>
+          <div class="license-card">
+            <div class="license-check"></div>
+            <div class="license-name">Company & Organization Use</div>
+            <div class="license-desc">สำหรับใช้งานในบริษัท/องค์กร/หจก.</div>
+            <div class="license-price">฿1,300</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Price -->
+      <div class="product-price-row">
+        <div class="product-price-main" id="mainPrice">฿149</div>
+      </div>
+
+      <!-- Actions -->
+      <div class="buy-actions">
+        <button class="btn btn-buy" id="buyNowBtn">🛒 ซื้อเลย — ดาวน์โหลดทันที</button>
+        <button class="btn btn-buy" id="addToCartBtn" style="background:var(--bg-soft);color:var(--text-dark);">+ เพิ่มในตะกร้า</button>
+        <button class="btn-wishlist" id="wishlistBtn" title="เพิ่มในรายการโปรด">🤍</button>
+      </div>
+
+      <!-- Guarantees -->
+      <div class="guarantee-pills">
+        <div class="guarantee-pill">⚡ ดาวน์โหลดทันทีหลังชำระ</div>
+        <div class="guarantee-pill">🔄 อัปเดตฟรีตลอดอายุ</div>
+        <div class="guarantee-pill">💬 รองรับ 24/7</div>
+        <div class="guarantee-pill">✓ ไฟล์ครบทุก format</div>
+      </div>
+
+      <!-- Copy Link -->
+      <div style="margin-top:28px;padding-top:24px;border-top:1px solid var(--border);">
+        <button class="btn btn-ghost" style="padding:6px 14px;font-size:0.82rem;" onclick="navigator.clipboard.writeText(window.location.href).then(()=>{this.textContent='✅ คัดลอกแล้ว!';setTimeout(()=>{this.textContent='🔗 คัดลอกลิงก์สินค้า'},2000)})">🔗 คัดลอกลิงก์สินค้า</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reviews Section -->
+  <section style="padding:60px 0;">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">รีวิวจากผู้ซื้อ</h2>
+        <p class="section-sub" id="reviewSummaryText" style="margin-bottom:0;"></p>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:200px 1fr;gap:48px;margin-bottom:40px;align-items:start;">
+      <div style="background:white;border:1px solid var(--border);border-radius:var(--radius);padding:28px;text-align:center;">
+        <div style="font-size:3.5rem;font-weight:900;color:var(--text-dark);font-family:'Noto Serif Thai',serif;">4.9</div>
+        <div style="font-size:1.4rem;margin:8px 0;" aria-label="5 ดาวจาก 5 ดาว" role="img">⭐⭐⭐⭐⭐</div>
+        <div id="reviewCountText" style="font-size:0.82rem;color:var(--text-light);"></div>
+        <div style="margin-top:16px;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:0.8rem;color:var(--text-mid);">
+            <span>5★</span>
+            <div style="flex:1;height:6px;background:var(--border);border-radius:99px;overflow:hidden;">
+              <div style="width:88%;height:100%;background:var(--pink);border-radius:99px;"></div>
+            </div>
+            <span>88%</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:0.8rem;color:var(--text-mid);">
+            <span>4★</span>
+            <div style="flex:1;height:6px;background:var(--border);border-radius:99px;overflow:hidden;">
+              <div style="width:10%;height:100%;background:var(--pink);border-radius:99px;"></div>
+            </div>
+            <span>10%</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:0.8rem;color:var(--text-mid);">
+            <span>3★</span>
+            <div style="flex:1;height:6px;background:var(--border);border-radius:99px;overflow:hidden;">
+              <div style="width:2%;height:100%;background:var(--pink);border-radius:99px;"></div>
+            </div>
+            <span>2%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonials-grid" style="grid-template-columns:1fr 1fr;">
+        <div class="testimonial-card">
+          <div class="stars" aria-label="5 ดาวจาก 5 ดาว" role="img">⭐⭐⭐⭐⭐</div>
+          <p class="testimonial-text">"ฟอนต์สวยมากค่ะ ใช้ทำโลโก้แบรนด์ได้เลย ลูกค้าติดใจมากเลยค่ะ"</p>
+          <div class="testimonial-author">
+            <div class="author-avatar" style="background:linear-gradient(135deg,var(--pink),var(--lavender));">ก</div>
+            <div><div class="author-name">กัลยา ศิริวัฒน์</div><div class="author-role">Brand Designer · มีนาคม 2567</div></div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="stars" aria-label="5 ดาวจาก 5 ดาว" role="img">⭐⭐⭐⭐⭐</div>
+          <p class="testimonial-text">"ซื้อมาใช้ในหนังสือ ตัวอักษรสวยงาม อ่านง่าย ไม่เมื่อยตา แนะนำมากครับ"</p>
+          <div class="testimonial-author">
+            <div class="author-avatar" style="background:linear-gradient(135deg,var(--blue),var(--mint));">น</div>
+            <div><div class="author-name">นพดล ชาญวิทย์</div><div class="author-role">นักเขียน · กุมภาพันธ์ 2567</div></div>
+          </div>
+        </div>
+        </div>
+    </div>
+
+    <!-- User Reviews -->
+    <div id="userReviewsList" style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:32px;"></div>
+
+    <!-- Review Form -->
+    <div id="reviewFormWrap" style="background:white;border:1px solid var(--border);border-radius:var(--radius);padding:32px;max-width:600px;">
+      <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:20px;">✍️ เขียนรีวิวของคุณ</h3>
+      <div style="margin-bottom:14px;">
+        <label style="font-size:0.85rem;color:var(--text-mid);display:block;margin-bottom:6px;">คะแนน</label>
+        <div id="starPicker" style="display:flex;gap:6px;font-size:1.6rem;cursor:pointer;">
+          <span data-star="1">☆</span><span data-star="2">☆</span><span data-star="3">☆</span><span data-star="4">☆</span><span data-star="5">☆</span>
+        </div>
+      </div>
+      <div style="margin-bottom:14px;">
+        <label style="font-size:0.85rem;color:var(--text-mid);display:block;margin-bottom:6px;">ชื่อของคุณ</label>
+        <input id="reviewName" type="text" placeholder="เช่น สมหญิง ใจดี" style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:10px;font-size:0.9rem;font-family:inherit;box-sizing:border-box;">
+      </div>
+      <div style="margin-bottom:14px;">
+        <label style="font-size:0.85rem;color:var(--text-mid);display:block;margin-bottom:6px;">อาชีพ / การใช้งาน</label>
+        <input id="reviewRole" type="text" placeholder="เช่น นักออกแบบ, ครู, ฟรีแลนซ์" style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:10px;font-size:0.9rem;font-family:inherit;box-sizing:border-box;">
+      </div>
+      <div style="margin-bottom:20px;">
+        <label style="font-size:0.85rem;color:var(--text-mid);display:block;margin-bottom:6px;">รีวิว</label>
+        <textarea id="reviewText" placeholder="บอกเล่าประสบการณ์การใช้งานฟอนต์นี้..." style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:10px;font-size:0.9rem;font-family:inherit;min-height:90px;resize:vertical;box-sizing:border-box;"></textarea>
+      </div>
+      <button onclick="submitReview()" class="btn btn-primary" style="width:100%;justify-content:center;">ส่งรีวิว</button>
+      <div id="reviewMsg" style="margin-top:12px;font-size:0.85rem;text-align:center;"></div>
+    </div>
+  </section>
+
+  <!-- Related Fonts -->
+  <section style="padding:0 0 80px;">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">ฟอนต์ที่คล้ายกัน</h2>
+        <p class="section-sub" style="margin-bottom:0;">คุณอาจชอบฟอนต์เหล่านี้ด้วย</p>
+      </div>
+      <a href="shop.html" class="btn btn-ghost">ดูทั้งหมด →</a>
+    </div>
+    <div class="fonts-grid" id="relatedFontsGrid"></div>
+  </section>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="logo" style="margin-bottom:16px;">
+          <div class="logo-icon"><img src="รูปโปร/LOGO.png" alt="Dsiin Studio Logo"></div>
+          <div style="color:white;"><div>สถานีฟอนต์</div><div class="logo-text-en" style="color:rgba(255,255,255,0.5);">Dsiin Studio</div></div>
+        </a>
+        <p>ร้านฟอนต์ดิจิทัลคุณภาพสูง สำหรับนักออกแบบและครีเอเตอร์ชาวไทย</p>
+      </div>
+      <div class="footer-col">
+        <h4>ฟอนต์</h4>
+        <ul><li><a href="shop.html">ฟอนต์ทั้งหมด</a></li><li><a href="shop.html">ขายดี</a></li><li><a href="shop.html">มาใหม่</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>ข้อมูล</h4>
+        <ul><li><a href="about.html">เกี่ยวกับเรา</a></li><li><a href="contact.html">ติดต่อ</a></li><li><a href="policy.html">นโยบาย</a></li></ul>
+      </div>
+      <div class="footer-col footer-newsletter">
+        <h4>รับข่าวสาร</h4>
+        <p>อัปเดตฟอนต์ใหม่และโปรโมชันก่อนใคร</p>
+        <a href="https://line.me/ti/g2/Aba7z_ZrCpKzZeHXGk6Krr-EnfwW5_N8hBzKIQ?utm_source=invitation&utm_medium=link_copy&utm_campaign=default" target="_blank" rel="noopener" class="btn btn-pink" style="display:inline-block;border-radius:10px;padding:12px 22px;font-weight:700;text-decoration:none;">🔔 รู้โปรก่อนใคร</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© 2569 สถานีฟอนต์ · Dsiin Studio</div>
+      <div>ออกแบบด้วย ❤️ สำหรับนักออกแบบไทย</div>
+    </div>
+  </div>
+</footer>
+
+<button class="scroll-top" id="scrollTop">↑</button>
+<script src="script.js"></script>
+<script src="auth.js"></script>
+<script src="fonts-data.js"></script>
+<script>
+(function() {
+  const grid = document.getElementById('relatedFontsGrid');
+  if (!grid || typeof FONTS_DATA === 'undefined') return;
+
+  // Get current font name from URL or page title
+  const currentName = new URLSearchParams(window.location.search).get('name')
+    || document.querySelector('.product-title')?.textContent?.trim()
+    || '';
+
+  const current = FONTS_DATA.find(f => f.name === currentName);
+
+  function score(a, b) {
+    if (a.name === b.name) return -1;
+    let s = 0;
+    // Same category badge (strongest signal)
+    if (a.badge === b.badge) s += 4;
+    // Shared tags (skip generic 'ไทย')
+    const aTags = new Set(a.tags.filter(t => t !== 'ไทย'));
+    const bTags = new Set(b.tags.filter(t => t !== 'ไทย'));
+    aTags.forEach(t => { if (bTags.has(t)) s += 2; });
+    // Same price
+    if (a.price === b.price) s += 1;
+    // Small random tiebreak so results vary slightly
+    s += Math.random() * 0.3;
+    return s;
+  }
+
+  const source = current || FONTS_DATA[0];
+  const related = FONTS_DATA
+    .filter(f => f.name !== source.name)
+    .map(f => ({ font: f, score: score(source, f) }))
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 4)
+    .map(x => x.font);
+
+  related.forEach(f => {
+    const card = document.createElement('a');
+    card.className = 'font-card';
+    card.href = 'product.html?name=' + encodeURIComponent(f.name);
+    card.innerHTML = `
+      <div class="font-card-preview" style="background-image:url('${f.image}');background-size:cover;background-position:center;">
+        <div class="card-badge"><span class="badge badge-mint">${f.badge}</span></div>
+      </div>
+      <div class="font-card-body">
+        <div class="font-card-name">${f.name}</div>
+        <div class="font-card-footer">
+          <div class="font-price">฿${f.price} <span>/ ไฟล์</span></div>
+          <span class="btn btn-pink btn-card">+ ตะกร้า</span>
+        </div>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+})();
+</script>
+<style>
+  @font-face { font-family: 'DSAlmond'; src: url('รวมฟอนต์/DSAlmond.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSAn-ko'; src: url('รวมฟอนต์/DSAn-ko.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSAroimak'; src: url('รวมฟอนต์/DSAroimak.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSBagel'; src: url('รวมฟอนต์/DSBagel.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSBali'; src: url('รวมฟอนต์/DSBali.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSBallet'; src: url('รวมฟอนต์/DSBallet.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSBanball'; src: url('รวมฟอนต์/DSBanball.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSBangsaen'; src: url('รวมฟอนต์/DSBangsaen.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSBansuan'; src: url('รวมฟอนต์/DSBansuan.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSBirthday'; src: url('ไฟล์ฟอนต์เพิ่ม/DSBirthday.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSBualoy'; src: url('รวมฟอนต์/DSBualoy.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSCalcium'; src: url('รวมฟอนต์/DSCalcium.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSCalculus'; src: url('ไฟล์ฟอนต์เพิ่ม/DSCalculus.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSCaramel'; src: url('รวมฟอนต์/DSCaramel.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSCarrot'; src: url('รวมฟอนต์/DSCarrot.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSChaingmai'; src: url('รวมฟอนต์/DSChaingmai.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSChanomnueb'; src: url('รวมฟอนต์/DSChanomnueb.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSCheescake'; src: url('รวมฟอนต์/DSCheescake.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSCoachella'; src: url('รวมฟอนต์/DSCoachella.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSDaosao'; src: url('รวมฟอนต์/DSDaosao.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSEclairs'; src: url('รวมฟอนต์/DSEclairs.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSFender'; src: url('รวมฟอนต์/DSFender.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSGanesh'; src: url('รวมฟอนต์/DSGanesh.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSGoodday'; src: url('รวมฟอนต์/DSGoodday.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSHawkins'; src: url('รวมฟอนต์/DSHawkins.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSHomok'; src: url('รวมฟอนต์/DSHomok.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSHongyok'; src: url('รวมฟอนต์/DSHongyok.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSInter'; src: url('รวมฟอนต์/DSInter.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSJaonaay'; src: url('รวมฟอนต์/DSJaonaay.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSKaphrao'; src: url('รวมฟอนต์/DSKaphrao.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSKhaiwan'; src: url('รวมฟอนต์/DSKhaiwan.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSKhamuu'; src: url('รวมฟอนต์/DSKhamuu.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSKhanomtan'; src: url('รวมฟอนต์/DSKhanomtan.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSKhonglen'; src: url('รวมฟอนต์/DSKhonglen.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSKluai-thot'; src: url('รวมฟอนต์/DSKluai-thot.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSLepan'; src: url('รวมฟอนต์/DSLepan.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSLookpeach'; src: url('รวมฟอนต์/DSLookpeach.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSMala'; src: url('รวมฟอนต์/DSMala.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSMaltese'; src: url('รวมฟอนต์/DSMaltese.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSManow'; src: url('รวมฟอนต์/DSManow.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSManwan'; src: url('รวมฟอนต์/DSManwan.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSMarvel'; src: url('รวมฟอนต์/DSMarvel.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSMascot'; src: url('รวมฟอนต์/DSMascot.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSMatoer'; src: url('รวมฟอนต์/DSMatoer.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSMelbourne'; src: url('รวมฟอนต์/DSMelbourne.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSMelon'; src: url('รวมฟอนต์/DSMelon.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSMendel'; src: url('รวมฟอนต์/DSMendel.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSMerlin'; src: url('รวมฟอนต์/DSMerlin.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSMeter'; src: url('รวมฟอนต์/DSMeter.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSMokaeng.250929-1749'; src: url('รวมฟอนต์/DSMokaeng.250929-1749.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSMonThong'; src: url('รวมฟอนต์/DSMonThong.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSMookrobThin'; src: url('รวมฟอนต์/DSMookrobThin.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSMorgan'; src: url('รวมฟอนต์/DSMorgan.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSMotor'; src: url('รวมฟอนต์/DSMotor.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSMueangjeen'; src: url('รวมฟอนต์/DSMueangjeen.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSMustang'; src: url('รวมฟอนต์/DSMustang.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSMustard'; src: url('รวมฟอนต์/DSMustard.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSNangsue'; src: url('รวมฟอนต์/DSNangsue.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSNewclear'; src: url('รวมฟอนต์/DSNewclear.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSNewyear'; src: url('รวมฟอนต์/DSNewyear.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSNoodle'; src: url('รวมฟอนต์/DSNoodle.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSOilpastel'; src: url('รวมฟอนต์/DSOilpastel.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSPasta'; src: url('รวมฟอนต์/DSPasta.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSPhloenWan'; src: url('รวมฟอนต์/DSPhloenWan.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSPhukhao'; src: url('รวมฟอนต์/DSPhukhao.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSReindeer'; src: url('รวมฟอนต์/DSReindeer.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSScalar'; src: url('รวมฟอนต์/DSScalar.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSSomwhan'; src: url('รวมฟอนต์/DSSomwhan.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSSpacebar'; src: url('รวมฟอนต์/DSSpacebar.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSStar'; src: url('รวมฟอนต์/DSStar.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSSubway'; src: url('รวมฟอนต์/DSSubway.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSSunday'; src: url('รวมฟอนต์/DSSunday.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSSydney'; src: url('รวมฟอนต์/DSSydney.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSThunder'; src: url('รวมฟอนต์/DSThunder.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSValentine'; src: url('รวมฟอนต์/DSValentine.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSWednesday'; src: url('รวมฟอนต์/DSWednesday.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSWelcome'; src: url('รวมฟอนต์/DSWelcome.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSbah-chang'; src: url('รวมฟอนต์/DSbah-chang.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSbhayu'; src: url('รวมฟอนต์/DSbhayu.ttf'); font-display: swap; }
+  @font-face { font-family: 'DScatier'; src: url('รวมฟอนต์/DScatier.ttf'); font-display: swap; }
+  @font-face { font-family: 'DScharlotte'; src: url('รวมฟอนต์/DScharlotte.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSchocomilk'; src: url('รวมฟอนต์/DSchocomilk.ttf'); font-display: swap; }
+  @font-face { font-family: 'DScyclone'; src: url('รวมฟอนต์/DScyclone.ttf'); font-display: swap; }
+  @font-face { font-family: 'DScynthia'; src: url('รวมฟอนต์/DScynthia.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSdiana'; src: url('รวมฟอนต์/DSdiana.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSfigure'; src: url('รวมฟอนต์/DSfigure.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSfongnom'; src: url('รวมฟอนต์/DSfongnom.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSgalileo'; src: url('รวมฟอนต์/DSgalileo.ttf'); font-display: swap; }
+  @font-face { font-family: 'DShippie'; src: url('รวมฟอนต์/DShippie.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSkhaoklong'; src: url('รวมฟอนต์/DSkhaoklong.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSlandokmai'; src: url('รวมฟอนต์/DSlandokmai.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSluxury'; src: url('รวมฟอนต์/DSluxury.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSmajor'; src: url('รวมฟอนต์/DSmajor.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSmannoeiTester'; src: url('รวมฟอนต์/DSmannoeiTester.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSmaple'; src: url('รวมฟอนต์/DSmaple.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSmargie'; src: url('รวมฟอนต์/DSmargie.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSmaterial'; src: url('รวมฟอนต์/DSmaterial.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSminako'; src: url('รวมฟอนต์/DSminako.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSmolecules'; src: url('รวมฟอนต์/DSmolecules.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSmooyong'; src: url('รวมฟอนต์/DSmooyong.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSmooyor'; src: url('รวมฟอนต์/DSmooyor.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSnommi'; src: url('รวมฟอนต์/DSnommi.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSpadlom'; src: url('รวมฟอนต์/DSpadlom.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSpakkrob'; src: url('รวมฟอนต์/DSpakkrob.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSpanfilm'; src: url('รวมฟอนต์/DSpanfilm.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSpangyen'; src: url('รวมฟอนต์/DSpangyen.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSpuimek'; src: url('รวมฟอนต์/DSpuimek.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSsaifah'; src: url('รวมฟอนต์/DSsaifah.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSstevia'; src: url('รวมฟอนต์/DSstevia.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSsummer'; src: url('รวมฟอนต์/DSsummer.ttf'); font-display: swap; }
+  @font-face { font-family: 'DStakeab'; src: url('รวมฟอนต์/DStakeab.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSthianhom'; src: url('รวมฟอนต์/DSthianhom.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSwaidek'; src: url('รวมฟอนต์/DSwaidek.ttf'); font-display: swap; }
+  @font-face { font-family: 'RGHongkong'; src: url('รวมฟอนต์/RGHongkong.ttf'); font-display: swap; }
+  @font-face { font-family: 'RGVictoria'; src: url('รวมฟอนต์/RGVictoria.ttf'); font-display: swap; }
+  @font-face { font-family: 'TKAnis'; src: url('รวมฟอนต์/TKAnis.ttf'); font-display: swap; }
+  @font-face { font-family: 'TKAnlene'; src: url('รวมฟอนต์/TKAnlene.ttf'); font-display: swap; }
+  @font-face { font-family: 'TKBluewhale'; src: url('รวมฟอนต์/TKBluewhale.ttf'); font-display: swap; }
+  @font-face { font-family: 'TKBobtail'; src: url('รวมฟอนต์/TKBobtail.ttf'); font-display: swap; }
+  @font-face { font-family: 'TKCanele'; src: url('รวมฟอนต์/TKCanele.ttf'); font-display: swap; }
+  @font-face { font-family: 'TKCayla'; src: url('รวมฟอนต์/TKCayla.ttf'); font-display: swap; }
+  @font-face { font-family: 'TKCindy'; src: url('รวมฟอนต์/TKCindy.ttf'); font-display: swap; }
+  @font-face { font-family: 'TKConnor'; src: url('รวมฟอนต์/TKConnor.ttf'); font-display: swap; }
+  @font-face { font-family: 'TKCreampuff'; src: url('รวมฟอนต์/TKCreampuff.ttf'); font-display: swap; }
+  @font-face { font-family: 'TKCulture'; src: url('รวมฟอนต์/TKCulture.ttf'); font-display: swap; }
+  @font-face { font-family: 'TKDragon'; src: url('รวมฟอนต์/TKDragon.ttf'); font-display: swap; }
+  @font-face { font-family: 'TKFilson'; src: url('รวมฟอนต์/TKFilson.ttf'); font-display: swap; }
+  @font-face { font-family: 'TKHarmony'; src: url('รวมฟอนต์/TKHarmony.ttf'); font-display: swap; }
+  @font-face { font-family: 'TKKaiFahPayaLor'; src: url('รวมฟอนต์/TKKaiFahPayaLor.ttf'); font-display: swap; }
+  @font-face { font-family: 'TKKamin'; src: url('รวมฟอนต์/TKKamin.ttf'); font-display: swap; }
+  @font-face { font-family: 'TKKhaopad'; src: url('รวมฟอนต์/TKKhaopad.ttf'); font-display: swap; }
+  @font-face { font-family: 'TKKhaosoi'; src: url('รวมฟอนต์/TKKhaosoi.ttf'); font-display: swap; }
+  @font-face { font-family: 'TKLasta'; src: url('รวมฟอนต์/TKLasta.ttf'); font-display: swap; }
+  @font-face { font-family: 'TKManmuang'; src: url('รวมฟอนต์/TKManmuang.ttf'); font-display: swap; }
+  @font-face { font-family: 'TKManmuang2'; src: url('รวมฟอนต์/TKManmuang 2.ttf'); font-display: swap; }
+  @font-face { font-family: 'TKMaphrao'; src: url('รวมฟอนต์/TKMaphrao.ttf'); font-display: swap; }
+  @font-face { font-family: 'TKMartin'; src: url('รวมฟอนต์/TKMartin.ttf'); font-display: swap; }
+  @font-face { font-family: 'TKMooDeng'; src: url('รวมฟอนต์/TKMooDeng.ttf'); font-display: swap; }
+  @font-face { font-family: 'TKMoobin'; src: url('รวมฟอนต์/TKMoobin.ttf'); font-display: swap; }
+  @font-face { font-family: 'TKMoojeaw'; src: url('รวมฟอนต์/TKMoojeaw.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSmooyor'; src: url('รวมฟอนต์/DSmooyor.ttf'); font-display: swap; }
+  @font-face { font-family: 'TKMooji'; src: url('รวมฟอนต์/TKMooji.ttf'); font-display: swap; }
+  @font-face { font-family: 'TKNeptune'; src: url('รวมฟอนต์/TKNeptune.ttf'); font-display: swap; }
+  @font-face { font-family: 'TKNilda'; src: url('รวมฟอนต์/TKNilda.ttf'); font-display: swap; }
+  @font-face { font-family: 'TKNokkaeo'; src: url('รวมฟอนต์/TKNokkaeo.ttf'); font-display: swap; }
+  @font-face { font-family: 'TKPahMai'; src: url('รวมฟอนต์/TKPahMai.ttf'); font-display: swap; }
+  @font-face { font-family: 'TKPangpond'; src: url('รวมฟอนต์/TKPangpond.ttf'); font-display: swap; }
+  @font-face { font-family: 'TKPatty'; src: url('รวมฟอนต์/TKPatty.ttf'); font-display: swap; }
+  @font-face { font-family: 'TKPeter'; src: url('รวมฟอนต์/TKPeter.ttf'); font-display: swap; }
+  @font-face { font-family: 'TKPetnoi'; src: url('รวมฟอนต์/TKPetnoi.ttf'); font-display: swap; }
+  @font-face { font-family: 'TKPudding'; src: url('รวมฟอนต์/TKPudding.ttf'); font-display: swap; }
+  @font-face { font-family: 'TKSangkhaya'; src: url('รวมฟอนต์/TKSangkhaya.ttf'); font-display: swap; }
+  @font-face { font-family: 'TKSinclair'; src: url('รวมฟอนต์/TKSinclair.ttf'); font-display: swap; }
+  @font-face { font-family: 'TKSomtum'; src: url('รวมฟอนต์/TKSomtum.ttf'); font-display: swap; }
+  @font-face { font-family: 'TKSudjai'; src: url('รวมฟอนต์/TKSudjai.ttf'); font-display: swap; }
+  @font-face { font-family: 'TKTeddy'; src: url('รวมฟอนต์/TKTeddy.ttf'); font-display: swap; }
+  @font-face { font-family: 'TKThanos'; src: url('รวมฟอนต์/TKThanos.ttf'); font-display: swap; }
+  @font-face { font-family: 'TKTuna'; src: url('รวมฟอนต์/TKTuna.ttf'); font-display: swap; }
+  @font-face { font-family: 'TKVenus'; src: url('รวมฟอนต์/TKVenus.ttf'); font-display: swap; }
+  @font-face { font-family: 'TKYukHin'; src: url('รวมฟอนต์/TKYukHin.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSMalfeil'; src: url('ไฟล์ฟอนต์เพิ่ม/DSMalfeil.ttf'); font-display: swap; }
+  @font-face { font-family: 'DSmannoei'; src: url('ไฟล์ฟอนต์เพิ่ม/DSmannoei.ttf'); font-display: swap; }
+  @font-face { font-family: 'TKBobtailFull'; src: url('ไฟล์ฟอนต์เพิ่ม/TKBobtail.ttf'); font-display: swap; }
+  @font-face { font-family: 'TKGorya'; src: url('ไฟล์ฟอนต์เพิ่ม/TKGorya.ttf'); font-display: swap; }
+</style>
+<script>
+// ===== IMAGE MAP =====
+const imageMap = {
+  "ฟอนต์ แคลคูลัส": "Font DS/ฟอนต์ แคลคูลัส.jpg",
+  "ฟอนต์ หนังสือ": "Font DS/ฟอนต์ หนังสือ.jpg",
+  "ฟอนต์ ลูกพีช": "Font DS/ฟอนต์ ลูกพีช.jpg",
+  "ฟอนต์ บลูวาฬ": "Font DS/ฟอนต์ บลูวาฬ.jpg",
+  "ฟอนต์ ก๋วยเตี๋ยว": "Font DS/ฟอนต์ ก๋วยเตี๋ยว.jpg",
+  "ฟอนต์ ม้าเต่อ": "Font DS/ฟอนต์ ม้าเต่อ.jpg",
+  "ฟอนต์ กู๊ดเดย์": "Font DS/ฟอนต์ กู๊ดเดย์.jpg",
+  "ฟอนต์ ลานดอกไม้": "Font DS/ฟอนต์ ลานดอกไม้.jpg",
+  "ฟอนต์ กอหญ้า": "Font DS/ฟอนต์ กอหญ้า.jpg",
+  "ฟอนต์ อินเตอร์": "Font DS/ฟอนต์ อินเตอร์.jpg",
+  "ฟอนต์ เป็ดน้อย": "Font DS/ ฟอนต์ เป็ดน้อย.jpg",
+  "ฟอนต์ นิวเยียร์": "Font DS/ฟอนต์ นิวเยียร์.jpg",
+  "ฟอนต์ เชียงใหม่": "Font DS/ฟอนต์ เชียงใหม่.jpg",
+  "ฟอนต์ คามิน": "Font DS/ฟอนต์ คามิน.jpg",
+  "ฟอนต์ มะพร้าว": "Font DS/ฟอนต์ มะพร้าว.jpg",
+  "ฟอนต์ ขนมตาล": "Font DS/ฟอนต์ ขนมตาล.jpg",
+  "ฟอนต์ ชาร์ลอตต์": "Font DS/ฟอนต์ ชาร์ลอตต์.jpg",
+  "ฟอนต์ ไข่หวาน": "Font DS/ฟอนต์ ไข่หวาน.jpg",
+  "ฟอนต์ สีชอล์ค": "Font DS/ฟอนต์ สีชอล์ค.jpg",
+  "ฟอนต์ พาสต้า": "Font DS/ฟอนต์ พาสต้า.png",
+  "ฟอนต์อิโมจิEp.8": "รูปสินค้า 3/ไม่มีชื่อ 775_20251119225944.png",
+  "ฟอนต์อิโมจิEp.9": "รูปสินค้า 3/IMG_4987.png",
+  "SET:อิโมจิ": "รูปสินค้า 3/SET_อิโมจิ_cover.PNG",
+  "ฟอนต์อิโมจิEp.7": "รูปสินค้า 3/ไม่มีชื่อ 773_20251119112500.png",
+  "ฟอนต์อิโมจิEp.6": "รูปสินค้า 3/IMG_2405.PNG",
+  "ฟอนต์อิโมจิEp.4": "รูปสินค้า 3/ไม่มีชื่อ 525_20250803174922.png",
+  "ฟอนต์อิโมจิEp.5": "รูปสินค้า 3/ไม่มีชื่อ 685_20250922165811.png",
+  "ฟอนต์อิโมจิEp.1": "อิโมจิ 2/ฟอนต์อิโมจิEp.1.png",
+  "ฟอนต์อิโมจิEp.2": "รูปสินค้า 3/ไม่มีชื่อ 3756_20250609175559.png",
+  "ฟอนต์อิโมจิEp.3": "รูปสินค้า 3/ไม่มีชื่อ 399_20250625153239.png",
+  "ฟอนต์แพตตี้": "ตัวอย่างฟอนต์/ฟอนต์แพตตี้.png",
+  "ฟอนต์เซล่า": "ตัวอย่างฟอนต์/ฟอนต์เซล่า.png",
+  "ฟอนต์ธันเดอร์": "ตัวอย่างฟอนต์/ฟอนต์ธันเดอร์.png",
+  "ฟอนต์มาร์เวล": "ตัวอย่างฟอนต์/ฟอนต์มาร์เวล.png",
+  "ฟอนต์มาร์ติน": "ตัวอย่างฟอนต์/ฟอนต์มาร์ติน.png",
+  "ฟอนต์อัลมอนด์": "ตัวอย่างฟอนต์/ฟอนต์อัลมอนด์.png",
+  "ฟอนต์คาราเมล": "ตัวอย่างฟอนต์/ฟอนต์คาราเมล.png",
+  "ฟอนต์ของเล่น": "ตัวอย่างฟอนต์/ฟอนต์ของเล่น.png",
+  "ฟอนต์เวนส์เดย์": "ตัวอย่างฟอนต์/ฟอนต์เวนส์เดย์.png",
+  "ฟอนต์ซินเทีย": "ตัวอย่างฟอนต์/ฟอนต์ซินเทีย.png",
+  "ฟอนต์เมนเดล": "ตัวอย่างฟอนต์/ฟอนต์เมนเดล.png",
+  "ฟอนต์วีนัส": "ตัวอย่างฟอนต์/ฟอนต์วีนัส.png",
+  "ฟอนต์หมูบิน": "ตัวอย่างฟอนต์/ฟอนต์หมูบิน.PNG",
+  "ฟอนต์ชีสเค้ก": "ตัวอย่างฟอนต์/ฟอนต์ชีสเค้ก.png",
+  "ฟอนต์ดาวเสาร์": "ตัวอย่างฟอนต์/ฟอนต์ดาวเสาร์.png",
+  "ฟอนต์สเปซบาร์": "ตัวอย่างฟอนต์/ฟอนต์สเปซบาร์.png",
+  "ฟอนต์มัสแตง": "ตัวอย่างฟอนต์/ฟอนต์มัสแตง.PNG",
+  "ฟอนต์แผ่นฟิล์ม": "ตัวอย่างฟอนต์/ฟอนต์แผ่นฟิล์ม.png",
+  "ฟอนต์มัสตาร์ด": "ตัวอย่างฟอนต์/ฟอนต์มัสตาร์ด.png",
+  "ฟอนต์ห่อหมก": "ตัวอย่างฟอนต์/ฟอนต์ห่อหมก.png",
+  "ฟอนต์เอนิส": "ตัวอย่างฟอนต์/ฟอนต์เอนิส.png",
+  "ฟอนต์พัดลม": "ตัวอย่างฟอนต์/ฟอนต์พัดลม.png",
+  "ฟอนต์คาเทียร์": "ตัวอย่างฟอนต์/ฟอนต์คาเทียร์.png",
+  "ฟอนต์ครีมพัฟ": "ตัวอย่างฟอนต์/ฟอนต์ครีมพัฟ.png",
+  "ฟอนต์เบเกิล": "ตัวอย่างฟอนต์/ฟอนต์เบเกิล.PNG",
+  "ฟอนต์เมืองจีน": "ตัวอย่างฟอนต์/ฟอนต์เมืองจีน.png",
+  "ฟอนต์เมลเบิร์น": "ตัวอย่างฟอนต์/ฟอนต์เมลเบิร์น.png",
+  "ฟอนต์มัลเฟิล": "ตัวอย่างฟอนต์/ฟอนต์มัลเฟิล.png",
+  "ฟอนต์บัลเลต์": "ตัวอย่างฟอนต์/ฟอนต์บัลเลต์.png",
+  "ฟอนต์ปังเย็น": "ตัวอย่างฟอนต์/ฟอนต์ปังเย็น.png",
+  "ฟอนต์พุดดิ้ง": "ตัวอย่างฟอนต์/ฟอนต์พุดดิ้ง.png",
+  "ฟอนต์มอร์แกน": "ตัวอย่างฟอนต์/ฟอนต์มอร์แกน.png",
+  "ฟอนต์ฟิกเกอร์": "ตัวอย่างฟอนต์/ฟอนต์ฟิกเกอร์.png",
+  "ฟอนต์เลอแปง": "ตัวอย่างฟอนต์/ฟอนต์เลอแปง.png",
+  "ฟอนต์ตะเกียบ": "ตัวอย่างฟอนต์/ฟอนต์ตะเกียบ.png",
+  "ฟอนต์ราสต้า": "ตัวอย่างฟอนต์/ฟอนต์ราสต้า.png",
+  "ฟอนต์เมอร์ลิน": "ตัวอย่างฟอนต์/ฟอนต์เมอร์ลิน.png",
+  "ฟอนต์นิวเคลียร์": "ตัวอย่างฟอนต์/ฟอนต์นิวเคลียร์.png",
+  "ฟอนต์กะเพรา": "ตัวอย่างฟอนต์/ฟอนต์กะเพรา.png",
+  "ฟอนต์ผักกรอบ": "ตัวอย่างฟอนต์/ฟอนต์ผักกรอบ.png",
+  "ฟอนต์มิเตอร์": "ตัวอย่างฟอนต์/ฟอนต์มิเตอร์.png",
+  "ฟอนต์ข้าวผัด": "ตัวอย่างฟอนต์/ฟอนต์ข้าวผัด.png",
+  "ฟอนต์คอนเนอร์": "ตัวอย่างฟอนต์/ฟอนต์คอนเนอร์.png",
+  "ฟอนต์บางแสน": "ตัวอย่างฟอนต์/ฟอนต์บางแสน.png",
+  "ฟอนต์ซิดนีย์": "ตัวอย่างฟอนต์/ฟอนต์ซิดนีย์.png",
+  "ฟอนต์มาสคอส": "ตัวอย่างฟอนต์/ฟอนต์มาสคอส.png",
+  "ฟอนต์ข้าวซอย": "ตัวอย่างฟอนต์/ฟอนต์ข้าวซอย.png",
+  "ฟอนต์เท็ดดี้": "ตัวอย่างฟอนต์/ฟอนต์เท็ดดี้.png",
+  "ฟอนต์วัยเด็ก": "ตัวอย่างฟอนต์/ฟอนต์วัยเด็ก.png",
+  "ฟอนต์มอลทีส": "ตัวอย่างฟอนต์/ฟอนต์มอลทีส.png",
+  "ฟอนต์หม้อแกง": "ตัวอย่างฟอนต์/ฟอนต์หม้อแกง.png",
+  "ฟอนต์มันเนย": "ตัวอย่างฟอนต์/ฟอนต์มันเนย.png",
+  "ฟอนต์ข้าวกล่อง": "ตัวอย่างฟอนต์/ฟอนต์ข้าวกล่อง.png",
+  "ฟอนต์กาลิเลโอ": "ตัวอย่างฟอนต์/ฟอนต์กาลิเลโอ.png",
+  "ฟอนต์เมเจอร์": "ตัวอย่างฟอนต์/ฟอนต์เมเจอร์.png",
+  "ฟอนต์หมูยอ": "ตัวอย่างฟอนต์/ฟอนต์หมูยอ.png",
+  "ฟอนต์เจ้านาย": "ตัวอย่างฟอนต์/ฟอนต์เจ้านาย.png",
+  "ฟอนต์หมอนทอง": "ตัวอย่างฟอนต์/ฟอนต์หมอนทอง.png",
+  "ฟอนต์บ้านบอล": "ตัวอย่างฟอนต์/ฟอนต์บ้านบอล.png",
+  "ฟอนต์เนปจูน": "ตัวอย่างฟอนต์/ฟอนต์เนปจูน.png",
+  "ฟอนต์เมล่อน": "ตัวอย่างฟอนต์/ฟอนต์เมล่อน.png",
+  "ฟอนต์ฮิปปี้": "ตัวอย่างฟอนต์/ฟอนต์ฮิปปี้.png",
+  "ฟอนต์ขาหมู": "ตัวอย่างฟอนต์/ฟอนต์ขาหมู.png",
+  "ฟอนต์เวลคัม": "ตัวอย่างฟอนต์/ฟอนต์เวลคัม.PNG",
+  "ฟอนต์ฮ่องกง": "ตัวอย่างฟอนต์/ฟอนต์ฮ่องกง.png",
+  "ฟอนต์ธานอส": "ตัวอย่างฟอนต์/ฟอนต์ธานอส.png",
+  "ฟอนต์มันม่วง": "ตัวอย่างฟอนต์/ฟอนต์มันม่วง.png",
+  "ฟอนต์คาเนเล่": "ตัวอย่างฟอนต์/ฟอนต์คาเนเล่.png",
+  "ฟอนต์ซัมเมอร์": "ตัวอย่างฟอนต์/ฟอนต์ซัมเมอร์.png",
+  "ฟอนต์บ้านสวน": "ตัวอย่างฟอนต์/ฟอนต์บ้านสวน.png",
+  "ฟอนต์หมูกรอบ": "ตัวอย่างฟอนต์/ฟอนต์หมูกรอบ.png",
+  "ฟอนต์แอนลีน": "ตัวอย่างฟอนต์/ฟอนต์แอนลีน.png",
+  "ฟอนต์เรนเดียร์": "ตัวอย่างฟอนต์/ฟอนต์เรนเดียร์.png",
+  "ฟอนต์ซันเดย์": "ตัวอย่างฟอนต์/ฟอนต์ซันเดย์.png",
+  "ฟอนต์มูจิ": "ตัวอย่างฟอนต์/ฟอนต์มูจิ.png",
+  "ฟอนต์ฟองนม": "ตัวอย่างฟอนต์/ฟอนต์ฟองนม.PNG",
+  "ฟอนต์เบิร์ดเดย์": "ตัวอย่างฟอนต์/ฟอนต์เบิร์ดเดย์.png",
+  "ฟอนต์หมาล่า": "ตัวอย่างฟอนต์/ฟอนต์หมาล่า.PNG",
+  "ฟอนต์มินาโกะ": "ตัวอย่างฟอนต์/ฟอนต์มินาโกะ.png",
+  "ฟอนต์อันโกะ": "ตัวอย่างฟอนต์/ฟอนต์อันโกะ.png",
+  "ฟอนต์ภูเขา": "ตัวอย่างฟอนต์/ฟอนต์ภูเขา.png",
+  "ฟอนต์สเกลาร์": "ตัวอย่างฟอนต์/ฟอนต์สเกลาร์.png"
+};
+
+// ===== FONT MAP & PREVIEW =====
+const fontMap = {
+  "ฟอนต์ เป็ดน้อย": "TKPetnoi",
+  "ฟอนต์เป็ดน้อย": "TKPetnoi",
+  "ฟอนต์ คามิน": "TKKamin",
+  "ฟอนต์คามิน": "TKKamin",
+  "ฟอนต์ ขนมตาล": "DSKhanomtan",
+  "ฟอนต์ขนมตาล": "DSKhanomtan",
+  "ฟอนต์ บลูวาฬ": "TKBluewhale",
+  "ฟอนต์บลูวาฬ": "TKBluewhale",
+  "ฟอนต์ ลูกพีช": "DSLookpeach",
+  "ฟอนต์ลูกพีช": "DSLookpeach",
+  "ฟอนต์ พาสต้า": "DSPasta",
+  "ฟอนต์พาสต้า": "DSPasta",
+  "ฟอนต์ มะพร้าว": "TKMaphrao",
+  "ฟอนต์มะพร้าว": "TKMaphrao",
+  "ฟอนต์ ม้าเต่อ": "DSMatoer",
+  "ฟอนต์ม้าเต่อ": "DSMatoer",
+  "ฟอนต์ สีชอล์ค": "DSOilpastel",
+  "ฟอนต์สีชอล์ค": "DSOilpastel",
+  "ฟอนต์ หนังสือ": "DSNangsue",
+  "ฟอนต์หนังสือ": "DSNangsue",
+  "ฟอนต์ ไข่หวาน": "DSKhaiwan",
+  "ฟอนต์ไข่หวาน": "DSKhaiwan",
+  "ฟอนต์ กู๊ดเดย์": "DSGoodday",
+  "ฟอนต์กู๊ดเดย์": "DSGoodday",
+  "ฟอนต์ อินเตอร์": "DSInter",
+  "ฟอนต์อินเตอร์": "DSInter",
+  "ฟอนต์ แคลคูลัส": "DSCalculus",
+  "ฟอนต์แคลคูลัส": "DSCalculus",
+  "ฟอนต์ ชาร์ลอตต์": "DScharlotte",
+  "ฟอนต์ชาร์ลอตต์": "DScharlotte",
+  "ฟอนต์ นิวเยียร์": "DSNewyear",
+  "ฟอนต์นิวเยียร์": "DSNewyear",
+  "ฟอนต์ ลานดอกไม้": "DSlandokmai",
+  "ฟอนต์ลานดอกไม้": "DSlandokmai",
+  "ฟอนต์ เชียงใหม่": "DSChaingmai",
+  "ฟอนต์เชียงใหม่": "DSChaingmai",
+  "ฟอนต์ ก๋วยเตี๋ยว": "DSNoodle",
+  "ฟอนต์ก๋วยเตี๋ยว": "DSNoodle",
+  "ฟอนต์ กอหญ้า": "TKGorya",
+  "ฟอนต์กอหญ้า": "TKGorya",
+  "ฟอนต์มูจิ": "TKMooji",
+  "ฟอนต์ฟองนม": "DSfongnom",
+  "ฟอนต์ขาหมู": "DSKhamuu",
+  "ฟอนต์ธานอส": "TKThanos",
+  "ฟอนต์พัดลม": "DSpadlom",
+  "ฟอนต์ภูเขา": "DSPhukhao",
+  "ฟอนต์วีนัส": "TKVenus",
+  "ฟอนต์หมูยอ": "DSmooyor",
+  "ฟอนต์เซล่า": "TKCayla",
+  "ฟอนต์เอนิส": "TKAnis",
+  "ฟอนต์มัสแตง": "DSMustang",
+  "ฟอนต์หมาล่า": "DSMala",
+  "ฟอนต์หมูบิน": "TKMoobin",
+  "ฟอนต์เบเกิล": "DSBagel",
+  "ฟอนต์เวลคัม": "DSWelcome",
+  "ฟอนต์กะเพรา": "DSKaphrao",
+  "ฟอนต์บางแสน": "DSBangsaen",
+  "ฟอนต์มอลทีส": "DSMaltese",
+  "ฟอนต์มันเนย": "DSmannoei",
+  "ฟอนต์มาสคอส": "DSMascot",
+  "ฟอนต์ราสต้า": "TKLasta",
+  "ฟอนต์ห่อหมก": "DSHomok",
+  "ฟอนต์อันโกะ": "DSAn-ko",
+  "ฟอนต์ฮิปปี้": "DShippie",
+  "ฟอนต์ฮ่องกง": "RGHongkong",
+  "ฟอนต์เนปจูน": "TKNeptune",
+  "ฟอนต์เมนเดล": "DSMendel",
+  "ฟอนต์เมล่อน": "DSMelon",
+  "ฟอนต์เลอแปง": "DSLepan",
+  "ฟอนต์แพตตี้": "TKPatty",
+  "ฟอนต์แอนลีน": "TKAnlene",
+  "ฟอนต์ของเล่น": "DSKhonglen",
+  "ฟอนต์ข้าวซอย": "TKKhaosoi",
+  "ฟอนต์ข้าวผัด": "TKKhaopad",
+  "ฟอนต์ครีมพัฟ": "TKCreampuff",
+  "ฟอนต์คาราเมล": "DSCaramel",
+  "ฟอนต์คาเนเล่": "TKCanele",
+  "ฟอนต์ชีสเค้ก": "DSCheescake",
+  "ฟอนต์ซันเดย์": "DSSunday",
+  "ฟอนต์ซิดนีย์": "DSSydney",
+  "ฟอนต์ซินเทีย": "DScynthia",
+  "ฟอนต์ตะเกียบ": "DStakeab",
+  "ฟอนต์บัลเลต์": "DSBallet",
+  "ฟอนต์บ้านบอล": "DSBanball",
+  "ฟอนต์บ้านสวน": "DSBansuan",
+  "ฟอนต์ปังเย็น": "DSpangyen",
+  "ฟอนต์ผักกรอบ": "DSpakkrob",
+  "ฟอนต์พุดดิ้ง": "TKPudding",
+  "ฟอนต์มอร์แกน": "DSMorgan",
+  "ฟอนต์มันม่วง": "TKManmuang2",
+  "ฟอนต์มัลเฟิล": "DSMalfeil",
+  "ฟอนต์บ็อบเทล": "TKBobtailFull",
+  "ฟอนต์มาร์ติน": "TKMartin",
+  "ฟอนต์มาร์เวล": "DSMarvel",
+  "ฟอนต์มินาโกะ": "DSminako",
+  "ฟอนต์มิเตอร์": "DSMeter",
+  "ฟอนต์วัยเด็ก": "DSwaidek",
+  "ฟอนต์สเกลาร์": "DSScalar",
+  "ฟอนต์หมอนทอง": "DSMonThong",
+  "ฟอนต์หมูกรอบ": "DSMookrobThin",
+  "ฟอนต์หม้อแกง": "DSMokaeng.250929-1749",
+  "ฟอนต์เจ้านาย": "DSJaonaay",
+  "ฟอนต์เท็ดดี้": "TKTeddy",
+  "ฟอนต์เมเจอร์": "DSmajor",
+  "ฟอนต์กาลิเลโอ": "DSgalileo",
+  "ฟอนต์คอนเนอร์": "TKConnor",
+  "ฟอนต์คาเทียร์": "DScatier",
+  "ฟอนต์ซัมเมอร์": "DSsummer",
+  "ฟอนต์ดาวเสาร์": "DSDaosao",
+  "ฟอนต์ธันเดอร์": "DSThunder",
+  "ฟอนต์ฟิกเกอร์": "DSfigure",
+  "ฟอนต์มัสตาร์ด": "DSMustard",
+  "ฟอนต์สเปซบาร์": "DSSpacebar",
+  "ฟอนต์อัลมอนด์": "DSAlmond",
+  "ฟอนต์เมอร์ลิน": "DSMerlin",
+  "ฟอนต์เมืองจีน": "DSMueangjeen",
+  "ฟอนต์ข้าวกล่อง": "DSkhaoklong",
+  "ฟอนต์แครอท": "DSCarrot",
+  "กล้วยทอด": "DSKluai-thot",
+  "หมูเจียว": "TKMoojeaw",
+  "ฟอนต์กาเนส": "DSGanesh",
+  "ฟอนต์ไซโคลน": "DScyclone",
+  "ฟอนต์ปีเตอร์": "TKPeter",
+  "ฟอนต์สตีเวีย": "DSstevia",
+  "ฟอนต์เอแคลร์": "DSEclairs",
+  "ฟอนต์ซับเวย์": "DSSubway",
+  "ฟอนต์ดราก้อน": "TKDragon",
+  "ฟอนต์มอเตอร์": "DSMotor",
+  "ฟอนต์ฮอว์กินส์": "DSHawkins",
+  "ฟอนต์สังขยา": "TKSangkhaya",
+  "ฟอนต์คัลเจอร์": "TKCulture",
+  "ฟอนต์ส้มหวาน": "DSSomwhan",
+  "ฟอนต์หมูเด้ง": "TKMooDeng",
+  "ฟอนต์เพลินวาน": "DSPhloenWan",
+  "ฟอนต์ชานมหนึบ": "DSChanomnueb",
+  "ฟอนต์อร่อยมาก": "DSAroimak",
+  "ฟอนต์โคเชลล่า": "DSCoachella",
+  "ฟอนต์วาเลนไทน์": "DSValentine",
+  "ฟอนต์บัวลอย": "DSBualoy",
+  "ฟอนต์เมเปิล": "DSmaple",
+  "ฟอนต์ไดอาน่า": "DSdiana",
+  "ฟอนต์เมลเบิร์น": "DSMelbourne",
+  "ฟอนต์เรนเดียร์": "DSReindeer",
+  "ฟอนต์เวนส์เดย์": "DSWednesday",
+  "ฟอนต์แผ่นฟิล์ม": "DSpanfilm",
+  "ฟอนต์นิวเคลียร์": "DSNewclear",
+  "ฟอนต์เบิร์ดเดย์": "DSBirthday",
+  "ฟอนต์อิโมจิEp.1": "",
+  "ฟอนต์อิโมจิEp.2": "",
+  "ฟอนต์อิโมจิEp.3": "",
+  "ฟอนต์อิโมจิEp.4": "",
+  "ฟอนต์อิโมจิEp.5": "",
+  "ฟอนต์อิโมจิEp.6": "",
+  "ฟอนต์อิโมจิEp.7": "",
+  "ฟอนต์อิโมจิEp.8": "",
+  "ฟอนต์อิโมจิEp.9": ""
+};
+
+(function() {
+  const params = new URLSearchParams(window.location.search);
+  const fontName = params.get('name');
+  if (!fontName) return;
+
+  // อัปเดตชื่อในหน้า
+  document.title = fontName + ' — สถานีฟอนต์ | Dsiin Studio';
+  const breadcrumb = document.querySelector('.product-breadcrumb span[style]');
+  if (breadcrumb) breadcrumb.textContent = fontName;
+  const h1 = document.querySelector('.product-title');
+  if (h1) h1.textContent = fontName;
+
+  // แสดงรูปภาพสินค้า
+  const imgPath = imageMap[fontName] || imageMap[fontName.trim()] || imageMap[fontName.replace(/\s+/g, '')];
+  const imgWrap = document.getElementById('productImageWrap');
+  const imgEl = document.getElementById('productImage');
+  if (imgPath && imgWrap && imgEl) {
+    imgEl.src = imgPath;
+    imgEl.alt = fontName;
+    imgWrap.style.display = 'block';
+  }
+
+  // ราคาพิเศษรายฟอนต์
+  const priceOverride = {
+    "ฟอนต์หมูกรอบ": 159,
+    "ฟอนต์อิโมจิEp.1": 129, "ฟอนต์อิโมจิEp.2": 129, "ฟอนต์อิโมจิEp.3": 99,
+    "ฟอนต์อิโมจิEp.4": 129, "ฟอนต์อิโมจิEp.5": 99, "ฟอนต์อิโมจิEp.6": 129,
+    "ฟอนต์อิโมจิEp.7": 99, "ฟอนต์อิโมจิEp.8": 129, "ฟอนต์อิโมจิEp.9": 129,
+    "ฟอนต์ซัมเมอร์": 139, "ฟอนต์มินาโกะ": 139, "ฟอนต์ไซโคลน": 139, "ฟอนต์ไดอาน่า": 139,
+    "ฟอนต์ฮิปปี้": 139, "ฟอนต์คามิน": 139, "ฟอนต์ลูกพีช": 139, "ฟอนต์พาสต้า": 139,
+    "ฟอนต์ม้าเต่อ": 139, "ฟอนต์ลานดอกไม้": 139, "ฟอนต์ฟองนม": 139, "ฟอนต์ขาหมู": 139,
+    "ฟอนต์วีนัส": 139, "ฟอนต์กะเพรา": 139, "ฟอนต์มาสคอส": 139, "ฟอนต์อันโกะ": 139,
+    "ฟอนต์เมนเดล": 139, "ฟอนต์แอนลีน": 139, "ฟอนต์ครีมพัฟ": 139, "ฟอนต์ชีสเค้ก": 139,
+    "ฟอนต์ซินเทีย": 139, "ฟอนต์บัลเลต์": 139, "ฟอนต์มอร์แกน": 139, "ฟอนต์มัลเฟิล": 139,
+    "ฟอนต์หมอนทอง": 139, "ฟอนต์เมเจอร์": 139, "ฟอนต์คาเทียร์": 139, "ฟอนต์ธันเดอร์": 139,
+    "ฟอนต์ฟิกเกอร์": 139, "ฟอนต์เมอร์ลิน": 139, "ฟอนต์ข้าวกล่อง": 139, "ฟอนต์แครอท": 139,
+    "ฟอนต์เมเปิล": 139, "ฟอนต์สตีเวีย": 139, "ฟอนต์มอเตอร์": 139, "ฟอนต์อร่อยมาก": 139,
+    "SET:อิโมจิ": 888,
+  };
+  const basePrice = priceOverride[fontName] || priceOverride[fontName.trim()] || priceOverride[fontName.replace(/\s+/g, '')];
+  if (basePrice) {
+    const mainPriceEl = document.getElementById('mainPrice');
+    if (mainPriceEl) mainPriceEl.textContent = '฿' + basePrice;
+    const licensePersonal = document.querySelector('.license-card .license-price');
+    if (licensePersonal) licensePersonal.textContent = '฿' + basePrice;
+    if (basePrice === 139) {
+      const licenseCards = document.querySelectorAll('.license-card .license-price');
+      if (licenseCards[3]) licenseCards[3].textContent = '฿900';
+    }
+  }
+
+  // ซ่อน preview tool สำหรับฟอนต์อิโมจิ และตั้งราคา Company
+  if (fontName.includes('อิโมจิ')) {
+    const previewArea = document.querySelector('.product-preview-area');
+    if (previewArea) previewArea.style.display = 'none';
+    const licenseCards = document.querySelectorAll('.license-card .license-price');
+    if (licenseCards[3]) licenseCards[3].textContent = '฿700';
+    if (fontName === 'SET:อิโมจิ') {
+      if (licenseCards[0]) licenseCards[0].textContent = '฿888';
+      if (licenseCards[1]) licenseCards[1].textContent = '฿4,200';
+      if (licenseCards[2]) licenseCards[2].textContent = '฿2,200';
+      if (licenseCards[3]) licenseCards[3].textContent = '฿6,000';
+    }
+    const langOverride = {
+      "SET:อิโมจิ": "อังกฤษ, ตัวเลข, สัญลักษณ์พิเศษ",
+    };
+    const lVal = document.getElementById('langVal');
+    if (lVal && langOverride[fontName]) lVal.textContent = langOverride[fontName];
+
+    const weightOverride = {
+      "ฟอนต์อิโมจิEp.1": "มีทั้งหมด65ตัว",
+      "ฟอนต์อิโมจิEp.2": "มีทั้งหมด100ตัว",
+      "ฟอนต์อิโมจิEp.3": "มีทั้งหมด100ตัว",
+      "ฟอนต์อิโมจิEp.4": "มีทั้งหมด100ตัว",
+      "ฟอนต์อิโมจิEp.5": "มีทั้งหมด100ตัว",
+      "ฟอนต์อิโมจิEp.6": "มีทั้งหมด100ตัว",
+      "ฟอนต์อิโมจิEp.7": "มีทั้งหมด100ตัว",
+      "ฟอนต์อิโมจิEp.8": "มีทั้งหมด100ตัว",
+      "ฟอนต์อิโมจิEp.9": "มีทั้งหมด88ตัว",
+      "SET:อิโมจิ": "มีทั้งหมด 9Ep. 853ตัว",
+    };
+    const wVal = document.getElementById('weightVal');
+    if (wVal && weightOverride[fontName]) wVal.textContent = weightOverride[fontName];
+    return;
+  }
+
+  // หา font-family ที่ตรงกับชื่อ
+  const family = fontMap[fontName] || fontMap[fontName.trim()] || fontMap[fontName.replace(/\s+/g, '')];
+  if (!family) return;
+
+  const fontCSS = "'" + family + "', sans-serif";
+
+  // ใส่ฟอนต์ใน preview ทุกจุด
+  const previewDisplay = document.getElementById('previewDisplay');
+  if (previewDisplay) previewDisplay.style.fontFamily = fontCSS;
+
+  const previewTextarea = document.getElementById('previewTextarea');
+  if (previewTextarea) previewTextarea.style.fontFamily = fontCSS;
+
+  // ตัวอักษรทั้งหมด
+  const charSetThai = document.getElementById('charSetThai');
+  if (charSetThai) charSetThai.style.fontFamily = fontCSS;
+  const charSetLatin = document.getElementById('charSetLatin');
+  if (charSetLatin) charSetLatin.style.fontFamily = fontCSS;
+
+  document.querySelectorAll('.waterfall-font-name, .waterfall-text, .glyph-char').forEach(el => {
+    el.style.fontFamily = fontCSS;
+  });
+})();
+
+// ===== ADD TO CART (product.html) =====
+function getProductInfo() {
+  const name = document.querySelector('.product-title')?.textContent.trim() || 'ฟอนต์';
+  const priceText = document.getElementById('mainPrice')?.textContent || '149';
+  const price = parseInt(priceText.replace(/[^0-9]/g, '')) || 149;
+  const license = document.querySelector('.license-card.selected .license-name')?.textContent.trim() || 'Personal & Commercial Use';
+  return { name, price, license };
+}
+
+document.getElementById('buyNowBtn')?.addEventListener('click', function() {
+  const { name, price, license } = getProductInfo();
+  cartAdd(name, price, license);
+  window.location.href = 'cart.html';
+});
+
+document.getElementById('addToCartBtn')?.addEventListener('click', function() {
+  const { name, price, license } = getProductInfo();
+  cartAdd(name, price, license);
+  this.textContent = '✓ เพิ่มในตะกร้าแล้ว';
+  this.style.background = '#4caf50';
+  setTimeout(() => { this.textContent = '+ เพิ่มในตะกร้า'; this.style.background = ''; }, 2000);
+});
+</script>
+<script>
+// ===== REVIEW SYSTEM =====
+let selectedStar = 0;
+const starEls = document.querySelectorAll('#starPicker span');
+const avatarColors = [
+  'linear-gradient(135deg,#f9a8d4,#c4b5fd)',
+  'linear-gradient(135deg,#6ee7b7,#93c5fd)',
+  'linear-gradient(135deg,#fcd34d,#f9a8d4)',
+  'linear-gradient(135deg,#a5b4fc,#6ee7b7)',
+  'linear-gradient(135deg,#fca5a5,#fcd34d)',
+];
+
+starEls.forEach(el => {
+  el.addEventListener('mouseover', () => highlightStars(+el.dataset.star));
+  el.addEventListener('mouseout', () => highlightStars(selectedStar));
+  el.addEventListener('click', () => { selectedStar = +el.dataset.star; highlightStars(selectedStar); });
+});
+
+function highlightStars(n) {
+  starEls.forEach(el => el.textContent = +el.dataset.star <= n ? '⭐' : '☆');
+}
+
+function getFontKey() {
+  return new URLSearchParams(window.location.search).get('name') || 'unknown';
+}
+
+function loadReviews() {
+  const key = 'reviews_' + getFontKey();
+  return JSON.parse(localStorage.getItem(key) || '[]');
+}
+
+function saveReview(review) {
+  const key = 'reviews_' + getFontKey();
+  const reviews = loadReviews();
+  reviews.unshift(review);
+  localStorage.setItem(key, JSON.stringify(reviews));
+}
+
+function renderUserReviews() {
+  const container = document.getElementById('userReviewsList');
+  if (!container) return;
+  const reviews = loadReviews();
+  if (reviews.length === 0) { container.style.display = 'none'; return; }
+  container.style.display = 'grid';
+  container.innerHTML = reviews.map(r => {
+    const initial = r.name ? r.name[0] : '?';
+    const colorIdx = initial.charCodeAt(0) % avatarColors.length;
+    const stars = '⭐'.repeat(r.star) + '☆'.repeat(5 - r.star);
+    return `<div class="testimonial-card">
+      <div class="stars">${stars}</div>
+      <p class="testimonial-text">"${r.text}"</p>
+      <div class="testimonial-author">
+        <div class="author-avatar" style="background:${avatarColors[colorIdx]}">${initial}</div>
+        <div><div class="author-name">${r.name}</div><div class="author-role">${r.role} · ${r.date}</div></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function submitReview() {
+  const name = document.getElementById('reviewName').value.trim();
+  const role = document.getElementById('reviewRole').value.trim();
+  const text = document.getElementById('reviewText').value.trim();
+  const msg = document.getElementById('reviewMsg');
+
+  if (!selectedStar) { msg.style.color = '#e11d48'; msg.textContent = 'กรุณาเลือกคะแนน'; return; }
+  if (!name) { msg.style.color = '#e11d48'; msg.textContent = 'กรุณาใส่ชื่อ'; return; }
+  if (!text) { msg.style.color = '#e11d48'; msg.textContent = 'กรุณาเขียนรีวิว'; return; }
+
+  const now = new Date();
+  const months = ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+  const date = months[now.getMonth()] + ' ' + (now.getFullYear() + 543);
+
+  saveReview({ name, role: role || 'ผู้ใช้งานทั่วไป', text, star: selectedStar, date });
+  renderUserReviews();
+
+  document.getElementById('reviewName').value = '';
+  document.getElementById('reviewRole').value = '';
+  document.getElementById('reviewText').value = '';
+  selectedStar = 0;
+  highlightStars(0);
+  msg.style.color = '#16a34a';
+  msg.textContent = '✅ ขอบคุณสำหรับรีวิวค่ะ!';
+  setTimeout(() => msg.textContent = '', 3000);
+}
+
+renderUserReviews();
+
+// อัปเดตจำนวนรีวิวจริง
+(function() {
+  const fontName = new URLSearchParams(window.location.search).get('name') || 'default';
+  const reviews = JSON.parse(localStorage.getItem('ds_reviews_' + fontName) || '[]');
+  const count = reviews.length;
+  const summaryEl = document.getElementById('reviewSummaryText');
+  const countEl = document.getElementById('reviewCountText');
+  if (summaryEl) summaryEl.textContent = count > 0 ? `${count} รีวิว` : 'ยังไม่มีรีวิว';
+  if (countEl) countEl.textContent = count > 0 ? `จาก ${count} รีวิว` : 'ยังไม่มีรีวิว';
+})();
+
+// ===== REVIEW GATE: ต้องซื้อก่อนถึงจะรีวิวได้ =====
+(function() {
+  const wrap = document.getElementById('reviewFormWrap');
+  if (!wrap) return;
+
+  const fontName = new URLSearchParams(window.location.search).get('name') || '';
+  const session = JSON.parse(localStorage.getItem('ds_session') || 'null');
+
+  // ถ้าไม่ได้ login
+  if (!session) {
+    wrap.innerHTML = `
+      <div style="text-align:center;padding:24px 0;">
+        <div style="font-size:2rem;margin-bottom:10px;">🔒</div>
+        <div style="font-weight:700;font-size:1rem;color:#1a1a2e;margin-bottom:6px;">กรุณาเข้าสู่ระบบ</div>
+        <div style="font-size:0.88rem;color:#888;margin-bottom:18px;">ต้องเข้าสู่ระบบและซื้อฟอนต์นี้ก่อนจึงจะเขียนรีวิวได้</div>
+        <button onclick="authOpen('login')" style="padding:10px 24px;background:linear-gradient(135deg,#f9a8d4,#c4b5fd);border:none;border-radius:10px;font-weight:700;cursor:pointer;font-family:inherit;">เข้าสู่ระบบ</button>
+      </div>`;
+    return;
+  }
+
+  // ตรวจสอบประวัติซื้อ
+  const orders = JSON.parse(localStorage.getItem('ds_orders_' + session.email) || '[]');
+  const hasPurchased = orders.some(order =>
+    order.items && order.items.some(item =>
+      item.name && fontName && item.name.replace(/\s+/g,'').includes(fontName.replace(/\s+/g,''))
+    )
+  );
+
+  if (!hasPurchased) {
+    wrap.innerHTML = `
+      <div style="text-align:center;padding:24px 0;">
+        <div style="font-size:2rem;margin-bottom:10px;">🛒</div>
+        <div style="font-weight:700;font-size:1rem;color:#1a1a2e;margin-bottom:6px;">ต้องซื้อฟอนต์นี้ก่อน</div>
+        <div style="font-size:0.88rem;color:#888;margin-bottom:18px;">เฉพาะผู้ที่ซื้อฟอนต์นี้แล้วเท่านั้นที่สามารถเขียนรีวิวได้</div>
+        <a href="cart.html" style="padding:10px 24px;background:linear-gradient(135deg,#f9a8d4,#c4b5fd);border-radius:10px;font-weight:700;text-decoration:none;color:#1a1a2e;">ไปที่ตะกร้าสินค้า</a>
+      </div>`;
+  }
+})();
+</script>
+</body>
+</html>

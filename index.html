@@ -1,0 +1,2736 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>สถานีฟอนต์ — Dsiin Studio | ฟอนต์ดิจิทัลสำหรับนักออกแบบไทย</title>
+  <meta name="description" content="ฟอนต์ดิจิทัลคุณภาพสูง สำหรับงานออกแบบทุกประเภท โดย Dsiin Studio">
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="สถานีฟอนต์ — Dsiin Studio | ฟอนต์ดิจิทัลสำหรับนักออกแบบไทย">
+  <meta property="og:description" content="ฟอนต์ลายมือคุณภาพสูง 133+ แบบ รองรับภาษาไทย ดาวน์โหลดได้ทันที โดย Dsiin Studio">
+  <meta property="og:image" content="รูปโปร/LOGO.png">
+  <meta property="og:locale" content="th_TH">
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="สถานีฟอนต์ — Dsiin Studio">
+  <meta name="twitter:description" content="ฟอนต์ลายมือคุณภาพสูง 133+ แบบ รองรับภาษาไทย โดย Dsiin Studio">
+  <meta name="twitter:image" content="รูปโปร/LOGO.png">
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="รูปโปร/LOGO.png">
+  <link rel="apple-touch-icon" href="รูปโปร/LOGO.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Thai:wght@100;300;400;700;900&family=Sarabun:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400&family=Kanit:wght@300;400;600;700&family=Mitr:wght@300;400;600&family=Itim&family=Pridi:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Hero font showcase fonts */
+    .font-hero-sarabun { font-family: 'Sarabun', sans-serif; }
+    .font-hero-serif { font-family: 'Noto Serif Thai', serif; }
+    /* Preview bg patterns */
+    .preview-bg-pink { background: linear-gradient(135deg, #FFE4EC 0%, #FFF8FA 100%); }
+    .preview-bg-blue { background: linear-gradient(135deg, #E4F0FF 0%, #F8FBFF 100%); }
+    .preview-bg-mint { background: linear-gradient(135deg, #E4FAF0 0%, #F8FFFC 100%); }
+    .preview-bg-lavender { background: linear-gradient(135deg, #F0E4FF 0%, #FBF8FF 100%); }
+    .preview-bg-yellow { background: linear-gradient(135deg, #FFF7E4 0%, #FFFDF8 100%); }
+    /* Local Font Faces */
+    @font-face { font-family: 'DSPetnoi';    src: url('รวมฟอนต์/TKPetnoi.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSKamin';     src: url('รวมฟอนต์/TKKamin.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSKhanomtan'; src: url('รวมฟอนต์/DSKhanomtan.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSBluewhale'; src: url('รวมฟอนต์/TKBluewhale.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSLookpeach'; src: url('รวมฟอนต์/DSLookpeach.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSPasta';     src: url('รวมฟอนต์/DSPasta.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSMaphrao';   src: url('รวมฟอนต์/TKMaphrao.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSMatoer';    src: url('รวมฟอนต์/DSMatoer.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSOilpastel'; src: url('รวมฟอนต์/DSOilpastel.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSNangsue';   src: url('รวมฟอนต์/DSNangsue.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSKhaiwan';   src: url('รวมฟอนต์/DSKhaiwan.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSGoodday';   src: url('รวมฟอนต์/DSGoodday.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSInter';     src: url('รวมฟอนต์/DSInter.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSCalcium';   src: url('รวมฟอนต์/DSCalcium.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSCalculus';  src: url('ไฟล์ฟอนต์เพิ่ม/DSCalculus.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSCharlotte'; src: url('รวมฟอนต์/DScharlotte.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSNewyear';   src: url('รวมฟอนต์/DSNewyear.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSLandokmai'; src: url('รวมฟอนต์/DSlandokmai.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSChaingmai'; src: url('รวมฟอนต์/DSChaingmai.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSNoodle';    src: url('รวมฟอนต์/DSNoodle.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSMalfeil';         src: url('ไฟล์ฟอนต์เพิ่ม/DSMalfeil.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSmannoei';         src: url('ไฟล์ฟอนต์เพิ่ม/DSmannoei.ttf'); font-display: swap; }
+    @font-face { font-family: 'TKBobtailFull';     src: url('ไฟล์ฟอนต์เพิ่ม/TKBobtail.ttf'); font-display: swap; }
+    @font-face { font-family: 'TKGorya';           src: url('ไฟล์ฟอนต์เพิ่ม/TKGorya.ttf'); font-display: swap; }
+    @font-face { font-family: 'TKMooji';           src: url('รวมฟอนต์/TKMooji.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSfongnom';         src: url('รวมฟอนต์/DSfongnom.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSKhamuu';          src: url('รวมฟอนต์/DSKhamuu.ttf'); font-display: swap; }
+    @font-face { font-family: 'TKThanos';          src: url('รวมฟอนต์/TKThanos.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSpadlom';          src: url('รวมฟอนต์/DSpadlom.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSPhukhao';         src: url('รวมฟอนต์/DSPhukhao.ttf'); font-display: swap; }
+    @font-face { font-family: 'TKVenus';           src: url('รวมฟอนต์/TKVenus.ttf'); font-display: swap; }
+    @font-face { font-family: 'TKMoojeaw';         src: url('รวมฟอนต์/TKMoojeaw.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSmooyor';          src: url('รวมฟอนต์/DSmooyor.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSKluai-thot';      src: url('รวมฟอนต์/DSKluai-thot.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSGanesh';          src: url('รวมฟอนต์/DSGanesh.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSBualoy';          src: url('รวมฟอนต์/DSBualoy.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSmaple';           src: url('รวมฟอนต์/DSmaple.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSdiana';           src: url('รวมฟอนต์/DSdiana.ttf'); font-display: swap; }
+    @font-face { font-family: 'DScyclone';         src: url('รวมฟอนต์/DScyclone.ttf'); font-display: swap; }
+    @font-face { font-family: 'TKPeter';           src: url('รวมฟอนต์/TKPeter.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSstevia';          src: url('รวมฟอนต์/DSstevia.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSEclairs';         src: url('รวมฟอนต์/DSEclairs.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSSubway';          src: url('รวมฟอนต์/DSSubway.ttf'); font-display: swap; }
+    @font-face { font-family: 'TKDragon';          src: url('รวมฟอนต์/TKDragon.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSMotor';           src: url('รวมฟอนต์/DSMotor.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSSomwhan';         src: url('รวมฟอนต์/DSSomwhan.ttf'); font-display: swap; }
+    @font-face { font-family: 'TKMooDeng';         src: url('รวมฟอนต์/TKMooDeng.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSPhloenWan';       src: url('รวมฟอนต์/DSPhloenWan.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSChanomnueb';      src: url('รวมฟอนต์/DSChanomnueb.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSAroimak';         src: url('รวมฟอนต์/DSAroimak.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSCoachella';       src: url('รวมฟอนต์/DSCoachella.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSValentine';       src: url('รวมฟอนต์/DSValentine.ttf'); font-display: swap; }
+    @font-face { font-family: 'TKCayla';           src: url('รวมฟอนต์/TKCayla.ttf'); font-display: swap; }
+    @font-face { font-family: 'TKAnis';            src: url('รวมฟอนต์/TKAnis.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSMustang';         src: url('รวมฟอนต์/DSMustang.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSMala';            src: url('รวมฟอนต์/DSMala.ttf'); font-display: swap; }
+    @font-face { font-family: 'TKMoobin';          src: url('รวมฟอนต์/TKMoobin.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSBagel';           src: url('รวมฟอนต์/DSBagel.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSWelcome';         src: url('รวมฟอนต์/DSWelcome.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSKaphrao';         src: url('รวมฟอนต์/DSKaphrao.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSBangsaen';        src: url('รวมฟอนต์/DSBangsaen.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSMaltese';         src: url('รวมฟอนต์/DSMaltese.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSMascot';          src: url('รวมฟอนต์/DSMascot.ttf'); font-display: swap; }
+    @font-face { font-family: 'TKLasta';           src: url('รวมฟอนต์/TKLasta.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSHomok';           src: url('รวมฟอนต์/DSHomok.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSAn-ko';           src: url('รวมฟอนต์/DSAn-ko.ttf'); font-display: swap; }
+    @font-face { font-family: 'DShippie';          src: url('รวมฟอนต์/DShippie.ttf'); font-display: swap; }
+    @font-face { font-family: 'RGHongkong';        src: url('รวมฟอนต์/RGHongkong.ttf'); font-display: swap; }
+    @font-face { font-family: 'TKNeptune';         src: url('รวมฟอนต์/TKNeptune.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSMendel';          src: url('รวมฟอนต์/DSMendel.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSMelon';           src: url('รวมฟอนต์/DSMelon.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSLepan';           src: url('รวมฟอนต์/DSLepan.ttf'); font-display: swap; }
+    @font-face { font-family: 'TKPatty';           src: url('รวมฟอนต์/TKPatty.ttf'); font-display: swap; }
+    @font-face { font-family: 'TKAnlene';          src: url('รวมฟอนต์/TKAnlene.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSKhonglen';        src: url('รวมฟอนต์/DSKhonglen.ttf'); font-display: swap; }
+    @font-face { font-family: 'TKKhaosoi';         src: url('รวมฟอนต์/TKKhaosoi.ttf'); font-display: swap; }
+    @font-face { font-family: 'TKKhaopad';         src: url('รวมฟอนต์/TKKhaopad.ttf'); font-display: swap; }
+    @font-face { font-family: 'TKCreampuff';       src: url('รวมฟอนต์/TKCreampuff.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSCaramel';         src: url('รวมฟอนต์/DSCaramel.ttf'); font-display: swap; }
+    @font-face { font-family: 'TKCanele';          src: url('รวมฟอนต์/TKCanele.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSCheescake';       src: url('รวมฟอนต์/DSCheescake.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSSunday';          src: url('รวมฟอนต์/DSSunday.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSSydney';          src: url('รวมฟอนต์/DSSydney.ttf'); font-display: swap; }
+    @font-face { font-family: 'DScynthia';         src: url('รวมฟอนต์/DScynthia.ttf'); font-display: swap; }
+    @font-face { font-family: 'DStakeab';          src: url('รวมฟอนต์/DStakeab.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSBallet';          src: url('รวมฟอนต์/DSBallet.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSBanball';         src: url('รวมฟอนต์/DSBanball.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSBansuan';         src: url('รวมฟอนต์/DSBansuan.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSpangyen';         src: url('รวมฟอนต์/DSpangyen.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSpakkrob';         src: url('รวมฟอนต์/DSpakkrob.ttf'); font-display: swap; }
+    @font-face { font-family: 'TKPudding';         src: url('รวมฟอนต์/TKPudding.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSMorgan';          src: url('รวมฟอนต์/DSMorgan.ttf'); font-display: swap; }
+    @font-face { font-family: 'TKManmuang';        src: url('รวมฟอนต์/TKManmuang.ttf'); font-display: swap; }
+    @font-face { font-family: 'TKMartin';          src: url('รวมฟอนต์/TKMartin.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSMarvel';          src: url('รวมฟอนต์/DSMarvel.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSminako';          src: url('รวมฟอนต์/DSminako.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSMeter';           src: url('รวมฟอนต์/DSMeter.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSwaidek';          src: url('รวมฟอนต์/DSwaidek.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSScalar';          src: url('รวมฟอนต์/DSScalar.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSMonThong';        src: url('รวมฟอนต์/DSMonThong.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSMookrobThin';     src: url('รวมฟอนต์/DSMookrobThin.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSMokaeng.250929-1749'; src: url('รวมฟอนต์/DSMokaeng.250929-1749.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSJaonaay';         src: url('รวมฟอนต์/DSJaonaay.ttf'); font-display: swap; }
+    @font-face { font-family: 'TKTeddy';           src: url('รวมฟอนต์/TKTeddy.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSmajor';           src: url('รวมฟอนต์/DSmajor.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSgalileo';         src: url('รวมฟอนต์/DSgalileo.ttf'); font-display: swap; }
+    @font-face { font-family: 'TKConnor';          src: url('รวมฟอนต์/TKConnor.ttf'); font-display: swap; }
+    @font-face { font-family: 'DScatier';          src: url('รวมฟอนต์/DScatier.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSsummer';          src: url('รวมฟอนต์/DSsummer.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSDaosao';          src: url('รวมฟอนต์/DSDaosao.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSThunder';         src: url('รวมฟอนต์/DSThunder.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSfigure';          src: url('รวมฟอนต์/DSfigure.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSMustard';         src: url('รวมฟอนต์/DSMustard.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSSpacebar';        src: url('รวมฟอนต์/DSSpacebar.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSAlmond';          src: url('รวมฟอนต์/DSAlmond.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSMerlin';          src: url('รวมฟอนต์/DSMerlin.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSMueangjeen';      src: url('รวมฟอนต์/DSMueangjeen.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSkhaoklong';       src: url('รวมฟอนต์/DSkhaoklong.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSMelbourne';       src: url('รวมฟอนต์/DSMelbourne.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSReindeer';        src: url('รวมฟอนต์/DSReindeer.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSWednesday';       src: url('รวมฟอนต์/DSWednesday.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSpanfilm';         src: url('รวมฟอนต์/DSpanfilm.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSNewclear';        src: url('รวมฟอนต์/DSNewclear.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSBirthday';        src: url('ไฟล์ฟอนต์เพิ่ม/DSBirthday.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSCarrot';          src: url('รวมฟอนต์/DSCarrot.ttf'); font-display: swap; }
+    @font-face { font-family: 'DSHawkins';         src: url('รวมฟอนต์/DSHawkins.ttf'); font-display: swap; }
+  </style>
+</head>
+<body>
+
+<!-- Page Loader -->
+<div class="page-loader" id="pageLoader">
+  <div class="loader-logo">Aa</div>
+  <div class="loader-dots">
+    <div class="loader-dot"></div>
+    <div class="loader-dot"></div>
+    <div class="loader-dot"></div>
+  </div>
+</div>
+
+<!-- Navbar -->
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-icon"><img src="รูปโปร/LOGO.png" alt="Dsiin Studio Logo"></div>
+      <div>
+        <div>สถานีฟอนต์</div>
+        <div class="logo-text-en">Dsiin Studio</div>
+      </div>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="index.html" class="active">หน้าแรก</a></li>
+      <li><a href="shop.html">ฟอนต์ทั้งหมด</a></li>
+      <li><a href="#font-preview-tool">ทดลองพิมพ์</a></li>
+      <li><a href="contact.html">ติดต่อ</a></li>
+      <li><a href="shop.html" class="nav-cta">เลือกซื้อฟอนต์</a></li>
+      <li><a href="cart.html" class="nav-cart">🛒 <span class="cart-count" style="display:none;">0</span></a></li>
+    </ul>
+
+    <button class="hamburger" id="hamburger" aria-label="เปิดเมนู">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- Mobile Nav -->
+<div class="mobile-nav" id="mobileNav">
+  <div class="mobile-nav-panel">
+    <button class="mobile-nav-close" id="mobileNavClose">✕</button>
+    <a href="index.html" class="logo" style="margin-bottom:8px;">
+      <div class="logo-icon"><img src="รูปโปร/LOGO.png" alt="Dsiin Studio Logo"></div>
+      <div>
+        <div>สถานีฟอนต์</div>
+        <div class="logo-text-en">Dsiin Studio</div>
+      </div>
+    </a>
+    <ul class="mobile-nav-links">
+      <li><a href="index.html" class="active">หน้าแรก</a></li>
+      <li><a href="shop.html">ฟอนต์ทั้งหมด</a></li>
+      <li><a href="#font-preview-tool">ทดลองพิมพ์</a></li>
+      <li><a href="contact.html">ติดต่อ</a></li>
+    </ul>
+    <div style="margin-top:24px;">
+      <a href="shop.html" class="btn btn-primary" style="width:100%;justify-content:center;">เลือกซื้อฟอนต์</a>
+    </div>
+  </div>
+</div>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-inner">
+      <div class="hero-content">
+        <div class="hero-label">ฟอนต์ใหม่อัปเดตทุกวัน</div>
+        <h1>ฟอนต์ลายมือ<br><span>ใช้งานง่าย</span><br>สำหรับทุกงานดีไซน์</h1>
+        <p class="hero-desc">คอลเลกชันฟอนต์ลายมือภาษาไทยคุณภาพสูง<br>โดย <strong>Dsiin Studio</strong> — ดาวน์โหลดได้ทันทีหลังชำระเงิน</p>
+
+        <ul class="hero-features">
+          <li>
+            <span class="hero-feat-icon">✓</span>
+            รองรับภาษาไทย–อังกฤษ ครบทุก format (OTF, TTF, WOFF)
+          </li>
+          <li>
+            <span class="hero-feat-icon">✓</span>
+            ใช้ได้กับ Photoshop, Illustrator, Figma, Canva และอื่นๆ
+          </li>
+          <li>
+            <span class="hero-feat-icon">✓</span>
+            ออกใบเสร็จ / ใบรับรองสำหรับบริษัท องค์กร หจก.
+          </li>
+        </ul>
+
+        <div class="hero-btns">
+          <a href="shop.html" class="btn btn-primary">เลือกซื้อฟอนต์</a>
+          <a href="shop.html" class="btn btn-outline">ดูฟอนต์ทั้งหมด →</a>
+        </div>
+
+        <div class="hero-stats">
+          <div class="stat">
+            <div class="stat-num">133+</div>
+            <div class="stat-label">ฟอนต์ในคลัง</div>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat">
+            <div class="stat-num">4,800+</div>
+            <div class="stat-label">ลูกค้าพึงพอใจ</div>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat">
+            <div class="stat-num">4.9★</div>
+            <div class="stat-label">คะแนนเฉลี่ย</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <a class="hero-specimen-card hero-card-animated" id="heroSpecimenLink" href="product.html?name=ฟอนต์เป็ดน้อย">
+          <div class="hero-specimen-bg">
+            <div class="hero-specimen-label">✦ ตัวอย่างฟอนต์จริง</div>
+            <div class="hero-specimen-display" id="heroSpecimenDisplay">สวัสดี</div>
+            <div class="hero-specimen-sub" id="heroSpecimenName">ฟอนต์ เป็ดน้อย</div>
+            <div class="hero-specimen-dots" id="heroSpecimenDots">
+              <span class="hero-specimen-dot active"></span>
+              <span class="hero-specimen-dot"></span>
+              <span class="hero-specimen-dot"></span>
+              <span class="hero-specimen-dot"></span>
+              <span class="hero-specimen-dot"></span>
+            </div>
+            <div class="hero-specimen-buy">กดเพื่อดูสินค้า →</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== MARQUEE ===== -->
+<div class="marquee-section">
+  <div class="marquee-track">
+    <span class="marquee-item"><span class="marquee-dot"></span>ฟอนต์สวย</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Font Design</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>รองรับภาษาไทย</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Creative Fonts</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>ดีไซน์มินิมอล</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Typography</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Dsiin Studio</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>สถานีฟอนต์</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>ฟอนต์สวย</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Font Design</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>รองรับภาษาไทย</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Creative Fonts</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>ดีไซน์มินิมอล</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Typography</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Dsiin Studio</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>สถานีฟอนต์</span>
+  </div>
+</div>
+
+
+<!-- ===== NEW FONTS ===== -->
+<section id="new-fonts" style="padding:60px 0 20px;">
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">✨ ฟอนต์ใหม่</h2>
+        <p class="section-sub" style="margin-bottom:0;">ฟอนต์ล่าสุดที่เพิ่งเข้าร้าน อัปเดตเรื่อยๆ</p>
+      </div>
+      <a href="shop.html" class="btn btn-ghost">ดูทั้งหมด →</a>
+    </div>
+    <div class="fonts-grid" id="newFontsGrid"></div>
+  </div>
+</section>
+<script>
+(function() {
+  const grid = document.getElementById('newFontsGrid');
+  if (!grid || typeof FONTS_DATA === 'undefined') return;
+  const newFonts = FONTS_DATA.slice(-8).reverse();
+  grid.innerHTML = newFonts.map(f => `
+    <div class="font-card" onclick="location.href='product.html?name=${encodeURIComponent(f.name)}'">
+      <div class="card-image-wrap">
+        ${f.image ? `<img src="${f.image}" alt="${f.name}" class="card-image" loading="lazy">` : `<div class="card-image-placeholder"></div>`}
+        <div class="card-badge"><span class="badge badge-mint">✨ ใหม่</span></div>
+      </div>
+      <div class="card-body">
+        <div class="card-title">${f.name}</div>
+        <div class="card-price">฿${f.price}</div>
+        <button class="btn btn-pink btn-add-cart" onclick="event.stopPropagation();addToCart('${f.name}',${f.price})">+ ตะกร้า</button>
+      </div>
+    </div>
+  `).join('');
+})();
+</script>
+
+<!-- ===== FONTS ALL ===== -->
+<section id="all-fonts">
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title my-product-title">My Product</h2>
+        <p class="section-sub" style="margin-bottom:0;">133+ ฟอนต์คุณภาพสูง รองรับภาษาไทย ดาวน์โหลดได้ทันที</p>
+      </div>
+      <div class="sort-dropdown-wrap" id="homeSortWrap">
+        <button class="sort-btn" id="homeSortBtn">
+          <span id="homeSortLabel">เรียงตาม: ความนิยม</span>
+          <span class="sort-chevron">▾</span>
+        </button>
+        <div class="sort-menu" id="homeSortMenu">
+          <button class="sort-option active" data-sort="popular">เรียงตาม: ความนิยม</button>
+          <button class="sort-option" data-sort="price-asc">ราคา: ต่ำ → สูง</button>
+          <button class="sort-option" data-sort="price-desc">ราคา: สูง → ต่ำ</button>
+          <button class="sort-option" data-sort="newest">มาใหม่</button>
+          <button class="sort-option" data-sort="name-az">ชื่อ ก-ฮ</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Search + Category Filter -->
+    <div class="home-fonts-toolbar">
+      <div class="home-search-wrap">
+        <input type="text" id="homeFontsSearch" placeholder="🔍 ค้นหาฟอนต์..." class="home-search-input">
+      </div>
+      <div class="home-filter-pills" id="homeFilterPills">
+        <button class="home-filter-pill active" data-filter="all">ทั้งหมด</button>
+        <button class="home-filter-pill" data-filter="ลายมือ">✍️ ลายมือ</button>
+        <button class="home-filter-pill" data-filter="อิโมจิ">😊 อิโมจิ</button>
+        <button class="home-filter-pill" data-filter="มินิมอล">▭ มินิมอล</button>
+        <button class="home-filter-pill" data-filter="บรัชดินสอ">🖌️ บรัชดินสอ</button>
+      </div>
+    </div>
+
+    <div class="result-count" id="homeResultCount" style="margin-bottom:16px;font-size:0.9rem;color:var(--text-mid);"></div>
+
+    <div class="fonts-grid" id="homeFontsGrid">
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('Font DS/ ฟอนต์ เป็ดน้อย.jpg');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✨ ใหม่</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์ เป็ดน้อย</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">น่ารัก</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('Font DS/ฟอนต์ คามิน.jpg');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">🖌️ บรัชดินสอ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์ คามิน</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">บรัชดินสอ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿139 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('Font DS/ฟอนต์ กอหญ้า.jpg');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✨ ใหม่</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์ กอหญ้า</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('Font DS/ฟอนต์ ขนมตาล.jpg');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✨ ใหม่</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์ ขนมตาล</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('Font DS/ฟอนต์ บลูวาฬ.jpg');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✨ ใหม่</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์ บลูวาฬ</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('Font DS/ฟอนต์ ลูกพีช.jpg');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✨ ใหม่</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์ ลูกพีช</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿139 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('Font DS/ฟอนต์ พาสต้า.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✨ ใหม่</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์ พาสต้า</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿139 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('Font DS/ฟอนต์ มะพร้าว.jpg');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✨ ใหม่</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์ มะพร้าว</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('Font DS/ฟอนต์ ม้าเต่อ.jpg');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✨ ใหม่</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์ ม้าเต่อ</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿139 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('Font DS/ฟอนต์ สีชอล์ค.jpg');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✨ ใหม่</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์ สีชอล์ค</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('Font DS/ฟอนต์ หนังสือ.jpg');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✨ ใหม่</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์ หนังสือ</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('Font DS/ฟอนต์ ไข่หวาน.jpg');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✨ ใหม่</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์ ไข่หวาน</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('Font DS/ฟอนต์ กู๊ดเดย์.jpg');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✨ ใหม่</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์ กู๊ดเดย์</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('Font DS/ฟอนต์ อินเตอร์.jpg');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✨ ใหม่</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์ อินเตอร์</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('Font DS/ฟอนต์ แคลคูลัส.jpg');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✨ ใหม่</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์ แคลคูลัส</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('Font DS/ฟอนต์ ชาร์ลอตต์.jpg');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✨ ใหม่</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์ ชาร์ลอตต์</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('Font DS/ฟอนต์ นิวเยียร์.jpg');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">🖌️ บรัชดินสอ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์ นิวเยียร์</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">บรัชดินสอ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('Font DS/ฟอนต์ ลานดอกไม้.jpg');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✨ ใหม่</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์ ลานดอกไม้</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿139 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('Font DS/ฟอนต์ เชียงใหม่.jpg');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✨ ใหม่</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์ เชียงใหม่</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('Font DS/ฟอนต์ ก๋วยเตี๋ยว.jpg');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✨ ใหม่</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์ ก๋วยเตี๋ยว</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+
+        <!-- ฟอนต์ลายมือ จาก ตัวอย่างฟอนต์ -->
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์มูจิ.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์มูจิ</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์ฟองนม.PNG');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์ฟองนม</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿139 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์ขาหมู.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์ขาหมู</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿139 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์ธานอส.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์ธานอส</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์พัดลม.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์พัดลม</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span><span class="font-card-tag">มินิมอล</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์ภูเขา.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์ภูเขา</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์วีนัส.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์วีนัส</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿139 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์หมูยอ.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์หมูยอ</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์เซล่า.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์เซล่า</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์เอนิส.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์เอนิส</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์มัสแตง.PNG');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์มัสแตง</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์หมาล่า.PNG');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์หมาล่า</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์หมูบิน.PNG');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์หมูบิน</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์เบเกิล.PNG');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์เบเกิล</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์เวลคัม.PNG');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์เวลคัม</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์กะเพรา.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์กะเพรา</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿139 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์บางแสน.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์บางแสน</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์มอลทีส.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์มอลทีส</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์มันเนย.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์มันเนย</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์มาสคอส.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์มาสคอส</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿139 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์ราสต้า.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์ราสต้า</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span><span class="font-card-tag">มินิมอล</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์ห่อหมก.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์ห่อหมก</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์อันโกะ.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์อันโกะ</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿139 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์ฮิปปี้.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์ฮิปปี้</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿139 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์ฮ่องกง.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์ฮ่องกง</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์เนปจูน.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์เนปจูน</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์เมนเดล.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์เมนเดล</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿139 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์เมล่อน.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์เมล่อน</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์เลอแปง.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์เลอแปง</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์แพตตี้.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์แพตตี้</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์แอนลีน.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์แอนลีน</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿139 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์ของเล่น.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์ของเล่น</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์ข้าวซอย.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์ข้าวซอย</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์ข้าวผัด.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์ข้าวผัด</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์ครีมพัฟ.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์ครีมพัฟ</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿139 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์คาราเมล.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์คาราเมล</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์คาเนเล่.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์คาเนเล่</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์ชีสเค้ก.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์ชีสเค้ก</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿139 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์ซันเดย์.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์ซันเดย์</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์ซิดนีย์.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์ซิดนีย์</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์ซินเทีย.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์ซินเทีย</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿139 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์ตะเกียบ.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์ตะเกียบ</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์บัลเลต์.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์บัลเลต์</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿139 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์บ้านบอล.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์บ้านบอล</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿129 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์บ้านสวน.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์บ้านสวน</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์ปังเย็น.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์ปังเย็น</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์ผักกรอบ.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์ผักกรอบ</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์พุดดิ้ง.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์พุดดิ้ง</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์มอร์แกน.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์มอร์แกน</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span><span class="font-card-tag">มินิมอล</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿139 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์มันม่วง.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์มันม่วง</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์มัลเฟิล.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์มัลเฟิล</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿139 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์มาร์ติน.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">🖌️ บรัชดินสอ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์มาร์ติน</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">บรัชดินสอ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์มาร์เวล.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์มาร์เวล</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์มินาโกะ.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์มินาโกะ</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿139 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์มิเตอร์.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์มิเตอร์</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์วัยเด็ก.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์วัยเด็ก</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์สเกลาร์.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์สเกลาร์</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์หมอนทอง.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์หมอนทอง</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿139 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์หมูกรอบ.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์หมูกรอบ</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿159 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์หม้อแกง.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์หม้อแกง</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์เจ้านาย.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์เจ้านาย</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์เท็ดดี้.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์เท็ดดี้</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์เมเจอร์.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์เมเจอร์</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿139 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์กาลิเลโอ.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์กาลิเลโอ</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์คอนเนอร์.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์คอนเนอร์</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์คาเทียร์.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์คาเทียร์</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿139 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์ซัมเมอร์.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์ซัมเมอร์</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿139 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์ดาวเสาร์.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์ดาวเสาร์</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span><span class="font-card-tag">มินิมอล</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์ธันเดอร์.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์ธันเดอร์</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿139 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์ฟิกเกอร์.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์ฟิกเกอร์</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿139 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์มัสตาร์ด.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์มัสตาร์ด</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์สเปซบาร์.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์สเปซบาร์</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์อัลมอนด์.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์อัลมอนด์</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์เมอร์ลิน.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์เมอร์ลิน</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span><span class="font-card-tag">มินิมอล</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿139 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์เมืองจีน.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์เมืองจีน</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์ข้าวกล่อง.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์ข้าวกล่อง</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿139 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์เมลเบิร์น.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์เมลเบิร์น</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์เรนเดียร์.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์เรนเดียร์</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span><span class="font-card-tag">มินิมอล</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์เวนส์เดย์.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์เวนส์เดย์</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์แผ่นฟิล์ม.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์แผ่นฟิล์ม</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span><span class="font-card-tag">มินิมอล</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์นิวเคลียร์.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์นิวเคลียร์</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('ตัวอย่างฟอนต์/ฟอนต์เบิร์ดเดย์.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์เบิร์ดเดย์</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+
+        <!-- ฟอนต์อิโมจิ จาก อิโมจิ 2 -->
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('อิโมจิ 2/ฟอนต์อิโมจิEp.1.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-yellow">😊 อิโมจิ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์อิโมจิEp.1</div>
+            <div class="font-card-tags"><span class="font-card-tag">อังกฤษ</span><span class="font-card-tag">ตัวเลข</span><span class="font-card-tag">สัญลักษณ์พิเศษ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿129 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('อิโมจิ 2/ฟอนต์อิโมจิEp.2.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-yellow">😊 อิโมจิ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์อิโมจิEp.2</div>
+            <div class="font-card-tags"><span class="font-card-tag">อังกฤษ</span><span class="font-card-tag">ตัวเลข</span><span class="font-card-tag">สัญลักษณ์พิเศษ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿129 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('อิโมจิ 2/ฟอนต์อิโมจิEp.3.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-yellow">😊 อิโมจิ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์อิโมจิEp.3</div>
+            <div class="font-card-tags"><span class="font-card-tag">อังกฤษ</span><span class="font-card-tag">ตัวเลข</span><span class="font-card-tag">สัญลักษณ์พิเศษ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿99 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('อิโมจิ 2/ฟอนต์อิโมจิEp.4.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-yellow">😊 อิโมจิ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์อิโมจิEp.4</div>
+            <div class="font-card-tags"><span class="font-card-tag">อังกฤษ</span><span class="font-card-tag">ตัวเลข</span><span class="font-card-tag">สัญลักษณ์พิเศษ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿129 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('อิโมจิ 2/ฟอนต์อิโมจิEp.5.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-yellow">😊 อิโมจิ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์อิโมจิEp.5</div>
+            <div class="font-card-tags"><span class="font-card-tag">อังกฤษ</span><span class="font-card-tag">ตัวเลข</span><span class="font-card-tag">สัญลักษณ์พิเศษ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿99 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('อิโมจิ 2/ฟอนต์อิโมจิEp.6.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-yellow">😊 อิโมจิ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์อิโมจิEp.6</div>
+            <div class="font-card-tags"><span class="font-card-tag">อังกฤษ</span><span class="font-card-tag">ตัวเลข</span><span class="font-card-tag">สัญลักษณ์พิเศษ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿129 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('อิโมจิ 2/ฟอนต์อิโมจิEp.7.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-yellow">😊 อิโมจิ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์อิโมจิEp.7</div>
+            <div class="font-card-tags"><span class="font-card-tag">อังกฤษ</span><span class="font-card-tag">ตัวเลข</span><span class="font-card-tag">สัญลักษณ์พิเศษ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿99 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('อิโมจิ 2/ฟอนต์อิโมจิEp.8.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-yellow">😊 อิโมจิ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์อิโมจิEp.8</div>
+            <div class="font-card-tags"><span class="font-card-tag">อังกฤษ</span><span class="font-card-tag">ตัวเลข</span><span class="font-card-tag">สัญลักษณ์พิเศษ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿129 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('อิโมจิ 2/ฟอนต์อิโมจิEp.9.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-yellow">😊 อิโมจิ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์อิโมจิEp.9</div>
+            <div class="font-card-tags"><span class="font-card-tag">อังกฤษ</span><span class="font-card-tag">ตัวเลข</span><span class="font-card-tag">สัญลักษณ์พิเศษ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿129 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+
+        <!-- ฟอนต์ลายมือ จาก รูปสินค้า2 -->
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('รูปสินค้า2/กล้วยทอด.PNG');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">กล้วยทอด</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('รูปสินค้า2/หมูเจียว.PNG');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">🖌️ บรัชดินสอ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">หมูเจียว</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">บรัชดินสอ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('รูปสินค้า2/ฟอนต์กาเนส.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์กาเนส</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span><span class="font-card-tag">มินิมอล</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('รูปสินค้า2/ฟอนต์แครอท.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์แครอท</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿139 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('รูปสินค้า2/ฟอนต์บัวลอย.PNG');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์บัวลอย</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('รูปสินค้า2/ฟอนต์ไซโคลน.PNG');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์ไซโคลน</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿139 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('รูปสินค้า2/ฟอนต์เมเปิล.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์เมเปิล</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿139 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('รูปสินค้า2/ฟอนต์ไดอาน่า.JPG');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์ไดอาน่า</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿139 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('รูปสินค้า2/ฟอนต์ปีเตอร์.PNG');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์ปีเตอร์</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('รูปสินค้า2/ฟอนต์สตีเวีย.PNG');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์สตีเวีย</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿139 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('รูปสินค้า2/ฟอนต์เอแคลร์.PNG');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์เอแคลร์</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('รูปสินค้า2/ฟอนต์ซับเวย์.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์ซับเวย์</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('รูปสินค้า2/ฟอนต์ดราก้อน.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์ดราก้อน</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('รูปสินค้า2/ฟอนต์บ็อบเทล.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์บ็อบเทล</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('รูปสินค้า2/ฟอนต์มอเตอร์.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์มอเตอร์</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿139 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('รูปสินค้า2/ฟอนต์ส้มหวาน.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์ส้มหวาน</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span><span class="font-card-tag">มินิมอล</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('รูปสินค้า2/ฟอนต์หมูเด้ง.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์หมูเด้ง</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('รูปสินค้า2/ฟอนต์เพลินวาน.JPG');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์เพลินวาน</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('รูปสินค้า2/ฟอนต์ชานมหนึบ.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์ชานมหนึบ</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('รูปสินค้า2/ฟอนต์อร่อยมาก.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์อร่อยมาก</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿139 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('รูปสินค้า2/ฟอนต์โคเชลล่า.png');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์โคเชลล่า</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+        <a href="product.html" class="font-card">
+          <div class="font-card-preview" style="background-image:url('รูปสินค้า2/ฟอนต์วาเลนไทน์.PNG');background-size:cover;background-position:center;">
+            <div class="card-badge"><span class="badge badge-mint">✍️ ลายมือ</span></div>
+          </div>
+          <div class="font-card-body">
+            <div class="font-card-name">ฟอนต์วาเลนไทน์</div>
+            <div class="font-card-tags"><span class="font-card-tag">ไทย</span><span class="font-card-tag">ลายมือ</span></div>
+            <div class="font-card-footer">
+              <div class="font-price">฿149 <span>/ ไฟล์</span></div>
+              <button class="btn btn-pink btn-card btn-add-cart">+ ตะกร้า</button>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <div id="homeNoResult" style="display:none;text-align:center;padding:48px 0;">
+      <div style="font-size:2.5rem;margin-bottom:12px;">🔍</div>
+      <p style="color:var(--text-light);font-size:1rem;">ไม่พบฟอนต์ที่ค้นหา ลองคำอื่น</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FONT PREVIEW TOOL ===== -->
+<section id="font-preview-tool" style="background:white;border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:40px;">
+      <div style="display:inline-flex;align-items:center;gap:8px;background:var(--pink-light);color:var(--pink-dark);border-radius:100px;padding:6px 18px;font-size:0.8rem;font-weight:700;margin-bottom:16px;">
+        ✏️ ทดลองพิมพ์ฟรี ไม่ต้องสมัครสมาชิก
+      </div>
+      <h2 class="section-title">ทดลองพิมพ์ฟอนต์ก่อนซื้อ</h2>
+      <p class="section-sub">พิมพ์ข้อความของคุณ แล้วดูว่าฟอนต์ไหนเหมาะกับงานของคุณที่สุด</p>
+    </div>
+
+    <!-- Preview Tool Card -->
+    <div style="background:var(--bg);border-radius:var(--radius-lg);border:1px solid var(--border);overflow:hidden;box-shadow:var(--shadow);">
+
+      <!-- Toolbar -->
+      <div style="background:white;border-bottom:1px solid var(--border);padding:16px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+        <!-- Font selector -->
+        <div style="display:flex;flex-direction:column;gap:10px;width:100%;">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span style="font-size:0.8rem;font-weight:700;color:var(--text-mid);white-space:nowrap;">🔍 ค้นหาฟอนต์:</span>
+            <input type="text" id="homeFontSearch" placeholder="พิมพ์ชื่อฟอนต์..." style="border:1.5px solid var(--border);border-radius:20px;padding:6px 14px;font-size:0.85rem;font-family:var(--font-body);outline:none;transition:border-color 0.2s;width:200px;" onfocus="this.style.borderColor='var(--pink)'" onblur="this.style.borderColor='var(--border)'">
+            <span id="homeFontSearchResult" style="font-size:0.78rem;color:var(--text-light);"></span>
+          </div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;" id="homeFontPills">
+            <!-- ก -->
+            <button class="home-font-pill active" data-font="'DSKaphrao',sans-serif" data-label="ฟอนต์ กะเพรา" style="font-family:'DSKaphrao',sans-serif;">กะเพรา</button>
+            <button class="home-font-pill" data-font="'TKGorya',sans-serif" data-label="ฟอนต์ กอหญ้า" style="font-family:'TKGorya',sans-serif;">กอหญ้า</button>
+            <button class="home-font-pill" data-font="'DSgalileo',sans-serif" data-label="ฟอนต์ กาลิเลโอ" style="font-family:'DSgalileo',sans-serif;">กาลิเลโอ</button>
+            <button class="home-font-pill" data-font="'DSGoodday',sans-serif" data-label="ฟอนต์ กู๊ดเดย์" style="font-family:'DSGoodday',sans-serif;">กู๊ดเดย์</button>
+            <button class="home-font-pill" data-font="'DSNoodle',sans-serif" data-label="ฟอนต์ ก๋วยเตี๋ยว" style="font-family:'DSNoodle',sans-serif;">ก๋วยเตี๋ยว</button>
+            <button class="home-font-pill" data-font="'DSKluai-thot',sans-serif" data-label="กล้วยทอด" style="font-family:'DSKluai-thot',sans-serif;">กล้วยทอด</button>
+            <button class="home-font-pill" data-font="'DSGanesh',sans-serif" data-label="ฟอนต์กาเนส" style="font-family:'DSGanesh',sans-serif;">กาเนส</button>
+            <!-- ข -->
+            <button class="home-font-pill" data-font="'DSKhanomtan',sans-serif" data-label="ฟอนต์ ขนมตาล" style="font-family:'DSKhanomtan',sans-serif;">ขนมตาล</button>
+            <button class="home-font-pill" data-font="'DSKhamuu',sans-serif" data-label="ฟอนต์ ขาหมู" style="font-family:'DSKhamuu',sans-serif;">ขาหมู</button>
+            <button class="home-font-pill" data-font="'DSKhonglen',sans-serif" data-label="ฟอนต์ ของเล่น" style="font-family:'DSKhonglen',sans-serif;">ของเล่น</button>
+            <button class="home-font-pill" data-font="'DSkhaoklong',sans-serif" data-label="ฟอนต์ ข้าวกล่อง" style="font-family:'DSkhaoklong',sans-serif;">ข้าวกล่อง</button>
+            <button class="home-font-pill" data-font="'TKKhaosoi',sans-serif" data-label="ฟอนต์ ข้าวซอย" style="font-family:'TKKhaosoi',sans-serif;">ข้าวซอย</button>
+            <button class="home-font-pill" data-font="'TKKhaopad',sans-serif" data-label="ฟอนต์ ข้าวผัด" style="font-family:'TKKhaopad',sans-serif;">ข้าวผัด</button>
+            <button class="home-font-pill" data-font="'DSKhaiwan',sans-serif" data-label="ฟอนต์ ไข่หวาน" style="font-family:'DSKhaiwan',sans-serif;">ไข่หวาน</button>
+            <!-- ค -->
+            <button class="home-font-pill" data-font="'DSKamin',sans-serif" data-label="ฟอนต์ คามิน" style="font-family:'DSKamin',sans-serif;">คามิน</button>
+            <button class="home-font-pill" data-font="'TKConnor',sans-serif" data-label="ฟอนต์ คอนเนอร์" style="font-family:'TKConnor',sans-serif;">คอนเนอร์</button>
+            <button class="home-font-pill" data-font="'TKCanele',sans-serif" data-label="ฟอนต์ คาเนเล่" style="font-family:'TKCanele',sans-serif;">คาเนเล่</button>
+            <button class="home-font-pill" data-font="'DSCoachella',sans-serif" data-label="ฟอนต์โคเชลล่า" style="font-family:'DSCoachella',sans-serif;">โคเชลล่า</button>
+            <button class="home-font-pill" data-font="'DScatier',sans-serif" data-label="ฟอนต์ คาเทียร์" style="font-family:'DScatier',sans-serif;">คาเทียร์</button>
+            <button class="home-font-pill" data-font="'DSCaramel',sans-serif" data-label="ฟอนต์ คาราเมล" style="font-family:'DSCaramel',sans-serif;">คาราเมล</button>
+            <button class="home-font-pill" data-font="'TKCreampuff',sans-serif" data-label="ฟอนต์ ครีมพัฟ" style="font-family:'TKCreampuff',sans-serif;">ครีมพัฟ</button>
+            <button class="home-font-pill" data-font="'DSCalculus',sans-serif" data-label="ฟอนต์แคลคูลัส" style="font-family:'DSCalculus',sans-serif;">แคลคูลัส</button>
+            <!-- จ -->
+            <button class="home-font-pill" data-font="'DSJaonaay',sans-serif" data-label="ฟอนต์ เจ้านาย" style="font-family:'DSJaonaay',sans-serif;">เจ้านาย</button>
+            <!-- ช -->
+            <button class="home-font-pill" data-font="'DSChanomnueb',sans-serif" data-label="ฟอนต์ชานมหนึบ" style="font-family:'DSChanomnueb',sans-serif;">ชานมหนึบ</button>
+            <button class="home-font-pill" data-font="'DSCharlotte',sans-serif" data-label="ฟอนต์ ชาร์ลอตต์" style="font-family:'DSCharlotte',sans-serif;">ชาร์ลอตต์</button>
+            <button class="home-font-pill" data-font="'DSCheescake',sans-serif" data-label="ฟอนต์ ชีสเค้ก" style="font-family:'DSCheescake',sans-serif;">ชีสเค้ก</button>
+            <button class="home-font-pill" data-font="'DSChaingmai',sans-serif" data-label="ฟอนต์ เชียงใหม่" style="font-family:'DSChaingmai',sans-serif;">เชียงใหม่</button>
+            <!-- ซ -->
+            <button class="home-font-pill" data-font="'DScyclone',sans-serif" data-label="ฟอนต์ไซโคลน" style="font-family:'DScyclone',sans-serif;">ไซโคลน</button>
+            <button class="home-font-pill" data-font="'DSSubway',sans-serif" data-label="ฟอนต์ซับเวย์" style="font-family:'DSSubway',sans-serif;">ซับเวย์</button>
+            <button class="home-font-pill" data-font="'DSSunday',sans-serif" data-label="ฟอนต์ ซันเดย์" style="font-family:'DSSunday',sans-serif;">ซันเดย์</button>
+            <button class="home-font-pill" data-font="'DSSydney',sans-serif" data-label="ฟอนต์ ซิดนีย์" style="font-family:'DSSydney',sans-serif;">ซิดนีย์</button>
+            <button class="home-font-pill" data-font="'DScynthia',sans-serif" data-label="ฟอนต์ ซินเทีย" style="font-family:'DScynthia',sans-serif;">ซินเทีย</button>
+            <button class="home-font-pill" data-font="'DSsummer',sans-serif" data-label="ฟอนต์ ซัมเมอร์" style="font-family:'DSsummer',sans-serif;">ซัมเมอร์</button>
+            <button class="home-font-pill" data-font="'TKCayla',sans-serif" data-label="ฟอนต์ เซล่า" style="font-family:'TKCayla',sans-serif;">เซล่า</button>
+            <!-- ด -->
+            <button class="home-font-pill" data-font="'TKDragon',sans-serif" data-label="ฟอนต์ดราก้อน" style="font-family:'TKDragon',sans-serif;">ดราก้อน</button>
+            <button class="home-font-pill" data-font="'DSDaosao',sans-serif" data-label="ฟอนต์ ดาวเสาร์" style="font-family:'DSDaosao',sans-serif;">ดาวเสาร์</button>
+            <button class="home-font-pill" data-font="'DSdiana',sans-serif" data-label="ฟอนต์ไดอาน่า" style="font-family:'DSdiana',sans-serif;">ไดอาน่า</button>
+            <!-- ต -->
+            <button class="home-font-pill" data-font="'DStakeab',sans-serif" data-label="ฟอนต์ ตะเกียบ" style="font-family:'DStakeab',sans-serif;">ตะเกียบ</button>
+            <!-- ท -->
+            <button class="home-font-pill" data-font="'TKTeddy',sans-serif" data-label="ฟอนต์ เท็ดดี้" style="font-family:'TKTeddy',sans-serif;">เท็ดดี้</button>
+            <!-- ธ -->
+            <button class="home-font-pill" data-font="'TKThanos',sans-serif" data-label="ฟอนต์ ธานอส" style="font-family:'TKThanos',sans-serif;">ธานอส</button>
+            <button class="home-font-pill" data-font="'DSThunder',sans-serif" data-label="ฟอนต์ ธันเดอร์" style="font-family:'DSThunder',sans-serif;">ธันเดอร์</button>
+            <!-- น -->
+            <button class="home-font-pill" data-font="'DSNewyear',sans-serif" data-label="ฟอนต์ นิวเยียร์" style="font-family:'DSNewyear',sans-serif;">นิวเยียร์</button>
+            <button class="home-font-pill" data-font="'DSNewclear',sans-serif" data-label="ฟอนต์ นิวเคลียร์" style="font-family:'DSNewclear',sans-serif;">นิวเคลียร์</button>
+            <button class="home-font-pill" data-font="'TKNeptune',sans-serif" data-label="ฟอนต์ เนปจูน" style="font-family:'TKNeptune',sans-serif;">เนปจูน</button>
+            <!-- บ -->
+            <button class="home-font-pill" data-font="'DSBluewhale',sans-serif" data-label="ฟอนต์ บลูวาฬ" style="font-family:'DSBluewhale',sans-serif;">บลูวาฬ</button>
+            <button class="home-font-pill" data-font="'DSBallet',sans-serif" data-label="ฟอนต์ บัลเลต์" style="font-family:'DSBallet',sans-serif;">บัลเลต์</button>
+            <button class="home-font-pill" data-font="'DSBangsaen',sans-serif" data-label="ฟอนต์ บางแสน" style="font-family:'DSBangsaen',sans-serif;">บางแสน</button>
+            <button class="home-font-pill" data-font="'TKBobtailFull',sans-serif" data-label="ฟอนต์ บ็อบเทล" style="font-family:'TKBobtailFull',sans-serif;">บ็อบเทล</button>
+            <button class="home-font-pill" data-font="'DSBanball',sans-serif" data-label="ฟอนต์ บ้านบอล" style="font-family:'DSBanball',sans-serif;">บ้านบอล</button>
+            <button class="home-font-pill" data-font="'DSBansuan',sans-serif" data-label="ฟอนต์ บ้านสวน" style="font-family:'DSBansuan',sans-serif;">บ้านสวน</button>
+            <button class="home-font-pill" data-font="'DSBagel',sans-serif" data-label="ฟอนต์ เบเกิล" style="font-family:'DSBagel',sans-serif;">เบเกิล</button>
+            <button class="home-font-pill" data-font="'DSBirthday',sans-serif" data-label="ฟอนต์ เบิร์ดเดย์" style="font-family:'DSBirthday',sans-serif;">เบิร์ดเดย์</button>
+            <button class="home-font-pill" data-font="'DSBualoy',sans-serif" data-label="ฟอนต์บัวลอย" style="font-family:'DSBualoy',sans-serif;">บัวลอย</button>
+            <!-- ป -->
+            <button class="home-font-pill" data-font="'TKPeter',sans-serif" data-label="ฟอนต์ปีเตอร์" style="font-family:'TKPeter',sans-serif;">ปีเตอร์</button>
+            <button class="home-font-pill" data-font="'DSpangyen',sans-serif" data-label="ฟอนต์ ปังเย็น" style="font-family:'DSpangyen',sans-serif;">ปังเย็น</button>
+            <button class="home-font-pill" data-font="'DSPetnoi',sans-serif" data-label="ฟอนต์ เป็ดน้อย" style="font-family:'DSPetnoi',sans-serif;">เป็ดน้อย</button>
+            <!-- ผ -->
+            <button class="home-font-pill" data-font="'DSpakkrob',sans-serif" data-label="ฟอนต์ ผักกรอบ" style="font-family:'DSpakkrob',sans-serif;">ผักกรอบ</button>
+            <button class="home-font-pill" data-font="'DSpanfilm',sans-serif" data-label="ฟอนต์ แผ่นฟิล์ม" style="font-family:'DSpanfilm',sans-serif;">แผ่นฟิล์ม</button>
+            <!-- พ -->
+            <button class="home-font-pill" data-font="'DSPhloenWan',sans-serif" data-label="ฟอนต์เพลินวาน" style="font-family:'DSPhloenWan',sans-serif;">เพลินวาน</button>
+            <button class="home-font-pill" data-font="'DSpadlom',sans-serif" data-label="ฟอนต์ พัดลม" style="font-family:'DSpadlom',sans-serif;">พัดลม</button>
+            <button class="home-font-pill" data-font="'DSPasta',sans-serif" data-label="ฟอนต์ พาสต้า" style="font-family:'DSPasta',sans-serif;">พาสต้า</button>
+            <button class="home-font-pill" data-font="'TKPudding',sans-serif" data-label="ฟอนต์ พุดดิ้ง" style="font-family:'TKPudding',sans-serif;">พุดดิ้ง</button>
+            <button class="home-font-pill" data-font="'TKPatty',sans-serif" data-label="ฟอนต์ แพตตี้" style="font-family:'TKPatty',sans-serif;">แพตตี้</button>
+            <!-- ฟ -->
+            <button class="home-font-pill" data-font="'DSfongnom',sans-serif" data-label="ฟอนต์ ฟองนม" style="font-family:'DSfongnom',sans-serif;">ฟองนม</button>
+            <button class="home-font-pill" data-font="'DSfigure',sans-serif" data-label="ฟอนต์ ฟิกเกอร์" style="font-family:'DSfigure',sans-serif;">ฟิกเกอร์</button>
+            <!-- ภ -->
+            <button class="home-font-pill" data-font="'DSPhukhao',sans-serif" data-label="ฟอนต์ ภูเขา" style="font-family:'DSPhukhao',sans-serif;">ภูเขา</button>
+            <!-- ม -->
+            <button class="home-font-pill" data-font="'DSMaphrao',sans-serif" data-label="ฟอนต์ มะพร้าว" style="font-family:'DSMaphrao',sans-serif;">มะพร้าว</button>
+            <button class="home-font-pill" data-font="'DSMorgan',sans-serif" data-label="ฟอนต์ มอร์แกน" style="font-family:'DSMorgan',sans-serif;">มอร์แกน</button>
+            <button class="home-font-pill" data-font="'DSMaltese',sans-serif" data-label="ฟอนต์ มอลทีส" style="font-family:'DSMaltese',sans-serif;">มอลทีส</button>
+            <button class="home-font-pill" data-font="'DSMalfeil',sans-serif" data-label="ฟอนต์ มัลเฟิล" style="font-family:'DSMalfeil',sans-serif;">มัลเฟิล</button>
+            <button class="home-font-pill" data-font="'DSMustard',sans-serif" data-label="ฟอนต์ มัสตาร์ด" style="font-family:'DSMustard',sans-serif;">มัสตาร์ด</button>
+            <button class="home-font-pill" data-font="'DSMustang',sans-serif" data-label="ฟอนต์ มัสแตง" style="font-family:'DSMustang',sans-serif;">มัสแตง</button>
+            <button class="home-font-pill" data-font="'DSmannoei',sans-serif" data-label="ฟอนต์ มันเนย" style="font-family:'DSmannoei',sans-serif;">มันเนย</button>
+            <button class="home-font-pill" data-font="'TKManmuang',sans-serif" data-label="ฟอนต์ มันม่วง" style="font-family:'TKManmuang',sans-serif;">มันม่วง</button>
+            <button class="home-font-pill" data-font="'TKMartin',sans-serif" data-label="ฟอนต์ มาร์ติน" style="font-family:'TKMartin',sans-serif;">มาร์ติน</button>
+            <button class="home-font-pill" data-font="'DSMarvel',sans-serif" data-label="ฟอนต์ มาร์เวล" style="font-family:'DSMarvel',sans-serif;">มาร์เวล</button>
+            <button class="home-font-pill" data-font="'DSMascot',sans-serif" data-label="ฟอนต์ มาสคอส" style="font-family:'DSMascot',sans-serif;">มาสคอส</button>
+            <button class="home-font-pill" data-font="'DSMeter',sans-serif" data-label="ฟอนต์ มิเตอร์" style="font-family:'DSMeter',sans-serif;">มิเตอร์</button>
+            <button class="home-font-pill" data-font="'DSMotor',sans-serif" data-label="ฟอนต์มอเตอร์" style="font-family:'DSMotor',sans-serif;">มอเตอร์</button>
+            <button class="home-font-pill" data-font="'DSminako',sans-serif" data-label="ฟอนต์ มินาโกะ" style="font-family:'DSminako',sans-serif;">มินาโกะ</button>
+            <button class="home-font-pill" data-font="'DSMatoer',sans-serif" data-label="ฟอนต์ ม้าเต่อ" style="font-family:'DSMatoer',sans-serif;">ม้าเต่อ</button>
+            <button class="home-font-pill" data-font="'TKMooji',sans-serif" data-label="ฟอนต์ มูจิ" style="font-family:'TKMooji',sans-serif;">มูจิ</button>
+            <button class="home-font-pill" data-font="'DSMendel',sans-serif" data-label="ฟอนต์ เมนเดล" style="font-family:'DSMendel',sans-serif;">เมนเดล</button>
+            <button class="home-font-pill" data-font="'DSMelon',sans-serif" data-label="ฟอนต์ เมล่อน" style="font-family:'DSMelon',sans-serif;">เมล่อน</button>
+            <button class="home-font-pill" data-font="'DSmaple',sans-serif" data-label="ฟอนต์เมเปิล" style="font-family:'DSmaple',sans-serif;">เมเปิล</button>
+            <button class="home-font-pill" data-font="'DSMelbourne',sans-serif" data-label="ฟอนต์ เมลเบิร์น" style="font-family:'DSMelbourne',sans-serif;">เมลเบิร์น</button>
+            <button class="home-font-pill" data-font="'DSmajor',sans-serif" data-label="ฟอนต์ เมเจอร์" style="font-family:'DSmajor',sans-serif;">เมเจอร์</button>
+            <button class="home-font-pill" data-font="'DSMerlin',sans-serif" data-label="ฟอนต์ เมอร์ลิน" style="font-family:'DSMerlin',sans-serif;">เมอร์ลิน</button>
+            <button class="home-font-pill" data-font="'DSMueangjeen',sans-serif" data-label="ฟอนต์ เมืองจีน" style="font-family:'DSMueangjeen',sans-serif;">เมืองจีน</button>
+            <!-- ร -->
+            <button class="home-font-pill" data-font="'TKLasta',sans-serif" data-label="ฟอนต์ ราสต้า" style="font-family:'TKLasta',sans-serif;">ราสต้า</button>
+            <button class="home-font-pill" data-font="'DSReindeer',sans-serif" data-label="ฟอนต์ เรนเดียร์" style="font-family:'DSReindeer',sans-serif;">เรนเดียร์</button>
+            <!-- ล -->
+            <button class="home-font-pill" data-font="'DSLandokmai',sans-serif" data-label="ฟอนต์ ลานดอกไม้" style="font-family:'DSLandokmai',sans-serif;">ลานดอกไม้</button>
+            <button class="home-font-pill" data-font="'DSLookpeach',sans-serif" data-label="ฟอนต์ ลูกพีช" style="font-family:'DSLookpeach',sans-serif;">ลูกพีช</button>
+            <button class="home-font-pill" data-font="'DSLepan',sans-serif" data-label="ฟอนต์ เลอแปง" style="font-family:'DSLepan',sans-serif;">เลอแปง</button>
+            <!-- ว -->
+            <button class="home-font-pill" data-font="'DSValentine',sans-serif" data-label="ฟอนต์วาเลนไทน์" style="font-family:'DSValentine',sans-serif;">วาเลนไทน์</button>
+            <button class="home-font-pill" data-font="'DSwaidek',sans-serif" data-label="ฟอนต์ วัยเด็ก" style="font-family:'DSwaidek',sans-serif;">วัยเด็ก</button>
+            <button class="home-font-pill" data-font="'TKVenus',sans-serif" data-label="ฟอนต์ วีนัส" style="font-family:'TKVenus',sans-serif;">วีนัส</button>
+            <button class="home-font-pill" data-font="'DSWednesday',sans-serif" data-label="ฟอนต์ เวนส์เดย์" style="font-family:'DSWednesday',sans-serif;">เวนส์เดย์</button>
+            <button class="home-font-pill" data-font="'DSWelcome',sans-serif" data-label="ฟอนต์ เวลคัม" style="font-family:'DSWelcome',sans-serif;">เวลคัม</button>
+            <!-- ส -->
+            <button class="home-font-pill" data-font="'DSSomwhan',sans-serif" data-label="ฟอนต์ส้มหวาน" style="font-family:'DSSomwhan',sans-serif;">ส้มหวาน</button>
+            <button class="home-font-pill" data-font="'DSstevia',sans-serif" data-label="ฟอนต์สตีเวีย" style="font-family:'DSstevia',sans-serif;">สตีเวีย</button>
+            <button class="home-font-pill" data-font="'DSOilpastel',sans-serif" data-label="ฟอนต์ สีชอล์ค" style="font-family:'DSOilpastel',sans-serif;">สีชอล์ค</button>
+            <button class="home-font-pill" data-font="'DSScalar',sans-serif" data-label="ฟอนต์ สเกลาร์" style="font-family:'DSScalar',sans-serif;">สเกลาร์</button>
+            <button class="home-font-pill" data-font="'DSSpacebar',sans-serif" data-label="ฟอนต์ สเปซบาร์" style="font-family:'DSSpacebar',sans-serif;">สเปซบาร์</button>
+            <!-- ห -->
+            <button class="home-font-pill" data-font="'DSNangsue',sans-serif" data-label="ฟอนต์ หนังสือ" style="font-family:'DSNangsue',sans-serif;">หนังสือ</button>
+            <button class="home-font-pill" data-font="'DSMonThong',sans-serif" data-label="ฟอนต์ หมอนทอง" style="font-family:'DSMonThong',sans-serif;">หมอนทอง</button>
+            <button class="home-font-pill" data-font="'DSMala',sans-serif" data-label="ฟอนต์ หมาล่า" style="font-family:'DSMala',sans-serif;">หมาล่า</button>
+            <button class="home-font-pill" data-font="'DSMookrobThin',sans-serif" data-label="ฟอนต์ หมูกรอบ" style="font-family:'DSMookrobThin',sans-serif;">หมูกรอบ</button>
+            <button class="home-font-pill" data-font="'TKMoobin',sans-serif" data-label="ฟอนต์ หมูบิน" style="font-family:'TKMoobin',sans-serif;">หมูบิน</button>
+            <button class="home-font-pill" data-font="'TKMooDeng',sans-serif" data-label="ฟอนต์หมูเด้ง" style="font-family:'TKMooDeng',sans-serif;">หมูเด้ง</button>
+            <button class="home-font-pill" data-font="'TKMoojeaw',sans-serif" data-label="หมูเจียว" style="font-family:'TKMoojeaw',sans-serif;">หมูเจียว</button>
+            <button class="home-font-pill" data-font="'DSmooyor',sans-serif" data-label="ฟอนต์ หมูยอ" style="font-family:'DSmooyor',sans-serif;">หมูยอ</button>
+            <button class="home-font-pill" data-font="'DSMokaeng.250929-1749',sans-serif" data-label="ฟอนต์ หม้อแกง" style="font-family:'DSMokaeng.250929-1749',sans-serif;">หม้อแกง</button>
+            <button class="home-font-pill" data-font="'DSHomok',sans-serif" data-label="ฟอนต์ ห่อหมก" style="font-family:'DSHomok',sans-serif;">ห่อหมก</button>
+            <!-- อ -->
+            <button class="home-font-pill" data-font="'DSAroimak',sans-serif" data-label="ฟอนต์อร่อยมาก" style="font-family:'DSAroimak',sans-serif;">อร่อยมาก</button>
+            <button class="home-font-pill" data-font="'DSEclairs',sans-serif" data-label="ฟอนต์เอแคลร์" style="font-family:'DSEclairs',sans-serif;">เอแคลร์</button>
+            <button class="home-font-pill" data-font="'DSAn-ko',sans-serif" data-label="ฟอนต์ อันโกะ" style="font-family:'DSAn-ko',sans-serif;">อันโกะ</button>
+            <button class="home-font-pill" data-font="'DSAlmond',sans-serif" data-label="ฟอนต์ อัลมอนด์" style="font-family:'DSAlmond',sans-serif;">อัลมอนด์</button>
+            <button class="home-font-pill" data-font="'DSInter',sans-serif" data-label="ฟอนต์ อินเตอร์" style="font-family:'DSInter',sans-serif;">อินเตอร์</button>
+            <button class="home-font-pill" data-font="'TKAnis',sans-serif" data-label="ฟอนต์ เอนิส" style="font-family:'TKAnis',sans-serif;">เอนิส</button>
+            <button class="home-font-pill" data-font="'TKAnlene',sans-serif" data-label="ฟอนต์ แอนลีน" style="font-family:'TKAnlene',sans-serif;">แอนลีน</button>
+            <!-- ฮ -->
+            <button class="home-font-pill" data-font="'DShippie',sans-serif" data-label="ฟอนต์ ฮิปปี้" style="font-family:'DShippie',sans-serif;">ฮิปปี้</button>
+            <button class="home-font-pill" data-font="'RGHongkong',sans-serif" data-label="ฟอนต์ ฮ่องกง" style="font-family:'RGHongkong',sans-serif;">ฮ่องกง</button>
+          </div>
+        </div>
+        <div style="margin-left:auto;display:flex;gap:8px;align-items:center;align-self:flex-start;">
+          <!-- Size slider -->
+          <span style="font-size:0.8rem;color:var(--text-light);">ขนาด:</span>
+          <input type="range" id="homeSizeSlider" min="20" max="120" value="56" style="width:80px;accent-color:var(--pink-dark);">
+          <span id="homeSizeLabel" style="font-size:0.8rem;font-weight:700;color:var(--text-dark);min-width:32px;">56px</span>
+          <a href="preview.html" class="btn btn-ghost" style="padding:6px 14px;font-size:0.8rem;">เปิดเครื่องมือเต็ม →</a>
+        </div>
+      </div>
+
+      <!-- Preview Display -->
+      <div id="homePreviewCanvas" style="min-height:200px;display:flex;align-items:center;justify-content:center;padding:48px 40px;background:white;position:relative;overflow:hidden;transition:background 0.3s;">
+        <div style="position:absolute;inset:0;background:linear-gradient(135deg,var(--pink-light) 0%,transparent 50%);opacity:0.4;pointer-events:none;"></div>
+        <div id="homePreviewText" style="font-family:'Noto Serif Thai',serif;font-size:56px;line-height:1.3;color:var(--text-dark);text-align:center;word-break:break-word;max-width:100%;position:relative;z-index:1;transition:all 0.2s ease;">
+          สวัสดีค่ะ · Hello
+        </div>
+      </div>
+
+      <!-- Input & Controls -->
+      <div style="background:var(--bg);border-top:1px solid var(--border);padding:20px 24px;display:flex;gap:16px;align-items:center;flex-wrap:wrap;">
+        <div style="flex:1;min-width:200px;position:relative;">
+          <input type="text" id="homePreviewInput" value="สวัสดีค่ะ · Hello" maxlength="80"
+            placeholder="พิมพ์ข้อความของคุณที่นี่..."
+            style="width:100%;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:12px 44px 12px 16px;font-size:1rem;font-family:var(--font-body);color:var(--text-dark);background:white;outline:none;transition:all 0.2s ease;">
+          <span style="position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:0.75rem;color:var(--text-light);" id="homeCharCount">20</span>
+        </div>
+
+        <!-- BG Colors -->
+        <div style="display:flex;gap:6px;align-items:center;">
+          <span style="font-size:0.78rem;color:var(--text-mid);">พื้นหลัง:</span>
+          <div style="display:flex;gap:5px;" id="homeBgPills">
+            <button class="home-bg-btn active" data-bg="white" style="width:26px;height:26px;border-radius:7px;border:2px solid var(--border);background:white;cursor:pointer;transition:all 0.2s;" title="ขาว"></button>
+            <button class="home-bg-btn" data-bg="var(--bg)" style="width:26px;height:26px;border-radius:7px;border:2px solid var(--border);background:var(--bg);cursor:pointer;transition:all 0.2s;" title="ครีม"></button>
+            <button class="home-bg-btn" data-bg="#2D2D3A" style="width:26px;height:26px;border-radius:7px;border:2px solid var(--border);background:#2D2D3A;cursor:pointer;transition:all 0.2s;" title="ดำ"></button>
+            <button class="home-bg-btn" data-bg="var(--pink-light)" style="width:26px;height:26px;border-radius:7px;border:2px solid var(--border);background:var(--pink-light);cursor:pointer;transition:all 0.2s;" title="ชมพู"></button>
+            <button class="home-bg-btn" data-bg="var(--blue-light)" style="width:26px;height:26px;border-radius:7px;border:2px solid var(--border);background:var(--blue-light);cursor:pointer;transition:all 0.2s;" title="ฟ้า"></button>
+            <button class="home-bg-btn" data-bg="var(--lavender-light)" style="width:26px;height:26px;border-radius:7px;border:2px solid var(--border);background:var(--lavender-light);cursor:pointer;transition:all 0.2s;" title="ม่วง"></button>
+          </div>
+        </div>
+
+        <!-- Font color toggle -->
+        <div style="display:flex;gap:6px;align-items:center;">
+          <span style="font-size:0.78rem;color:var(--text-mid);">สีตัวอักษร:</span>
+          <button id="homeColorDark" onclick="setHomeColor('#2D2D3A',this)" style="width:26px;height:26px;border-radius:7px;border:2px solid var(--text-dark);background:#2D2D3A;cursor:pointer;" title="ดำ"></button>
+          <button id="homeColorPink" onclick="setHomeColor('#E8839A',this)" style="width:26px;height:26px;border-radius:7px;border:2px solid var(--border);background:#E8839A;cursor:pointer;" title="ชมพู"></button>
+          <button id="homeColorWhite" onclick="setHomeColor('#FFFFFF',this)" style="width:26px;height:26px;border-radius:7px;border:2px solid #ddd;background:#fff;cursor:pointer;" title="ขาว"></button>
+        </div>
+
+        <a href="product.html?name=%E0%B8%9F%E0%B8%AD%E0%B8%99%E0%B8%95%E0%B9%8C+%E0%B8%81%E0%B8%B0%E0%B9%80%E0%B8%9E%E0%B8%A3%E0%B8%B2" id="homeBuyBtn" class="btn btn-primary" style="flex-shrink:0;">🛒 ซื้อฟอนต์นี้</a>
+      </div>
+
+      <!-- Font Waterfall Quick -->
+      <div style="background:white;border-top:1px solid var(--border);padding:20px 24px;">
+        <div style="font-size:0.78rem;font-weight:700;color:var(--text-light);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:12px;">ดูตัวอย่างหลายขนาด</div>
+        <div id="homeWaterfall" style="display:flex;flex-direction:column;gap:4px;"></div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .home-font-pill {
+    padding: 6px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 100px;
+    background: white;
+    cursor: pointer;
+    font-size: 0.85rem;
+    color: var(--text-mid);
+    transition: all 0.2s ease;
+    font-family: var(--font-body);
+  }
+  .home-font-pill:hover { border-color: var(--pink); color: var(--pink-dark); background: var(--pink-light); }
+  .home-font-pill.active { border-color: var(--pink-dark); color: var(--pink-dark); background: var(--pink-light); font-weight: 700; }
+  #homePreviewInput:focus { border-color: var(--pink); box-shadow: 0 0 0 3px rgba(255,179,198,0.2); }
+  .home-bg-btn.active { border-color: var(--pink-dark) !important; transform: scale(1.15); }
+</style>
+
+<script>
+  (function() {
+    const previewText = document.getElementById('homePreviewText');
+    const input = document.getElementById('homePreviewInput');
+    const canvas = document.getElementById('homePreviewCanvas');
+    const sizeSlider = document.getElementById('homeSizeSlider');
+    const sizeLabel = document.getElementById('homeSizeLabel');
+    const charCount = document.getElementById('homeCharCount');
+    const waterfall = document.getElementById('homeWaterfall');
+
+    const firstActivePill = document.querySelector('#homeFontPills .home-font-pill.active');
+    let currentFont = firstActivePill ? firstActivePill.dataset.font : "'DSPetnoi',sans-serif";
+    let currentColor = '#2D2D3A';
+    let currentBg = 'white';
+    let currentSize = 56;
+    if (firstActivePill) {
+      document.getElementById('homeBuyBtn').href = 'product.html?name=' + encodeURIComponent(firstActivePill.dataset.label);
+    }
+    const waterfallSizes = [14, 20, 28, 40];
+
+    function updatePreview() {
+      const txt = input.value || 'สวัสดีค่ะ · Hello';
+      previewText.style.fontFamily = currentFont;
+      previewText.style.fontSize = currentSize + 'px';
+      previewText.style.color = currentColor;
+      canvas.style.background = currentBg;
+      previewText.textContent = txt;
+      charCount.textContent = input.value.length;
+      renderWaterfall(txt);
+    }
+
+    function renderWaterfall(txt) {
+      waterfall.innerHTML = waterfallSizes.map(s => `
+        <div style="display:flex;align-items:baseline;gap:12px;padding:5px 0;border-bottom:1px solid var(--border);">
+          <span style="font-size:0.7rem;color:var(--text-light);font-family:monospace;min-width:32px;">${s}px</span>
+          <span style="font-family:${currentFont};font-size:${s}px;color:${currentColor};line-height:1.3;">${txt}</span>
+        </div>`).join('');
+    }
+
+    // Font pills
+    document.getElementById('homeFontPills').addEventListener('click', e => {
+      const pill = e.target.closest('.home-font-pill');
+      if (!pill) return;
+      document.querySelectorAll('.home-font-pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      currentFont = pill.dataset.font;
+      updatePreview();
+      document.getElementById('homeBuyBtn').href = 'product.html?name=' + encodeURIComponent(pill.dataset.label);
+      document.getElementById('homePreviewCanvas').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+
+    // Size slider
+    sizeSlider.addEventListener('input', () => {
+      currentSize = +sizeSlider.value;
+      sizeLabel.textContent = currentSize + 'px';
+      updatePreview();
+    });
+
+    // Text input
+    input.addEventListener('input', updatePreview);
+
+    // BG buttons
+    document.getElementById('homeBgPills').addEventListener('click', e => {
+      const btn = e.target.closest('.home-bg-btn');
+      if (!btn) return;
+      document.querySelectorAll('.home-bg-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentBg = btn.dataset.bg;
+      updatePreview();
+    });
+
+    // Color buttons
+    window.setHomeColor = function(color, el) {
+      currentColor = color;
+      document.querySelectorAll('#homeColorDark,#homeColorPink,#homeColorWhite').forEach(b => b.style.borderColor = 'var(--border)');
+      el.style.borderColor = 'var(--pink-dark)';
+      updatePreview();
+    };
+
+    updatePreview();
+  })();
+</script>
+
+<!-- ===== FAQ ===== -->
+<section class="faq-section" style="background:var(--bg);">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:48px;">
+      <h2 class="section-title">คำถามที่พบบ่อย ❓</h2>
+      <p class="section-sub">หากยังมีข้อสงสัย สามารถติดต่อเราได้ที่หน้า ติดต่อเรา</p>
+    </div>
+    <div class="faq-grid">
+
+      <div class="faq-item">
+        <button class="faq-question">
+          <span>ซื้อฟอนต์แล้วสามารถดาวน์โหลดได้ทันทีเลยไหม?</span>
+          <div class="faq-icon">+</div>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">ได้เลยครับ หลังจากชำระเงินสำเร็จ ระบบจะส่งลิงก์ดาวน์โหลดให้ทางอีเมลทันที ไม่ต้องรอครับ</div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          <span>ฟอนต์รองรับโปรแกรมอะไรบ้าง?</span>
+          <div class="faq-icon">+</div>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">รองรับทุกโปรแกรมออกแบบยอดนิยม เช่น Adobe Illustrator, Photoshop, InDesign, Canva, Microsoft Word, PowerPoint และอื่น ๆ ที่รองรับไฟล์ .ttf / .otf ครับ</div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          <span>ใช้ฟอนต์ในงานเชิงพาณิชย์ได้ไหม?</span>
+          <div class="faq-icon">+</div>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">ขึ้นอยู่กับประเภทใบอนุญาตที่เลือกซื้อครับ แบบ Personal Use ใช้ได้เฉพาะงานส่วนตัว ส่วนแบบ Commercial Use สามารถนำไปใช้ในงานธุรกิจได้เลย</div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          <span>หากไฟล์มีปัญหา สามารถขอรับไฟล์ใหม่ได้ไหม?</span>
+          <div class="faq-icon">+</div>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">ได้เลยครับ หากพบปัญหากับไฟล์ฟอนต์ ติดต่อทีมงานได้ที่หน้าติดต่อเรา เราจะดำเนินการส่งไฟล์ใหม่ให้โดยเร็วที่สุดครับ</div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          <span>สามารถทดลองใช้ฟอนต์ก่อนซื้อได้ไหม?</span>
+          <div class="faq-icon">+</div>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">ได้ครับ สามารถทดลองพิมพ์ฟอนต์ได้ฟรีที่หน้า "ทดลองพิมพ์" โดยไม่ต้องสมัครสมาชิกหรือจ่ายเงินใด ๆ ทั้งสิ้นครับ</div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          <span>ชำระเงินได้ช่องทางไหนบ้าง?</span>
+          <div class="faq-icon">+</div>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">รับชำระผ่านโอนเงินธนาคาร, พร้อมเพย์, บัตรเครดิต/เดบิต และ QR Code ครับ สะดวกทุกช่องทางครับ</div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          <span>ซื้อฟอนต์แล้วสามารถติดตั้งกี่เครื่อง?</span>
+          <div class="faq-icon">+</div>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">ใบอนุญาตมาตรฐานอนุญาตให้ติดตั้งได้ 1-3 เครื่องต่อ 1 ใบอนุญาตครับ หากต้องการใช้มากกว่านั้น สามารถติดต่อสอบถามแพ็กเกจองค์กรได้ครับ</div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          <span>มีบริการออกแบบฟอนต์ตามสั่งไหม?</span>
+          <div class="faq-icon">+</div>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">มีครับ สำหรับลูกค้าที่ต้องการฟอนต์เฉพาะสำหรับแบรนด์ของตัวเอง สามารถติดต่อทีมงานได้ที่หน้าติดต่อเรา เพื่อรับใบเสนอราคาครับ</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== TESTIMONIALS ===== -->
+<section style="background:var(--bg);">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:40px;">
+      <h2 class="section-title">ลูกค้าพูดถึงเรา 💬</h2>
+      <p class="section-sub">รีวิวจากนักออกแบบและครีเอเตอร์ที่ใช้ฟอนต์ของเรา</p>
+    </div>
+    <div class="testimonials-grid">
+      <div class="testimonial-card">
+        <div class="stars" aria-label="5 ดาวจาก 5 ดาว" role="img">⭐⭐⭐⭐⭐</div>
+        <p class="testimonial-text">"ฟอนต์ร้านนี้คือแต่งปกวิดีโอน่ารักมากๆแล้วราคาถูกมากด้วย"</p>
+        <div class="testimonial-author">
+          <div class="author-avatar" style="background:linear-gradient(135deg,var(--pink),var(--lavender));">ก</div>
+          <div>
+            <div class="author-name">กัลยา ศิริวัฒน์</div>
+            <div class="author-role">Graphic Designer</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="stars" aria-label="5 ดาวจาก 5 ดาว" role="img">⭐⭐⭐⭐⭐</div>
+        <p class="testimonial-text">"แวะมารีวิวด้วยเลยค้าบ เราชอบฟอนต์ของร้านนี้มากเลย ใช้ได้น่ารักสุดๆทุกๆงานเราใช้ฟอนต์ของร้านนี้มาตลอดเลย ขอบคุณนะครับที่ทำฟอนต์สวยๆมาให้ใช้"</p>
+        <div class="testimonial-author">
+          <div class="author-avatar" style="background:linear-gradient(135deg,var(--blue),var(--mint));">น</div>
+          <div>
+            <div class="author-name">นพดล ชาญวิทย์</div>
+            <div class="author-role">Content Creator</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="stars" aria-label="5 ดาวจาก 5 ดาว" role="img">⭐⭐⭐⭐⭐</div>
+        <p class="testimonial-text">"เราซื้อมา 3 ฟอนต์ แต่งรูปเยอะขึ้น แฟนชม พี่ชม ว่าทำงานน่ารักมากๆ"</p>
+        <div class="testimonial-author">
+          <div class="author-avatar" style="background:linear-gradient(135deg,var(--yellow),var(--pink));">พ</div>
+          <div>
+            <div class="author-name">พรทิพย์ มีสุข</div>
+            <div class="author-role">Brand Designer</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="stars" aria-label="5 ดาวจาก 5 ดาว" role="img">⭐⭐⭐⭐⭐</div>
+        <p class="testimonial-text">"ฟอนต์ที่ร้านน่ารักมากเลยค่ะเอามาทำป้ายที่ร้าน น่ารักไปอีกเอามาทำป้ายที่ร้านเยอะเลยค่ะ ชอบมากฟอนต์น่ารักทุกตัวฟอนต์ทำให้สื่อสวยน่ารักขึ้น100เท่า😊"</p>
+        <div class="testimonial-author">
+          <div class="author-avatar" style="background:none;padding:0;overflow:hidden;"><img src="รูปสินค้า 3/puky_profile.jpeg" alt="puky" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"></div>
+          <div>
+            <div class="author-name">puky</div>
+            <div class="author-role">เจ้าของร้านชอบเบเกอรี่เฮ้าส์</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PROMO BANNER ===== -->
+<section>
+  <div class="container">
+    <div class="promo-banner">
+      <div class="promo-content">
+        <div class="promo-label">⚡ ข้อเสนอพิเศษ</div>
+        <h2>ต้องการออกใบเสร็จ<br>หรือใบรับรองไหม?</h2>
+        <p>ซื้อในนามบริษัท/องค์กร/หจก. ติดต่อเราได้เลย เราพร้อมออกเอกสารให้ทุกรายการ</p>
+      </div>
+      <div class="promo-actions">
+        <a href="contact.html" class="btn btn-white">📩 ติดต่อเรา</a>
+        <a href="shop.html" class="btn btn-outline-white">ดูฟอนต์ทั้งหมด →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="logo" style="margin-bottom:16px;">
+          <div class="logo-icon"><img src="รูปโปร/LOGO.png" alt="Dsiin Studio Logo"></div>
+          <div style="color:white;">
+            <div>สถานีฟอนต์</div>
+            <div class="logo-text-en" style="color:rgba(255,255,255,0.5);">Dsiin Studio</div>
+          </div>
+        </a>
+        <p>ร้านฟอนต์ดิจิทัลคุณภาพสูง สำหรับนักออกแบบและครีเอเตอร์ชาวไทย ฟอนต์สวย ใช้งานง่าย รองรับทุกโปรแกรม</p>
+        <div class="social-links" style="margin-top:20px;">
+          <a href="https://lin.ee/R8474uM" target="_blank" rel="noopener" class="social-btn" title="Line" aria-label="ติดตามเราทาง LINE">💚</a>
+          <a href="https://www.instagram.com/dsiin.g?igsh=MXJldTltb3d3dnRzNg%3D%3D&utm_source=qr" target="_blank" rel="noopener" class="social-btn" title="Instagram" aria-label="ติดตามเราทาง Instagram">📸</a>
+          <a href="https://www.tiktok.com/@dsiin11?_r=1&_t=ZS-94qnQD5EWt2" target="_blank" rel="noopener" class="social-btn" title="TikTok" aria-label="ติดตามเราทาง TikTok">🎵</a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>ฟอนต์</h4>
+        <ul>
+          <li><a href="shop.html">ฟอนต์ทั้งหมด</a></li>
+          <li><a href="shop.html">ขายดี</a></li>
+          <li><a href="shop.html">มาใหม่</a></li>
+          <li><a href="shop.html">แพ็กชุด</a></li>
+          <li><a href="shop.html">ฟอนต์ฟรี</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>ข้อมูล</h4>
+        <ul>
+              <li><a href="contact.html">ติดต่อ</a></li>
+          <li><a href="policy.html">นโยบายการใช้งาน</a></li>
+          <li><a href="#">เงื่อนไขการซื้อ</a></li>
+          <li><a href="#">คำถามที่พบบ่อย</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-newsletter">
+        <h4>รับข่าวสาร</h4>
+        <p>อัปเดตฟอนต์ใหม่และโปรโมชันก่อนใคร</p>
+        <a href="https://line.me/ti/g2/Aba7z_ZrCpKzZeHXGk6Krr-EnfwW5_N8hBzKIQ?utm_source=invitation&utm_medium=link_copy&utm_campaign=default" target="_blank" rel="noopener" class="btn btn-pink" style="display:inline-block;border-radius:10px;padding:12px 22px;font-weight:700;text-decoration:none;">🔔 รู้โปรก่อนใคร</a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div>© 2569 สถานีฟอนต์ · Dsiin Studio · สงวนลิขสิทธิ์</div>
+      <div>ออกแบบด้วย ❤️ สำหรับนักออกแบบไทย</div>
+    </div>
+  </div>
+</footer>
+
+<button class="scroll-top" id="scrollTop" aria-label="กลับขึ้นด้านบน">↑</button>
+
+<script src="script.js"></script>
+<script src="auth.js"></script>
+<script>
+// ===== FONT SEARCH IN PREVIEW TOOL =====
+const homeFontSearch = document.getElementById('homeFontSearch');
+const homeFontSearchResult = document.getElementById('homeFontSearchResult');
+
+if (homeFontSearch) {
+  homeFontSearch.addEventListener('input', () => {
+    const q = homeFontSearch.value.trim().toLowerCase();
+    const pills = document.querySelectorAll('#homeFontPills .home-font-pill');
+    let visible = 0;
+    pills.forEach(pill => {
+      const label = (pill.dataset.label || pill.textContent).toLowerCase();
+      const match = !q || label.includes(q);
+      pill.style.display = match ? '' : 'none';
+      if (match) visible++;
+    });
+    homeFontSearchResult.textContent = q ? `พบ ${visible} ฟอนต์` : '';
+  });
+}
+</script>
+</body>
+</html>
