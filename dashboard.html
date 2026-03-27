@@ -395,8 +395,8 @@
     }
     btn.disabled = true;
     btn.textContent = 'กำลังโหลด...';
-    // ลองทั้ง root และ fonts/ subfolder
-    const paths = [fileName, 'fonts/' + fileName];
+    // ลองทุก path ที่เป็นไปได้
+    const paths = ['TK studio/' + fileName, fileName, 'fonts/' + fileName];
     function tryPath(index) {
       if (index >= paths.length) {
         btn.disabled = false;
