@@ -862,7 +862,7 @@ section { padding: 80px 0; }
 
 /* ===== PROMO BANNER ===== */
 .promo-banner {
-  background: linear-gradient(135deg, #0F0F0F 0%, #2A0818 100%);
+  background: linear-gradient(135deg, #2A1A1A 0%, #4A1228 100%);
   border-radius: var(--radius-lg);
   padding: 60px 48px;
   display: flex;
