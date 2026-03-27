@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — สถานีฟอนต์ | Dsiin Studio</title>
+  <link rel="icon" type="image/png" href="รูปโปร/LOGO.png">
+  <link rel="apple-touch-icon" href="รูปโปร/LOGO.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Thai:wght@300;400;700;900&family=Sarabun:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .dashboard-wrapper {
+      min-height: 100vh;
+      background: var(--bg);
+      padding: 40px 0 80px;
+    }
+    .dashboard-header {
+      background: white;
+      border-bottom: 1px solid var(--border);
+      padding: 32px 0;
+      margin-bottom: 40px;
+    }
+    .dashboard-header-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .dashboard-avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #f9a8d4, #c4b5fd);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: #1a1a2e;
+      flex-shrink: 0;
+    }
+    .dashboard-name {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+    .dashboard-email {
+      font-size: 0.85rem;
+      color: #888;
+      margin-top: 2px;
+    }
+    .dashboard-content {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 28px;
+    }
+    .dashboard-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .dash-nav-btn {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 13px 18px;
+      border-radius: 12px;
+      border: none;
+      background: transparent;
+      font-size: 0.92rem;
+      font-weight: 500;
+      color: #555;
+      cursor: pointer;
+      text-align: left;
+      font-family: inherit;
+      transition: all 0.2s;
+    }
+    .dash-nav-btn:hover { background: #f5f5f5; color: #1a1a2e; }
+    .dash-nav-btn.active { background: linear-gradient(135deg, rgba(249,168,212,0.2), rgba(196,181,253,0.2)); color: #1a1a2e; font-weight: 700; }
+    .dash-nav-btn .icon { font-size: 1.1rem; }
+    .dashboard-main {
+      background: white;
+      border-radius: 16px;
+      padding: 28px;
+      border: 1px solid var(--border);
+      min-height: 400px;
+    }
+    .dash-section { display: none; }
+    .dash-section.active { display: block; }
+    .dash-section-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 20px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .order-card {
+      border: 1px solid #f0f0f0;
+      border-radius: 12px;
+      padding: 18px;
+      margin-bottom: 14px;
+    }
+    .order-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .order-date { font-size: 0.8rem; color: #888; }
+    .order-total { font-weight: 700; color: #ec4899; font-size: 1rem; }
+    .order-item {
+      font-size: 0.88rem;
+      color: #444;
+      padding: 4px 0;
+      border-top: 1px solid #f8f8f8;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .profile-form-group {
+      margin-bottom: 18px;
+    }
+    .profile-form-group label {
+      font-size: 0.82rem;
+      color: #666;
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 500;
+    }
+    .profile-form-group input {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      font-family: inherit;
+      box-sizing: border-box;
+      outline: none;
+    }
+    .profile-form-group input:focus { border-color: #f9a8d4; }
+    .btn-save {
+      padding: 12px 28px;
+      background: linear-gradient(135deg, #f9a8d4, #c4b5fd);
+      border: none;
+      border-radius: 10px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: #1a1a2e;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .btn-logout {
+      padding: 11px 24px;
+      background: #f5f5f5;
+      border: none;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #e11d48;
+      cursor: pointer;
+      font-family: inherit;
+      margin-top: 12px;
+    }
+    .msg-box {
+      font-size: 0.82rem;
+      padding: 10px 14px;
+      border-radius: 8px;
+      margin-bottom: 14px;
+      display: none;
+    }
+    .msg-box.success { background: #f0fdf4; color: #16a34a; display: block; }
+    .msg-box.error { background: #fff1f2; color: #e11d48; display: block; }
+    #loginPrompt {
+      display: none;
+      text-align: center;
+      padding: 80px 20px;
+    }
+    #loginPrompt h2 { font-size: 1.3rem; color: var(--text-dark); margin-bottom: 10px; }
+    #loginPrompt p { color: #888; font-size: 0.9rem; margin-bottom: 24px; }
+    @media (max-width: 700px) {
+      .dashboard-content { grid-template-columns: 1fr; }
+      .dashboard-sidebar { flex-direction: row; flex-wrap: wrap; }
+      .dash-nav-btn { flex: 1; justify-content: center; font-size: 0.82rem; padding: 10px 8px; }
+      .dash-nav-btn .icon { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page-loader" id="pageLoader">
+  <div class="loader-logo">Aa</div>
+  <div class="loader-dots">
+    <div class="loader-dot"></div><div class="loader-dot"></div><div class="loader-dot"></div>
+  </div>
+</div>
+
+<!-- Navbar -->
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">สถานีฟอนต์</a>
+    <ul class="nav-links">
+      <li><a href="shop.html">ฟอนต์ทั้งหมด</a></li>
+      <li><a href="shop.html#new">ฟอนต์ใหม่</a></li>
+      <li><a href="contact.html">ติดต่อ</a></li>
+      <li><a href="shop.html" class="nav-cta">เลือกซื้อฟอนต์</a></li>
+      <li><a href="cart.html" class="nav-cart">🛒</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Login Prompt (สำหรับคนที่ยังไม่ login) -->
+<div id="loginPrompt">
+  <h2>กรุณาเข้าสู่ระบบ</h2>
+  <p>เพื่อเข้าใช้งาน Dashboard</p>
+  <button onclick="authOpen('login')" style="padding:12px 32px;background:linear-gradient(135deg,#f9a8d4,#c4b5fd);border:none;border-radius:12px;font-size:0.95rem;font-weight:700;color:#1a1a2e;cursor:pointer;font-family:inherit;">เข้าสู่ระบบ</button>
+</div>
+
+<!-- Dashboard (สำหรับคนที่ login แล้ว) -->
+<div class="dashboard-wrapper" id="dashboardMain" style="display:none;">
+
+  <div class="dashboard-header">
+    <div class="dashboard-header-inner">
+      <div class="dashboard-avatar" id="dashAvatar">?</div>
+      <div>
+        <div class="dashboard-name" id="dashName">—</div>
+        <div class="dashboard-email" id="dashEmail">—</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="dashboard-content">
+    <!-- Sidebar -->
+    <div class="dashboard-sidebar">
+      <button class="dash-nav-btn active" onclick="showSection('orders', this)">
+        <span class="icon">📦</span> ประวัติการซื้อ
+      </button>
+      <button class="dash-nav-btn" onclick="showSection('profile', this)">
+        <span class="icon">👤</span> ข้อมูลส่วนตัว
+      </button>
+      <button class="dash-nav-btn" onclick="showSection('password', this)">
+        <span class="icon">🔒</span> เปลี่ยนรหัสผ่าน
+      </button>
+      <button class="dash-nav-btn" onclick="authLogout()" style="color:#e11d48;margin-top:auto;">
+        <span class="icon">🚪</span> ออกจากระบบ
+      </button>
+    </div>
+
+    <!-- Main Content -->
+    <div class="dashboard-main">
+
+      <!-- ประวัติการซื้อ -->
+      <div class="dash-section active" id="section-orders">
+        <div class="dash-section-title">📦 ประวัติการซื้อ</div>
+        <div id="ordersList"><p style="color:#aaa;text-align:center;padding:40px 0;">กำลังโหลด...</p></div>
+      </div>
+
+      <!-- ข้อมูลส่วนตัว -->
+      <div class="dash-section" id="section-profile">
+        <div class="dash-section-title">👤 ข้อมูลส่วนตัว</div>
+        <div id="profileMsg" class="msg-box"></div>
+        <div class="profile-form-group">
+          <label>ชื่อ-นามสกุล</label>
+          <input type="text" id="profileName" placeholder="ชื่อของคุณ">
+        </div>
+        <div class="profile-form-group">
+          <label>อีเมล</label>
+          <input type="email" id="profileEmail" disabled style="background:#f9f9f9;color:#999;">
+        </div>
+        <button class="btn-save" onclick="saveProfile()">บันทึกการเปลี่ยนแปลง</button>
+      </div>
+
+      <!-- เปลี่ยนรหัสผ่าน -->
+      <div class="dash-section" id="section-password">
+        <div class="dash-section-title">🔒 เปลี่ยนรหัสผ่าน</div>
+        <div id="passwordMsg" class="msg-box"></div>
+        <div class="profile-form-group">
+          <label>รหัสผ่านใหม่ (อย่างน้อย 6 ตัว)</label>
+          <input type="password" id="newPassword" placeholder="รหัสผ่านใหม่">
+        </div>
+        <div class="profile-form-group">
+          <label>ยืนยันรหัสผ่านใหม่</label>
+          <input type="password" id="confirmPassword" placeholder="ยืนยันรหัสผ่าน">
+        </div>
+        <button class="btn-save" onclick="savePassword()">เปลี่ยนรหัสผ่าน</button>
+        <br>
+        <small style="color:#aaa;font-size:0.78rem;">* หากสมัครผ่าน Google ไม่สามารถเปลี่ยนรหัสผ่านที่นี่ได้</small>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<script src="script.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="auth.js"></script>
+<script>
+  function showSection(name, btn) {
+    document.querySelectorAll('.dash-section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.dash-nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('section-' + name).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  function loadOrders() {
+    const user = firebase.auth().currentUser;
+    if (!user) return;
+    db.collection('orders')
+      .where('uid', '==', user.uid)
+      .orderBy('timestamp', 'desc')
+      .get()
+      .then(snapshot => {
+        const list = document.getElementById('ordersList');
+        if (snapshot.empty) {
+          list.innerHTML = `<div style="text-align:center;padding:40px 0;color:#aaa;">
+            <div style="font-size:2rem;margin-bottom:10px;">🛍️</div>
+            <p>ยังไม่มีประวัติการซื้อ</p>
+            <a href="shop.html" style="color:#ec4899;font-weight:600;text-decoration:none;">เลือกซื้อฟอนต์ →</a>
+          </div>`;
+          return;
+        }
+        list.innerHTML = snapshot.docs.map(doc => {
+          const o = doc.data();
+          return `<div class="order-card">
+            <div class="order-card-header">
+              <span class="order-date">🗓 ${o.date}</span>
+              <span class="order-total">฿${o.total.toLocaleString()}</span>
+            </div>
+            ${o.items.map(i => `<div class="order-item">🔤 ${i.name}</div>`).join('')}
+          </div>`;
+        }).join('');
+      })
+      .catch(() => {
+        document.getElementById('ordersList').innerHTML = `<p style="color:#aaa;text-align:center;padding:40px 0;">ไม่สามารถโหลดข้อมูลได้</p>`;
+      });
+  }
+
+  function saveProfile() {
+    const name = document.getElementById('profileName').value.trim();
+    const msg = document.getElementById('profileMsg');
+    msg.className = 'msg-box';
+    if (!name) { msg.className = 'msg-box error'; msg.textContent = 'กรุณาใส่ชื่อ'; return; }
+    firebase.auth().currentUser.updateProfile({ displayName: name })
+      .then(() => {
+        msg.className = 'msg-box success';
+        msg.textContent = '✓ บันทึกสำเร็จ';
+        document.getElementById('dashName').textContent = name;
+        document.getElementById('dashAvatar').textContent = name[0].toUpperCase();
+      })
+      .catch(() => { msg.className = 'msg-box error'; msg.textContent = 'เกิดข้อผิดพลาด'; });
+  }
+
+  function savePassword() {
+    const newPass = document.getElementById('newPassword').value;
+    const confirmPass = document.getElementById('confirmPassword').value;
+    const msg = document.getElementById('passwordMsg');
+    msg.className = 'msg-box';
+    if (newPass.length < 6) { msg.className = 'msg-box error'; msg.textContent = 'รหัสผ่านต้องมีอย่างน้อย 6 ตัว'; return; }
+    if (newPass !== confirmPass) { msg.className = 'msg-box error'; msg.textContent = 'รหัสผ่านไม่ตรงกัน'; return; }
+    firebase.auth().currentUser.updatePassword(newPass)
+      .then(() => {
+        msg.className = 'msg-box success';
+        msg.textContent = '✓ เปลี่ยนรหัสผ่านสำเร็จ';
+        document.getElementById('newPassword').value = '';
+        document.getElementById('confirmPassword').value = '';
+      })
+      .catch(err => {
+        msg.className = 'msg-box error';
+        if (err.code === 'auth/requires-recent-login') {
+          msg.textContent = 'กรุณา logout แล้ว login ใหม่ก่อนเปลี่ยนรหัสผ่าน';
+        } else {
+          msg.textContent = 'เกิดข้อผิดพลาด กรุณาลองใหม่';
+        }
+      });
+  }
+
+  firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+      document.getElementById('loginPrompt').style.display = 'none';
+      document.getElementById('dashboardMain').style.display = 'block';
+      const name = user.displayName || user.email.split('@')[0];
+      document.getElementById('dashAvatar').textContent = name[0].toUpperCase();
+      document.getElementById('dashName').textContent = name;
+      document.getElementById('dashEmail').textContent = user.email;
+      document.getElementById('profileName').value = name;
+      document.getElementById('profileEmail').value = user.email;
+      loadOrders();
+    } else {
+      document.getElementById('loginPrompt').style.display = 'block';
+      document.getElementById('dashboardMain').style.display = 'none';
+    }
+  });
+</script>
+</body>
+</html>
