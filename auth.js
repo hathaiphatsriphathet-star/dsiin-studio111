@@ -25,11 +25,15 @@
     if (!user) { callback([]); return; }
     db.collection('orders')
       .where('uid', '==', user.uid)
-      .orderBy('timestamp', 'desc')
       .get()
       .then(snapshot => {
         const orders = [];
         snapshot.forEach(doc => orders.push(doc.data()));
+        orders.sort((a, b) => {
+          const ta = a.timestamp ? a.timestamp.seconds : 0;
+          const tb = b.timestamp ? b.timestamp.seconds : 0;
+          return tb - ta;
+        });
         callback(orders);
       })
       .catch(() => callback([]));
