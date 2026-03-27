@@ -317,11 +317,15 @@
     if (!user) return;
     db.collection('orders')
       .where('uid', '==', user.uid)
-      .orderBy('timestamp', 'desc')
       .get()
       .then(snapshot => {
         const list = document.getElementById('ordersList');
-        if (snapshot.empty) {
+        const docs = snapshot.docs.map(d => d.data()).sort((a, b) => {
+          const ta = a.timestamp ? a.timestamp.seconds : 0;
+          const tb = b.timestamp ? b.timestamp.seconds : 0;
+          return tb - ta;
+        });
+        if (docs.length === 0) {
           list.innerHTML = `<div style="text-align:center;padding:40px 0;color:#aaa;">
             <div style="font-size:2rem;margin-bottom:10px;">🛍️</div>
             <p>ยังไม่มีประวัติการซื้อ</p>
@@ -329,8 +333,7 @@
           </div>`;
           return;
         }
-        list.innerHTML = snapshot.docs.map(doc => {
-          const o = doc.data();
+        list.innerHTML = docs.map(o => {
           return `<div class="order-card">
             <div class="order-card-header">
               <span class="order-date">🗓 ${o.date}</span>
@@ -383,6 +386,13 @@
         }
       });
   }
+
+  window.addEventListener('load', function() {
+    setTimeout(function() {
+      const loader = document.getElementById('pageLoader');
+      if (loader) loader.classList.add('hidden');
+    }, 400);
+  });
 
   firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
