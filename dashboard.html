@@ -395,18 +395,27 @@
     }
     btn.disabled = true;
     btn.textContent = 'กำลังโหลด...';
-    storage.ref('fonts/' + fileName).getDownloadURL().then(url => {
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = fileName;
-      a.click();
-      btn.disabled = false;
-      btn.textContent = '⬇ ดาวน์โหลด';
-    }).catch(() => {
-      btn.disabled = false;
-      btn.textContent = '⬇ ดาวน์โหลด';
-      alert('ไม่พบไฟล์ฟอนต์ กรุณาติดต่อ @dsiinstudio');
-    });
+    // ลองทั้ง root และ fonts/ subfolder
+    const paths = [fileName, 'fonts/' + fileName];
+    function tryPath(index) {
+      if (index >= paths.length) {
+        btn.disabled = false;
+        btn.textContent = '⬇ ดาวน์โหลด';
+        alert('ไม่พบไฟล์ฟอนต์ กรุณาติดต่อ @dsiinstudio');
+        return;
+      }
+      storage.ref(paths[index]).getDownloadURL().then(url => {
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = fileName;
+        a.click();
+        btn.disabled = false;
+        btn.textContent = '⬇ ดาวน์โหลด';
+      }).catch(() => {
+        tryPath(index + 1);
+      });
+    }
+    tryPath(0);
   }
 
   function loadOrders() {
