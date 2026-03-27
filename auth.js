@@ -3,23 +3,36 @@
   const auth = firebase.auth();
   const googleProvider = new firebase.auth.GoogleAuthProvider();
 
-  // ---- Purchase History (localStorage) ----
+  // ---- Purchase History (Firestore) ----
   window.savePurchaseHistory = function (items) {
     const user = auth.currentUser;
     if (!user) return;
-    const key = 'ds_orders_' + user.uid;
-    const orders = JSON.parse(localStorage.getItem(key) || '[]');
     const now = new Date();
     const months = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
     const date = now.getDate() + ' ' + months[now.getMonth()] + ' ' + (now.getFullYear() + 543);
-    orders.unshift({ date, items: JSON.parse(JSON.stringify(items)), total: items.reduce((s, i) => s + i.price, 0) });
-    localStorage.setItem(key, JSON.stringify(orders));
+    db.collection('orders').add({
+      uid: user.uid,
+      email: user.email,
+      date: date,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      items: JSON.parse(JSON.stringify(items)),
+      total: items.reduce((s, i) => s + i.price, 0)
+    });
   };
 
-  function getPurchaseHistory() {
+  function getPurchaseHistory(callback) {
     const user = auth.currentUser;
-    if (!user) return [];
-    return JSON.parse(localStorage.getItem('ds_orders_' + user.uid) || '[]');
+    if (!user) { callback([]); return; }
+    db.collection('orders')
+      .where('uid', '==', user.uid)
+      .orderBy('timestamp', 'desc')
+      .get()
+      .then(snapshot => {
+        const orders = [];
+        snapshot.forEach(doc => orders.push(doc.data()));
+        callback(orders);
+      })
+      .catch(() => callback([]));
   }
 
   // ---- Profile Modal HTML ----
@@ -250,18 +263,6 @@
     const user = auth.currentUser;
     if (!user) return;
     const name = user.displayName || user.email.split('@')[0];
-    const orders = getPurchaseHistory();
-    const ordersHTML = orders.length === 0
-      ? `<p style="color:#888;font-size:0.85rem;text-align:center;padding:20px 0;">ยังไม่มีประวัติการซื้อ</p>`
-      : orders.map(o => `
-        <div style="border:1px solid #f0f0f0;border-radius:12px;padding:14px;margin-bottom:10px;">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-            <span style="font-size:0.78rem;color:#888;">${o.date}</span>
-            <span style="font-weight:700;color:#ec4899;">฿${o.total.toLocaleString()}</span>
-          </div>
-          ${o.items.map(i => `<div style="font-size:0.85rem;color:#333;padding:2px 0;">• ${i.name}</div>`).join('')}
-        </div>`).join('');
-
     document.getElementById('profileContent').innerHTML = `
       <div style="display:flex;align-items:center;gap:14px;margin-bottom:24px;">
         <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#f9a8d4,#c4b5fd);display:flex;align-items:center;justify-content:center;font-size:1.3rem;font-weight:800;color:#1a1a2e;flex-shrink:0;">${name[0].toUpperCase()}</div>
@@ -272,10 +273,28 @@
       </div>
       <div style="border-top:1px solid #f0f0f0;padding-top:20px;margin-bottom:16px;">
         <div style="font-weight:700;font-size:0.95rem;margin-bottom:12px;">📦 ประวัติการซื้อ</div>
-        ${ordersHTML}
+        <div id="ordersContainer"><p style="color:#aaa;font-size:0.85rem;text-align:center;padding:16px 0;">กำลังโหลด...</p></div>
       </div>
+      <a href="dashboard.html" style="display:block;text-align:center;padding:11px;background:linear-gradient(135deg,#f9a8d4,#c4b5fd);border-radius:10px;font-size:0.9rem;font-weight:600;color:#1a1a2e;text-decoration:none;margin-bottom:10px;">ไปหน้า Dashboard</a>
       <button onclick="authLogout()" style="width:100%;padding:11px;background:#f5f5f5;border:none;border-radius:10px;font-size:0.9rem;font-weight:600;color:#e11d48;cursor:pointer;">ออกจากระบบ</button>`;
     document.getElementById('profileOverlay').style.display = 'flex';
+
+    getPurchaseHistory(function(orders) {
+      const container = document.getElementById('ordersContainer');
+      if (!container) return;
+      if (orders.length === 0) {
+        container.innerHTML = `<p style="color:#888;font-size:0.85rem;text-align:center;padding:20px 0;">ยังไม่มีประวัติการซื้อ</p>`;
+      } else {
+        container.innerHTML = orders.map(o => `
+          <div style="border:1px solid #f0f0f0;border-radius:12px;padding:14px;margin-bottom:10px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+              <span style="font-size:0.78rem;color:#888;">${o.date}</span>
+              <span style="font-weight:700;color:#ec4899;">฿${o.total.toLocaleString()}</span>
+            </div>
+            ${o.items.map(i => `<div style="font-size:0.85rem;color:#333;padding:2px 0;">• ${i.name}</div>`).join('')}
+          </div>`).join('');
+      }
+    });
   };
 
   window.authLogout = function () {
