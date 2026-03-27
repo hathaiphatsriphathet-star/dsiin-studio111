@@ -411,7 +411,8 @@
         a.click();
         btn.disabled = false;
         btn.textContent = '⬇ ดาวน์โหลด';
-      }).catch(() => {
+      }).catch((err) => {
+        console.warn('Storage path failed:', paths[index], '| Error:', err.code, err.message);
         tryPath(index + 1);
       });
     }
