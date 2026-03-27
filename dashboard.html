@@ -177,6 +177,41 @@
     }
     .msg-box.success { background: #f0fdf4; color: #16a34a; display: block; }
     .msg-box.error { background: #fff1f2; color: #e11d48; display: block; }
+    .my-font-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 14px;
+    }
+    .my-font-card {
+      border: 1px solid #f0f0f0;
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+    }
+    .my-font-card .font-name {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #1a1a2e;
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+    .btn-download {
+      width: 100%;
+      padding: 9px;
+      background: linear-gradient(135deg, #f9a8d4, #c4b5fd);
+      border: none;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #1a1a2e;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .btn-download:disabled {
+      background: #f0f0f0;
+      color: #aaa;
+      cursor: not-allowed;
+    }
     #loginPrompt {
       display: none;
       text-align: center;
@@ -238,7 +273,10 @@
   <div class="dashboard-content">
     <!-- Sidebar -->
     <div class="dashboard-sidebar">
-      <button class="dash-nav-btn active" onclick="showSection('orders', this)">
+      <button class="dash-nav-btn active" onclick="showSection('fonts', this)">
+        <span class="icon">🔤</span> ฟอนต์ของฉัน
+      </button>
+      <button class="dash-nav-btn" onclick="showSection('orders', this)">
         <span class="icon">📦</span> ประวัติการซื้อ
       </button>
       <button class="dash-nav-btn" onclick="showSection('profile', this)">
@@ -255,8 +293,14 @@
     <!-- Main Content -->
     <div class="dashboard-main">
 
+      <!-- ฟอนต์ของฉัน -->
+      <div class="dash-section active" id="section-fonts">
+        <div class="dash-section-title">🔤 ฟอนต์ของฉัน</div>
+        <div id="myFontsList"><p style="color:#aaa;text-align:center;padding:40px 0;">กำลังโหลด...</p></div>
+      </div>
+
       <!-- ประวัติการซื้อ -->
-      <div class="dash-section active" id="section-orders">
+      <div class="dash-section" id="section-orders">
         <div class="dash-section-title">📦 ประวัติการซื้อ</div>
         <div id="ordersList"><p style="color:#aaa;text-align:center;padding:40px 0;">กำลังโหลด...</p></div>
       </div>
@@ -302,6 +346,7 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
 <script src="firebase-config.js"></script>
 <script src="auth.js"></script>
 <script>
@@ -310,6 +355,53 @@
     document.querySelectorAll('.dash-nav-btn').forEach(b => b.classList.remove('active'));
     document.getElementById('section-' + name).classList.add('active');
     btn.classList.add('active');
+  }
+
+  function loadMyFonts() {
+    const user = firebase.auth().currentUser;
+    if (!user) return;
+    db.collection('orders').where('uid', '==', user.uid).get().then(snapshot => {
+      const fontSet = {};
+      snapshot.forEach(doc => {
+        const o = doc.data();
+        (o.items || []).forEach(item => {
+          fontSet[item.name] = item;
+        });
+      });
+      const fonts = Object.values(fontSet);
+      const container = document.getElementById('myFontsList');
+      if (fonts.length === 0) {
+        container.innerHTML = `<div style="text-align:center;padding:40px 0;color:#aaa;">
+          <div style="font-size:2rem;margin-bottom:10px;">🔤</div>
+          <p>ยังไม่มีฟอนต์ที่ซื้อ</p>
+          <a href="shop.html" style="color:#ec4899;font-weight:600;text-decoration:none;">เลือกซื้อฟอนต์ →</a>
+        </div>`;
+        return;
+      }
+      container.innerHTML = `<div class="my-font-grid">${fonts.map(f => `
+        <div class="my-font-card">
+          <div class="font-name">${f.name}</div>
+          <button class="btn-download" onclick="downloadFont('${f.name.replace(/'/g, "\\'")}', this)">⬇ ดาวน์โหลด</button>
+        </div>`).join('')}</div>`;
+    });
+  }
+
+  function downloadFont(fontName, btn) {
+    btn.disabled = true;
+    btn.textContent = 'กำลังโหลด...';
+    const ref = storage.ref('fonts/' + fontName + '.ttf');
+    ref.getDownloadURL().then(url => {
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = fontName + '.ttf';
+      a.click();
+      btn.disabled = false;
+      btn.textContent = '⬇ ดาวน์โหลด';
+    }).catch(() => {
+      btn.disabled = false;
+      btn.textContent = '⬇ ดาวน์โหลด';
+      alert('ไม่พบไฟล์ฟอนต์ กรุณาติดต่อ @dsiinstudio');
+    });
   }
 
   function loadOrders() {
@@ -404,6 +496,7 @@
       document.getElementById('dashEmail').textContent = user.email;
       document.getElementById('profileName').value = name;
       document.getElementById('profileEmail').value = user.email;
+      loadMyFonts();
       loadOrders();
     } else {
       document.getElementById('loginPrompt').style.display = 'block';
