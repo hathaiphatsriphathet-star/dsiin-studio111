@@ -1,17 +1,13 @@
-// ===== AUTH SYSTEM =====
+// ===== AUTH SYSTEM (Firebase) =====
 (function () {
-  // ---- Storage Helpers ----
-  function getUsers() { return JSON.parse(localStorage.getItem('ds_users') || '[]'); }
-  function saveUsers(u) { localStorage.setItem('ds_users', JSON.stringify(u)); }
-  function getUser() { return JSON.parse(localStorage.getItem('ds_session') || 'null'); }
-  function setUser(u) { localStorage.setItem('ds_session', JSON.stringify(u)); }
-  function clearUser() { localStorage.removeItem('ds_session'); }
+  const auth = firebase.auth();
+  const googleProvider = new firebase.auth.GoogleAuthProvider();
 
-  // ---- Purchase History ----
+  // ---- Purchase History (localStorage) ----
   window.savePurchaseHistory = function (items) {
-    const user = getUser();
+    const user = auth.currentUser;
     if (!user) return;
-    const key = 'ds_orders_' + user.email;
+    const key = 'ds_orders_' + user.uid;
     const orders = JSON.parse(localStorage.getItem(key) || '[]');
     const now = new Date();
     const months = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
@@ -21,9 +17,9 @@
   };
 
   function getPurchaseHistory() {
-    const user = getUser();
+    const user = auth.currentUser;
     if (!user) return [];
-    return JSON.parse(localStorage.getItem('ds_orders_' + user.email) || '[]');
+    return JSON.parse(localStorage.getItem('ds_orders_' + user.uid) || '[]');
   }
 
   // ---- Profile Modal HTML ----
@@ -47,11 +43,24 @@
       <div id="authRequiredNote" style="font-size:0.78rem;color:#ec4899;margin-top:6px;display:none;">กรุณาเข้าสู่ระบบเพื่อใช้งาน</div>
     </div>
 
-    <div style="display:flex;border-radius:12px;background:#f5f5f5;padding:4px;margin-bottom:24px;">
+    <div style="display:flex;border-radius:12px;background:#f5f5f5;padding:4px;margin-bottom:20px;">
       <button id="tabLogin" onclick="authTab('login')" style="flex:1;padding:9px;border:none;border-radius:9px;font-size:0.9rem;font-weight:600;cursor:pointer;background:white;color:#1a1a2e;box-shadow:0 2px 6px rgba(0,0,0,0.08);">เข้าสู่ระบบ</button>
       <button id="tabRegister" onclick="authTab('register')" style="flex:1;padding:9px;border:none;border-radius:9px;font-size:0.9rem;font-weight:600;cursor:pointer;background:transparent;color:#888;">สมัครสมาชิก</button>
     </div>
 
+    <!-- Google Sign-In -->
+    <button onclick="doGoogleLogin()" style="width:100%;padding:11px;background:white;border:1.5px solid #e5e7eb;border-radius:12px;font-size:0.9rem;font-weight:600;color:#333;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:16px;">
+      <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" style="width:18px;height:18px;">
+      เข้าสู่ระบบด้วย Google
+    </button>
+
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+      <div style="flex:1;height:1px;background:#e5e7eb;"></div>
+      <span style="font-size:0.78rem;color:#aaa;">หรือใช้อีเมล</span>
+      <div style="flex:1;height:1px;background:#e5e7eb;"></div>
+    </div>
+
+    <!-- Login Form -->
     <div id="formLogin">
       <div style="margin-bottom:14px;">
         <label style="font-size:0.82rem;color:#666;display:block;margin-bottom:6px;">อีเมล</label>
@@ -69,21 +78,19 @@
       </p>
     </div>
 
+    <!-- Forgot Password Form -->
     <div id="formForgot" style="display:none;">
-      <div style="text-align:center;margin-bottom:16px;font-size:0.88rem;color:#555;">ใส่อีเมลและรหัสผ่านใหม่</div>
-      <div style="margin-bottom:14px;">
+      <div style="text-align:center;margin-bottom:16px;font-size:0.88rem;color:#555;">ใส่อีเมลของคุณ เราจะส่งลิงก์รีเซ็ตรหัสผ่านให้</div>
+      <div style="margin-bottom:20px;">
         <label style="font-size:0.82rem;color:#666;display:block;margin-bottom:6px;">อีเมล</label>
         <input id="forgotEmail" type="email" placeholder="your@email.com" style="width:100%;padding:11px 14px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:0.9rem;font-family:inherit;box-sizing:border-box;outline:none;" onfocus="this.style.borderColor='#f9a8d4'" onblur="this.style.borderColor='#e5e7eb'">
       </div>
-      <div style="margin-bottom:20px;">
-        <label style="font-size:0.82rem;color:#666;display:block;margin-bottom:6px;">รหัสผ่านใหม่ (อย่างน้อย 6 ตัว)</label>
-        <input id="forgotPassword" type="password" placeholder="รหัสผ่านใหม่" style="width:100%;padding:11px 14px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:0.9rem;font-family:inherit;box-sizing:border-box;outline:none;" onfocus="this.style.borderColor='#f9a8d4'" onblur="this.style.borderColor='#e5e7eb'">
-      </div>
       <div id="forgotMsg" style="font-size:0.82rem;text-align:center;margin-bottom:12px;min-height:18px;"></div>
-      <button onclick="doForgot()" style="width:100%;padding:13px;background:linear-gradient(135deg,#f9a8d4,#c4b5fd);border:none;border-radius:12px;font-size:0.95rem;font-weight:700;color:#1a1a2e;cursor:pointer;">ตั้งรหัสผ่านใหม่</button>
+      <button onclick="doForgot()" style="width:100%;padding:13px;background:linear-gradient(135deg,#f9a8d4,#c4b5fd);border:none;border-radius:12px;font-size:0.95rem;font-weight:700;color:#1a1a2e;cursor:pointer;">ส่งลิงก์รีเซ็ต</button>
       <p style="text-align:center;font-size:0.82rem;color:#888;margin-top:14px;"><a href="#" onclick="authTab('login');return false;" style="color:#ec4899;font-weight:600;text-decoration:none;">← กลับเข้าสู่ระบบ</a></p>
     </div>
 
+    <!-- Register Form -->
     <div id="formRegister" style="display:none;">
       <div style="margin-bottom:14px;">
         <label style="font-size:0.82rem;color:#666;display:block;margin-bottom:6px;">ชื่อ-นามสกุล</label>
@@ -107,27 +114,27 @@
   document.body.insertAdjacentHTML('beforeend', modalHTML + profileHTML);
 
   // ---- Navbar ----
-  function updateNavAuth() {
-    const user = getUser();
+  function updateNavAuth(user) {
     const navLinks = document.querySelector('.nav-links');
     const mobileLinks = document.querySelector('.mobile-nav-links');
     document.querySelectorAll('.nav-auth-item').forEach(el => el.remove());
 
     if (user) {
-      const initial = user.name[0].toUpperCase();
+      const name = user.displayName || user.email.split('@')[0];
+      const initial = name[0].toUpperCase();
       if (navLinks) {
         const el = document.createElement('li');
         el.className = 'nav-auth-item';
         el.innerHTML = `<a href="#" onclick="authShowProfile();return false;" style="display:flex;align-items:center;gap:8px;font-weight:600;">
           <span style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#f9a8d4,#c4b5fd);display:flex;align-items:center;justify-content:center;font-size:0.8rem;font-weight:700;color:#1a1a2e;">${initial}</span>
-          <span style="font-size:0.85rem;">${user.name.split(' ')[0]}</span>
+          <span style="font-size:0.85rem;">${name.split(' ')[0]}</span>
         </a>`;
         navLinks.appendChild(el);
       }
       if (mobileLinks) {
         const el = document.createElement('li');
         el.className = 'nav-auth-item';
-        el.innerHTML = `<a href="#" onclick="authShowProfile();return false;">👤 ${user.name}</a>`;
+        el.innerHTML = `<a href="#" onclick="authShowProfile();return false;">👤 ${name}</a>`;
         mobileLinks.appendChild(el);
       }
     } else {
@@ -146,6 +153,11 @@
     }
   }
 
+  // ---- Firebase Auth State Listener ----
+  auth.onAuthStateChanged(function (user) {
+    updateNavAuth(user);
+  });
+
   // ---- Globals ----
   window.authOpen = function (tab) {
     authTab(tab || 'login');
@@ -163,22 +175,27 @@
   window.authTab = function (tab) {
     const isLogin = tab === 'login';
     const isForgot = tab === 'forgot';
+    const isRegister = tab === 'register';
     document.getElementById('formLogin').style.display = isLogin ? '' : 'none';
-    document.getElementById('formRegister').style.display = tab === 'register' ? '' : 'none';
+    document.getElementById('formRegister').style.display = isRegister ? '' : 'none';
     document.getElementById('formForgot').style.display = isForgot ? '' : 'none';
     document.getElementById('tabLogin').style.cssText += isLogin ? ';background:white;color:#1a1a2e;box-shadow:0 2px 6px rgba(0,0,0,0.08)' : ';background:transparent;color:#888;box-shadow:none';
-    document.getElementById('tabRegister').style.cssText += tab === 'register' ? ';background:white;color:#1a1a2e;box-shadow:0 2px 6px rgba(0,0,0,0.08)' : ';background:transparent;color:#888;box-shadow:none';
+    document.getElementById('tabRegister').style.cssText += isRegister ? ';background:white;color:#1a1a2e;box-shadow:0 2px 6px rgba(0,0,0,0.08)' : ';background:transparent;color:#888;box-shadow:none';
   };
 
   window.doLogin = function () {
     const email = document.getElementById('loginEmail').value.trim();
     const password = document.getElementById('loginPassword').value;
     const msg = document.getElementById('loginMsg');
-    const user = getUsers().find(u => u.email === email && u.password === password);
-    if (!user) { msg.style.color = '#e11d48'; msg.textContent = 'อีเมลหรือรหัสผ่านไม่ถูกต้อง'; return; }
-    setUser({ name: user.name, email: user.email });
-    document.getElementById('authOverlay').style.display = 'none';
-    updateNavAuth();
+    msg.textContent = '';
+    auth.signInWithEmailAndPassword(email, password)
+      .then(() => {
+        document.getElementById('authOverlay').style.display = 'none';
+      })
+      .catch(() => {
+        msg.style.color = '#e11d48';
+        msg.textContent = 'อีเมลหรือรหัสผ่านไม่ถูกต้อง';
+      });
   };
 
   window.doRegister = function () {
@@ -186,21 +203,53 @@
     const email = document.getElementById('regEmail').value.trim();
     const password = document.getElementById('regPassword').value;
     const msg = document.getElementById('registerMsg');
+    msg.textContent = '';
     if (!name) { msg.style.color = '#e11d48'; msg.textContent = 'กรุณาใส่ชื่อ'; return; }
-    if (!email || !email.includes('@') || !email.includes('.')) { msg.style.color = '#e11d48'; msg.textContent = 'กรุณาใส่อีเมลที่ถูกต้อง'; return; }
-    if (password.length < 6) { msg.style.color = '#e11d48'; msg.textContent = 'รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร'; return; }
-    const users = getUsers();
-    if (users.find(u => u.email === email)) { msg.style.color = '#e11d48'; msg.textContent = 'อีเมลนี้ถูกใช้งานแล้ว'; return; }
-    users.push({ name, email, password });
-    saveUsers(users);
-    setUser({ name, email });
-    document.getElementById('authOverlay').style.display = 'none';
-    updateNavAuth();
+    auth.createUserWithEmailAndPassword(email, password)
+      .then(result => result.user.updateProfile({ displayName: name }))
+      .then(() => {
+        document.getElementById('authOverlay').style.display = 'none';
+        updateNavAuth(auth.currentUser);
+      })
+      .catch(err => {
+        msg.style.color = '#e11d48';
+        if (err.code === 'auth/email-already-in-use') msg.textContent = 'อีเมลนี้ถูกใช้งานแล้ว';
+        else if (err.code === 'auth/weak-password') msg.textContent = 'รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร';
+        else if (err.code === 'auth/invalid-email') msg.textContent = 'รูปแบบอีเมลไม่ถูกต้อง';
+        else msg.textContent = 'เกิดข้อผิดพลาด กรุณาลองใหม่';
+      });
+  };
+
+  window.doGoogleLogin = function () {
+    auth.signInWithPopup(googleProvider)
+      .then(() => {
+        document.getElementById('authOverlay').style.display = 'none';
+      })
+      .catch(err => {
+        console.error('Google login error:', err);
+      });
+  };
+
+  window.doForgot = function () {
+    const email = document.getElementById('forgotEmail').value.trim();
+    const msg = document.getElementById('forgotMsg');
+    msg.textContent = '';
+    if (!email) { msg.style.color = '#e11d48'; msg.textContent = 'กรุณาใส่อีเมล'; return; }
+    auth.sendPasswordResetEmail(email)
+      .then(() => {
+        msg.style.color = '#2E9962';
+        msg.textContent = '✓ ส่งลิงก์ไปยังอีเมลของคุณแล้ว กรุณาตรวจสอบกล่องจดหมาย';
+      })
+      .catch(() => {
+        msg.style.color = '#e11d48';
+        msg.textContent = 'ไม่พบอีเมลนี้ในระบบ';
+      });
   };
 
   window.authShowProfile = function () {
-    const user = getUser();
+    const user = auth.currentUser;
     if (!user) return;
+    const name = user.displayName || user.email.split('@')[0];
     const orders = getPurchaseHistory();
     const ordersHTML = orders.length === 0
       ? `<p style="color:#888;font-size:0.85rem;text-align:center;padding:20px 0;">ยังไม่มีประวัติการซื้อ</p>`
@@ -215,9 +264,9 @@
 
     document.getElementById('profileContent').innerHTML = `
       <div style="display:flex;align-items:center;gap:14px;margin-bottom:24px;">
-        <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#f9a8d4,#c4b5fd);display:flex;align-items:center;justify-content:center;font-size:1.3rem;font-weight:800;color:#1a1a2e;flex-shrink:0;">${user.name[0].toUpperCase()}</div>
+        <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#f9a8d4,#c4b5fd);display:flex;align-items:center;justify-content:center;font-size:1.3rem;font-weight:800;color:#1a1a2e;flex-shrink:0;">${name[0].toUpperCase()}</div>
         <div>
-          <div style="font-weight:700;font-size:1.05rem;">${user.name}</div>
+          <div style="font-weight:700;font-size:1.05rem;">${name}</div>
           <div style="font-size:0.82rem;color:#888;">${user.email}</div>
         </div>
       </div>
@@ -229,33 +278,13 @@
     document.getElementById('profileOverlay').style.display = 'flex';
   };
 
-  window.doForgot = function () {
-    const email = document.getElementById('forgotEmail').value.trim();
-    const password = document.getElementById('forgotPassword').value;
-    const msg = document.getElementById('forgotMsg');
-    if (!email || !email.includes('@') || !email.includes('.')) { msg.style.color = '#e11d48'; msg.textContent = 'กรุณาใส่อีเมลที่ถูกต้อง'; return; }
-    if (password.length < 6) { msg.style.color = '#e11d48'; msg.textContent = 'รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร'; return; }
-    const users = getUsers();
-    const idx = users.findIndex(u => u.email === email);
-    if (idx === -1) { msg.style.color = '#e11d48'; msg.textContent = 'ไม่พบอีเมลนี้ในระบบ'; return; }
-    users[idx].password = password;
-    saveUsers(users);
-    msg.style.color = '#2E9962';
-    msg.textContent = 'เปลี่ยนรหัสผ่านสำเร็จ!';
-    setTimeout(() => authTab('login'), 1500);
-  };
-
   window.authLogout = function () {
-    clearUser();
+    auth.signOut();
     document.getElementById('profileOverlay').style.display = 'none';
-    updateNavAuth();
   };
 
-  // Prevent closing by overlay click
   document.getElementById('authOverlay').addEventListener('click', function (e) {
     if (e.target === this) authClose();
   });
 
-  // Init
-  updateNavAuth();
 })();
