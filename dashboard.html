@@ -348,6 +348,7 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
 <script src="firebase-config.js"></script>
+<script src="font-map.js"></script>
 <script src="auth.js"></script>
 <script>
   function showSection(name, btn) {
@@ -387,13 +388,17 @@
   }
 
   function downloadFont(fontName, btn) {
+    const fileName = FONT_STORAGE_MAP[fontName];
+    if (!fileName) {
+      alert('ไม่พบไฟล์ฟอนต์ กรุณาติดต่อ @dsiinstudio');
+      return;
+    }
     btn.disabled = true;
     btn.textContent = 'กำลังโหลด...';
-    const ref = storage.ref('fonts/' + fontName + '.ttf');
-    ref.getDownloadURL().then(url => {
+    storage.ref('fonts/' + fileName).getDownloadURL().then(url => {
       const a = document.createElement('a');
       a.href = url;
-      a.download = fontName + '.ttf';
+      a.download = fileName;
       a.click();
       btn.disabled = false;
       btn.textContent = '⬇ ดาวน์โหลด';
