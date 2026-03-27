@@ -180,14 +180,14 @@ section { padding: 80px 0; }
 }
 
 .nav-cta {
-  background: #ffffff !important;
-  color: var(--text-dark) !important;
+  background: #22c55e !important;
+  color: #ffffff !important;
   padding: 8px 20px !important;
   border-radius: var(--radius-sm) !important;
 }
 
 .nav-cta:hover {
-  background: var(--pink) !important;
+  background: #16a34a !important;
   color: white !important;
 }
 
