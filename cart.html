@@ -301,7 +301,7 @@ try {
 }
 
 try {
-  fbFunctions = firebase.functions('asia-southeast1');
+  fbFunctions = firebase.app().functions('asia-southeast1');
   fnCreatePaymentIntent = fbFunctions.httpsCallable('createPaymentIntent');
   fnGetDownloadLinks = fbFunctions.httpsCallable('getDownloadLinks');
   fnCheckPaymentStatus = fbFunctions.httpsCallable('checkPaymentStatus');
