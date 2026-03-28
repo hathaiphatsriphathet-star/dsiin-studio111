@@ -7,13 +7,13 @@ admin.initializeApp();
 const stripeSecretKey = defineSecret('STRIPE_SECRET_KEY');
 
 // ==============================
-// สร้าง Payment Intent
+// สร้าง Payment Intent (Card & PromptPay)
 // ==============================
 exports.createPaymentIntent = onCall(
   { region: 'asia-southeast1', secrets: [stripeSecretKey] },
   async (request) => {
     const stripe = require('stripe')(stripeSecretKey.value());
-    const { items, email } = request.data;
+    const { items, email, paymentMethod = 'card' } = request.data;
 
     if (!items || items.length === 0) {
       throw new HttpsError('invalid-argument', 'ไม่มีสินค้าในตะกร้า');
@@ -25,18 +25,53 @@ exports.createPaymentIntent = onCall(
     const total = subtotal - discount;
     const amount = total * 100;
 
+    const metadata = {
+      items: JSON.stringify(items.map(i => ({
+        name: i.name,
+        price: i.price,
+        license: i.license,
+      }))),
+      userId: request.auth ? request.auth.uid : 'guest',
+      email: email || '',
+    };
+
+    if (paymentMethod === 'promptpay') {
+      const paymentIntent = await stripe.paymentIntents.create({
+        amount,
+        currency: 'thb',
+        payment_method_types: ['promptpay'],
+        metadata,
+      });
+
+      const confirmed = await stripe.paymentIntents.confirm(paymentIntent.id, {
+        payment_method: { type: 'promptpay' },
+      });
+
+      await admin.firestore().collection('orders').doc(confirmed.id).set({
+        paymentIntentId: confirmed.id,
+        userId: request.auth ? request.auth.uid : null,
+        email: email || '',
+        items,
+        subtotal,
+        discount,
+        total,
+        status: 'pending',
+        paymentMethod: 'promptpay',
+        createdAt: admin.firestore.FieldValue.serverTimestamp(),
+      });
+
+      return {
+        paymentIntentId: confirmed.id,
+        qrCodeUrl: confirmed.next_action.promptpay_display_qr_code.image_url_png,
+      };
+    }
+
+    // Card payment (default)
     const paymentIntent = await stripe.paymentIntents.create({
       amount,
       currency: 'thb',
-      metadata: {
-        items: JSON.stringify(items.map(i => ({
-          name: i.name,
-          price: i.price,
-          license: i.license,
-        }))),
-        userId: request.auth ? request.auth.uid : 'guest',
-        email: email || '',
-      },
+      payment_method_types: ['card'],
+      metadata,
     });
 
     await admin.firestore().collection('orders').doc(paymentIntent.id).set({
@@ -48,6 +83,7 @@ exports.createPaymentIntent = onCall(
       discount,
       total,
       status: 'pending',
+      paymentMethod: 'card',
       createdAt: admin.firestore.FieldValue.serverTimestamp(),
     });
 
@@ -55,6 +91,24 @@ exports.createPaymentIntent = onCall(
       clientSecret: paymentIntent.client_secret,
       paymentIntentId: paymentIntent.id,
     };
+  }
+);
+
+// ==============================
+// ตรวจสอบสถานะ PromptPay
+// ==============================
+exports.checkPaymentStatus = onCall(
+  { region: 'asia-southeast1', secrets: [stripeSecretKey] },
+  async (request) => {
+    const stripe = require('stripe')(stripeSecretKey.value());
+    const { paymentIntentId } = request.data;
+
+    if (!paymentIntentId) {
+      throw new HttpsError('invalid-argument', 'ไม่พบ paymentIntentId');
+    }
+
+    const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
+    return { status: paymentIntent.status };
   }
 );
 

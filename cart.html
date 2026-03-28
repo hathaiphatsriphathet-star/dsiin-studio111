@@ -19,6 +19,30 @@
     #card-element.StripeElement--focus { border-color: #ec4899; }
     #card-element.StripeElement--invalid { border-color: #ef4444; }
     #card-errors { color: #ef4444; font-size: 0.82rem; margin-top: 6px; min-height: 18px; }
+    .payment-tab {
+      flex: 1; padding: 10px 8px; border: 1.5px solid #e5e7eb;
+      border-radius: 10px; background: white; cursor: pointer;
+      font-size: 0.85rem; font-weight: 600; color: #888;
+      transition: all 0.2s; font-family: 'Sarabun', sans-serif;
+    }
+    .payment-tab.active {
+      background: linear-gradient(135deg, #ec4899, #8b5cf6);
+      color: white; border-color: transparent;
+    }
+    .qr-box {
+      text-align: center; padding: 20px 0;
+    }
+    .qr-box img {
+      width: 200px; height: 200px; border-radius: 12px;
+      border: 2px solid #e5e7eb; display: block; margin: 0 auto 14px;
+    }
+    .qr-timer {
+      font-size: 0.82rem; color: #888; margin-bottom: 6px;
+    }
+    .qr-status {
+      font-size: 0.9rem; font-weight: 600; color: #8b5cf6;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
     .pay-btn {
       width: 100%; padding: 14px;
       background: linear-gradient(135deg, #ec4899, #8b5cf6);
@@ -101,7 +125,7 @@
   <div style="background:white;border-radius:20px;width:100%;max-width:480px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.2);">
     <div style="padding:28px;">
 
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
         <div style="font-size:1.2rem;font-weight:800;color:#1a1a2e;">ชำระเงิน</div>
         <button onclick="closePayment()" style="background:none;border:none;font-size:1.2rem;cursor:pointer;color:#888;">✕</button>
       </div>
@@ -116,28 +140,68 @@
         </div>
       </div>
 
-      <!-- Email -->
-      <div style="margin-bottom:16px;">
-        <label style="font-size:0.85rem;font-weight:700;color:#1a1a2e;display:block;margin-bottom:6px;">อีเมล (สำหรับรับใบเสร็จ)</label>
-        <input type="email" id="paymentEmail" placeholder="your@email.com"
-          style="width:100%;padding:12px 14px;border:1.5px solid #e5e7eb;border-radius:12px;font-size:0.9rem;outline:none;box-sizing:border-box;transition:border-color 0.2s;"
-          onfocus="this.style.borderColor='#ec4899'" onblur="this.style.borderColor='#e5e7eb'">
+      <!-- Payment Method Tabs -->
+      <div style="display:flex;gap:8px;margin-bottom:20px;">
+        <button class="payment-tab active" id="tabCard" onclick="switchTab('card')">💳 บัตรเครดิต/เดบิต</button>
+        <button class="payment-tab" id="tabPromptpay" onclick="switchTab('promptpay')">📱 PromptPay</button>
       </div>
 
-      <!-- Stripe Card Element -->
-      <div style="margin-bottom:4px;">
-        <label style="font-size:0.85rem;font-weight:700;color:#1a1a2e;display:block;margin-bottom:8px;">ข้อมูลบัตรเครดิต / เดบิต</label>
-        <div id="card-element"></div>
-        <div id="card-errors"></div>
+      <!-- Card Section -->
+      <div id="cardSection">
+        <!-- Email -->
+        <div style="margin-bottom:16px;">
+          <label style="font-size:0.85rem;font-weight:700;color:#1a1a2e;display:block;margin-bottom:6px;">อีเมล (สำหรับรับใบเสร็จ)</label>
+          <input type="email" id="paymentEmail" placeholder="your@email.com"
+            style="width:100%;padding:12px 14px;border:1.5px solid #e5e7eb;border-radius:12px;font-size:0.9rem;outline:none;box-sizing:border-box;transition:border-color 0.2s;"
+            onfocus="this.style.borderColor='#ec4899'" onblur="this.style.borderColor='#e5e7eb'">
+        </div>
+        <!-- Stripe Card Element -->
+        <div style="margin-bottom:4px;">
+          <label style="font-size:0.85rem;font-weight:700;color:#1a1a2e;display:block;margin-bottom:8px;">ข้อมูลบัตรเครดิต / เดบิต</label>
+          <div id="card-element"></div>
+          <div id="card-errors"></div>
+        </div>
+        <div style="font-size:0.75rem;color:#888;margin:10px 0 4px;display:flex;align-items:center;gap:6px;">
+          🔒 ชำระเงินปลอดภัยด้วย Stripe — ข้อมูลบัตรถูกเข้ารหัส SSL
+        </div>
+        <button class="pay-btn" id="payBtn" onclick="handlePayment()">
+          จ่ายเงิน <span id="payBtnAmount"></span>
+        </button>
       </div>
 
-      <div style="font-size:0.75rem;color:#888;margin:10px 0 4px;display:flex;align-items:center;gap:6px;">
-        🔒 ชำระเงินปลอดภัยด้วย Stripe — ข้อมูลบัตรถูกเข้ารหัส SSL
+      <!-- PromptPay Section -->
+      <div id="promptpaySection" style="display:none;">
+        <div id="qrPending">
+          <div style="background:#fdf4ff;border:1.5px solid #e9d5ff;border-radius:12px;padding:16px;margin-bottom:16px;font-size:0.88rem;color:#555;line-height:1.6;">
+            📌 สแกน QR Code ผ่านแอปธนาคารหรือ Mobile Banking<br>
+            ลิงก์ดาวน์โหลดจะแสดงทันทีหลังชำระสำเร็จ
+          </div>
+          <!-- Email for PromptPay -->
+          <div style="margin-bottom:16px;">
+            <label style="font-size:0.85rem;font-weight:700;color:#1a1a2e;display:block;margin-bottom:6px;">อีเมล (สำหรับรับใบเสร็จ)</label>
+            <input type="email" id="promptpayEmail" placeholder="your@email.com"
+              style="width:100%;padding:12px 14px;border:1.5px solid #e5e7eb;border-radius:12px;font-size:0.9rem;outline:none;box-sizing:border-box;transition:border-color 0.2s;"
+              onfocus="this.style.borderColor='#ec4899'" onblur="this.style.borderColor='#e5e7eb'">
+          </div>
+          <button class="pay-btn" id="qrBtn" onclick="handlePromptPay()">
+            รับ QR Code <span id="qrBtnAmount"></span>
+          </button>
+        </div>
+        <div id="qrDisplay" style="display:none;">
+          <div class="qr-box">
+            <img id="qrImage" src="" alt="PromptPay QR Code">
+            <div style="font-size:1rem;font-weight:800;color:#1a1a2e;margin-bottom:4px;">ยอดชำระ: <span id="qrAmount" style="color:#ec4899;"></span></div>
+            <div class="qr-timer" id="qrTimer"></div>
+            <div class="qr-status">
+              <span class="spinner"></span>
+              <span id="qrStatusText">กำลังรอการชำระเงิน...</span>
+            </div>
+          </div>
+          <div style="font-size:0.75rem;color:#888;text-align:center;margin-top:8px;">
+            🔒 ชำระเงินปลอดภัยด้วย Stripe
+          </div>
+        </div>
       </div>
-
-      <button class="pay-btn" id="payBtn" onclick="handlePayment()">
-        จ่ายเงิน <span id="payBtnAmount"></span>
-      </button>
 
     </div>
   </div>
@@ -175,10 +239,13 @@ const stripeClient = Stripe('pk_live_51TDKKk2LK109DEDRK5Y9LziTTpTauFxVixnVhiZP1G
 const fbFunctions = firebase.functions('asia-southeast1');
 const fnCreatePaymentIntent = fbFunctions.httpsCallable('createPaymentIntent');
 const fnGetDownloadLinks = fbFunctions.httpsCallable('getDownloadLinks');
+const fnCheckPaymentStatus = fbFunctions.httpsCallable('checkPaymentStatus');
 
 let cardElement = null;
 let currentClientSecret = null;
 let currentPaymentIntentId = null;
+let pollInterval = null;
+let qrTimerInterval = null;
 
 function initStripeElement() {
   if (cardElement) return;
@@ -276,16 +343,105 @@ function checkout() {
 
   document.getElementById('paymentTotal').textContent = '฿' + total.toLocaleString();
   document.getElementById('payBtnAmount').textContent = '฿' + total.toLocaleString();
+  document.getElementById('qrBtnAmount').textContent = '฿' + total.toLocaleString();
 
   const user = firebase.auth().currentUser;
-  if (user && user.email) document.getElementById('paymentEmail').value = user.email;
+  if (user && user.email) {
+    document.getElementById('paymentEmail').value = user.email;
+    document.getElementById('promptpayEmail').value = user.email;
+  }
 
   document.getElementById('paymentOverlay').style.display = 'flex';
   setTimeout(initStripeElement, 100);
 }
 
+function switchTab(tab) {
+  document.getElementById('cardSection').style.display = tab === 'card' ? 'block' : 'none';
+  document.getElementById('promptpaySection').style.display = tab === 'promptpay' ? 'block' : 'none';
+  document.getElementById('tabCard').classList.toggle('active', tab === 'card');
+  document.getElementById('tabPromptpay').classList.toggle('active', tab === 'promptpay');
+  if (tab === 'card') setTimeout(initStripeElement, 100);
+}
+
 function closePayment() {
   document.getElementById('paymentOverlay').style.display = 'none';
+  if (pollInterval) { clearInterval(pollInterval); pollInterval = null; }
+  if (qrTimerInterval) { clearInterval(qrTimerInterval); qrTimerInterval = null; }
+  // reset promptpay section
+  document.getElementById('qrPending').style.display = 'block';
+  document.getElementById('qrDisplay').style.display = 'none';
+  const qrBtn = document.getElementById('qrBtn');
+  if (qrBtn) { qrBtn.disabled = false; qrBtn.innerHTML = 'รับ QR Code <span id="qrBtnAmount"></span>'; }
+}
+
+async function handlePromptPay() {
+  const qrBtn = document.getElementById('qrBtn');
+  const cart = cartGet();
+  if (!cart.length) return;
+
+  const email = document.getElementById('promptpayEmail').value.trim();
+  const subtotal = cart.reduce((sum, i) => sum + i.price, 0);
+  const hasDiscount = cart.length >= 10;
+  const discount = hasDiscount ? Math.round(subtotal * 0.10) : 0;
+  const total = subtotal - discount;
+
+  qrBtn.disabled = true;
+  qrBtn.innerHTML = '<span class="spinner"></span>กำลังสร้าง QR Code...';
+
+  try {
+    const result = await fnCreatePaymentIntent({ items: cart, email, paymentMethod: 'promptpay' });
+    currentPaymentIntentId = result.data.paymentIntentId;
+    const qrCodeUrl = result.data.qrCodeUrl;
+
+    // Show QR
+    document.getElementById('qrPending').style.display = 'none';
+    document.getElementById('qrImage').src = qrCodeUrl;
+    document.getElementById('qrAmount').textContent = '฿' + total.toLocaleString();
+    document.getElementById('qrDisplay').style.display = 'block';
+
+    // Countdown 10 min
+    let secondsLeft = 10 * 60;
+    qrTimerInterval = setInterval(() => {
+      secondsLeft--;
+      const m = Math.floor(secondsLeft / 60);
+      const s = secondsLeft % 60;
+      const el = document.getElementById('qrTimer');
+      if (el) el.textContent = `QR หมดอายุใน ${m}:${String(s).padStart(2,'0')} นาที`;
+      if (secondsLeft <= 0) {
+        clearInterval(qrTimerInterval);
+        const statusEl = document.getElementById('qrStatusText');
+        if (statusEl) statusEl.textContent = 'QR Code หมดอายุแล้ว กรุณาลองใหม่';
+        if (pollInterval) { clearInterval(pollInterval); pollInterval = null; }
+      }
+    }, 1000);
+
+    // Poll payment status every 4 seconds
+    pollInterval = setInterval(async () => {
+      try {
+        const statusResult = await fnCheckPaymentStatus({ paymentIntentId: currentPaymentIntentId });
+        if (statusResult.data.status === 'succeeded') {
+          clearInterval(pollInterval); pollInterval = null;
+          clearInterval(qrTimerInterval); qrTimerInterval = null;
+          const statusEl = document.getElementById('qrStatusText');
+          if (statusEl) statusEl.textContent = 'ชำระเงินสำเร็จ! กำลังเตรียมไฟล์...';
+
+          const dlResult = await fnGetDownloadLinks({ paymentIntentId: currentPaymentIntentId });
+          localStorage.removeItem('dsiin_cart');
+          cartUpdateBadge();
+          if (typeof savePurchaseHistory === 'function') savePurchaseHistory(cart);
+          closePayment();
+          showDownloads(dlResult.data.downloadLinks, dlResult.data.items);
+          renderCart();
+        }
+      } catch (e) { /* ยังไม่ได้ชำระ รอต่อ */ }
+    }, 4000);
+
+  } catch (err) {
+    console.error(err);
+    qrBtn.disabled = false;
+    qrBtn.innerHTML = 'รับ QR Code <span id="qrBtnAmount">฿' + total.toLocaleString() + '</span>';
+    alert('เกิดข้อผิดพลาด: ' + (err.message || 'กรุณาลองใหม่'));
+  }
 }
 
 async function handlePayment() {
