@@ -388,32 +388,21 @@
   }
 
   function downloadFont(fontName, btn) {
-    const baseFile = FONT_STORAGE_MAP[fontName];
-    if (!baseFile) {
+    const files = FONT_STORAGE_MAP[fontName];
+    if (!files || files.length === 0) {
       alert('ไม่พบไฟล์ฟอนต์ กรุณาติดต่อ @dsiinstudio');
       return;
     }
     btn.disabled = true;
     btn.textContent = 'กำลังโหลด...';
 
-    // รวม base + variants (Bold, Thin, V2, BoldV2)
-    const base = baseFile.replace(/\.ttf$/i, '');
-    const allFiles = [
-      baseFile,
-      base + 'Bold.ttf',
-      base + 'Thin.ttf',
-      base + 'V2.ttf',
-      base + 'BoldV2.ttf',
-    ];
-
     let tried = 0;
     let downloaded = 0;
 
-    allFiles.forEach((fileName, i) => {
+    files.forEach((fileName, i) => {
       storage.ref('TK studio/' + fileName).getDownloadURL()
         .then(url => {
           downloaded++;
-          // หน่วงเวลาเล็กน้อยเพื่อไม่ให้เบราว์เซอร์บล็อก popup
           setTimeout(() => {
             const a = document.createElement('a');
             a.href = url;
@@ -423,14 +412,14 @@
             document.body.removeChild(a);
           }, i * 800);
         })
-        .catch(() => { /* ไม่มีไฟล์นี้ → ข้ามไป */ })
+        .catch(() => { /* ไม่มีไฟล์ → ข้ามไป */ })
         .finally(() => {
           tried++;
-          if (tried === allFiles.length) {
+          if (tried === files.length) {
             setTimeout(() => {
               btn.disabled = false;
               btn.textContent = '⬇ ดาวน์โหลด';
-            }, allFiles.length * 800);
+            }, files.length * 800);
             if (downloaded === 0) {
               alert('ไม่พบไฟล์ฟอนต์ กรุณาติดต่อ @dsiinstudio');
             }
