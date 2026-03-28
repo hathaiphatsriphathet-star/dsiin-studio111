@@ -118,6 +118,8 @@ section { padding: 80px 0; }
   font-weight: 700;
   font-size: 1.25rem;
   color: #ffffff;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .logo-icon {
@@ -2042,9 +2044,12 @@ section { padding: 80px 0; }
   .about-story { gap: 48px; }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1100px) {
   .nav-links { display: none; }
   .hamburger { display: flex; }
+}
+
+@media (max-width: 768px) {
 
   .hero { padding: 60px 0 48px; }
   .hero-inner { grid-template-columns: 1fr; gap: 40px; }
