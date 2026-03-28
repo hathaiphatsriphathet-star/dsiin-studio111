@@ -7,6 +7,46 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Thai:wght@300;400;700;900&family=Sarabun:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+  <script src="https://js.stripe.com/v3/"></script>
+  <style>
+    #card-element {
+      background: #f9fafb;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 14px 16px;
+      transition: border-color 0.2s;
+    }
+    #card-element.StripeElement--focus { border-color: #ec4899; }
+    #card-element.StripeElement--invalid { border-color: #ef4444; }
+    #card-errors { color: #ef4444; font-size: 0.82rem; margin-top: 6px; min-height: 18px; }
+    .pay-btn {
+      width: 100%; padding: 14px;
+      background: linear-gradient(135deg, #ec4899, #8b5cf6);
+      border: none; border-radius: 14px;
+      font-size: 1rem; font-weight: 700; color: white;
+      cursor: pointer; transition: opacity 0.2s; margin-top: 16px;
+    }
+    .pay-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    .download-item {
+      background: #f0fdf4; border: 1.5px solid #bbf7d0;
+      border-radius: 12px; padding: 14px 16px; margin-bottom: 10px;
+    }
+    .download-item-name { font-weight: 700; color: #1a1a2e; margin-bottom: 8px; font-size: 0.95rem; }
+    .download-file-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: #22c55e; color: white; border: none; border-radius: 8px;
+      padding: 7px 14px; font-size: 0.82rem; font-weight: 600;
+      cursor: pointer; text-decoration: none; margin: 3px 4px 3px 0;
+    }
+    .download-file-btn:hover { background: #16a34a; color: white; }
+    .spinner {
+      display: inline-block; width: 16px; height: 16px;
+      border: 2px solid rgba(255,255,255,0.4); border-top-color: white;
+      border-radius: 50%; animation: spin 0.7s linear infinite;
+      vertical-align: middle; margin-right: 6px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
 </head>
 <body>
 
@@ -59,7 +99,8 @@
 <!-- Payment Modal -->
 <div id="paymentOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:9999;align-items:center;justify-content:center;padding:16px;">
   <div style="background:white;border-radius:20px;width:100%;max-width:480px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.2);">
-    <div style="padding:28px 28px 0;">
+    <div style="padding:28px;">
+
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
         <div style="font-size:1.2rem;font-weight:800;color:#1a1a2e;">ชำระเงิน</div>
         <button onclick="closePayment()" style="background:none;border:none;font-size:1.2rem;cursor:pointer;color:#888;">✕</button>
@@ -70,93 +111,99 @@
         <div style="font-size:0.82rem;font-weight:700;color:#888;margin-bottom:10px;">สรุปคำสั่งซื้อ</div>
         <div id="paymentItems"></div>
         <div style="border-top:1px solid #e5e7eb;margin-top:10px;padding-top:10px;display:flex;justify-content:space-between;font-weight:800;font-size:1.05rem;">
-          <span>ยอดรวม</span>
+          <span>ยอดที่ต้องชำระ</span>
           <span id="paymentTotal" style="color:#ec4899;"></span>
         </div>
       </div>
 
-      <!-- Payment methods -->
-      <div style="font-size:0.85rem;font-weight:700;color:#1a1a2e;margin-bottom:12px;">เลือกวิธีชำระเงิน</div>
-      <div style="display:flex;gap:10px;margin-bottom:20px;">
-        <button onclick="selectPayMethod('promptpay')" id="btnPromptpay"
-          style="flex:1;padding:12px;border-radius:12px;border:2px solid #ec4899;background:#fff0f7;font-weight:700;font-size:0.88rem;cursor:pointer;">
-          📱 พร้อมเพย์
-        </button>
-        <button onclick="selectPayMethod('bank')" id="btnBank"
-          style="flex:1;padding:12px;border-radius:12px;border:2px solid #e5e7eb;background:white;font-weight:700;font-size:0.88rem;cursor:pointer;">
-          🏦 โอนเงินธนาคาร
-        </button>
+      <!-- Email -->
+      <div style="margin-bottom:16px;">
+        <label style="font-size:0.85rem;font-weight:700;color:#1a1a2e;display:block;margin-bottom:6px;">อีเมล (สำหรับรับใบเสร็จ)</label>
+        <input type="email" id="paymentEmail" placeholder="your@email.com"
+          style="width:100%;padding:12px 14px;border:1.5px solid #e5e7eb;border-radius:12px;font-size:0.9rem;outline:none;box-sizing:border-box;transition:border-color 0.2s;"
+          onfocus="this.style.borderColor='#ec4899'" onblur="this.style.borderColor='#e5e7eb'">
       </div>
 
-      <!-- PromptPay info -->
-      <div id="promptpayInfo" style="text-align:center;padding:16px;background:#f9fafb;border-radius:12px;margin-bottom:20px;">
-        <div style="font-size:0.85rem;font-weight:700;color:#1a1a2e;margin-bottom:8px;">สแกน QR พร้อมเพย์</div>
-        <div style="width:160px;height:160px;background:#e5e7eb;border-radius:12px;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:0.75rem;color:#888;">
-          [QR Code PromptPay]
-        </div>
-        <div style="font-size:0.85rem;color:#555;">เบอร์พร้อมเพย์: <strong>0XX-XXX-XXXX</strong></div>
-        <div style="font-size:0.8rem;color:#888;margin-top:4px;">ชื่อบัญชี: สถานีฟอนต์ / Dsiin Studio</div>
+      <!-- Stripe Card Element -->
+      <div style="margin-bottom:4px;">
+        <label style="font-size:0.85rem;font-weight:700;color:#1a1a2e;display:block;margin-bottom:8px;">ข้อมูลบัตรเครดิต / เดบิต</label>
+        <div id="card-element"></div>
+        <div id="card-errors"></div>
       </div>
 
-      <!-- Bank info -->
-      <div id="bankInfo" style="display:none;padding:16px;background:#f9fafb;border-radius:12px;margin-bottom:20px;">
-        <div style="font-size:0.85rem;font-weight:700;color:#1a1a2e;margin-bottom:12px;">ข้อมูลบัญชีธนาคาร</div>
-        <div style="font-size:0.88rem;line-height:2;color:#333;">
-          ธนาคาร: <strong>กสิกรไทย (KBANK)</strong><br>
-          เลขบัญชี: <strong>XXX-X-XXXXX-X</strong><br>
-          ชื่อบัญชี: <strong>สถานีฟอนต์ / Dsiin Studio</strong>
-        </div>
+      <div style="font-size:0.75rem;color:#888;margin:10px 0 4px;display:flex;align-items:center;gap:6px;">
+        🔒 ชำระเงินปลอดภัยด้วย Stripe — ข้อมูลบัตรถูกเข้ารหัส SSL
       </div>
 
-      <!-- Steps -->
-      <div style="background:#f0fdf4;border-radius:12px;padding:14px;margin-bottom:20px;">
-        <div style="font-size:0.82rem;font-weight:700;color:#166534;margin-bottom:8px;">ขั้นตอนหลังชำระเงิน</div>
-        <div style="font-size:0.82rem;color:#166534;line-height:1.9;">
-          1. โอนเงินตามยอดที่แสดง<br>
-          2. แคปหน้าจอสลิปโอนเงิน<br>
-          3. ส่งสลิปมาที่ Line: <strong>@dsiinstudio</strong><br>
-          4. รับไฟล์ฟอนต์ภายใน 30 นาที (เวลาทำการ)
-        </div>
-      </div>
-
-      <!-- Confirm button -->
-      <button onclick="confirmPayment()" style="width:100%;padding:14px;background:linear-gradient(135deg,#f9a8d4,#c4b5fd);border:none;border-radius:14px;font-size:1rem;font-weight:700;color:#1a1a2e;cursor:pointer;margin-bottom:20px;">
-        ✓ ยืนยันการสั่งซื้อ
+      <button class="pay-btn" id="payBtn" onclick="handlePayment()">
+        จ่ายเงิน <span id="payBtnAmount"></span>
       </button>
+
     </div>
   </div>
 </div>
 
-<!-- Success Modal -->
-<div id="successOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:9999;align-items:center;justify-content:center;padding:16px;">
-  <div style="background:white;border-radius:20px;width:100%;max-width:420px;padding:36px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.2);">
-    <div style="font-size:3rem;margin-bottom:12px;">✅</div>
-    <div style="font-size:1.3rem;font-weight:800;color:#1a1a2e;margin-bottom:8px;">สั่งซื้อสำเร็จ!</div>
-    <div style="font-size:0.9rem;color:#555;line-height:1.8;margin-bottom:24px;">
-      ขอบคุณสำหรับการสั่งซื้อค่ะ<br>
-      กรุณาส่งสลิปโอนเงินมาที่<br>
-      <strong>Line: @dsiinstudio</strong><br>
-      ทีมงานจะส่งไฟล์ฟอนต์ให้ภายใน 30 นาที
+<!-- Download Modal -->
+<div id="downloadOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:9999;align-items:center;justify-content:center;padding:16px;">
+  <div style="background:white;border-radius:20px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.2);padding:32px;">
+    <div style="text-align:center;margin-bottom:24px;">
+      <div style="font-size:3rem;margin-bottom:10px;">✅</div>
+      <div style="font-size:1.3rem;font-weight:800;color:#1a1a2e;margin-bottom:6px;">ชำระเงินสำเร็จ!</div>
+      <div style="font-size:0.88rem;color:#555;">ดาวน์โหลดไฟล์ฟอนต์ได้เลย (ลิงก์หมดอายุใน 7 วัน)</div>
     </div>
-    <a href="shop.html" style="display:inline-block;padding:12px 28px;background:linear-gradient(135deg,#f9a8d4,#c4b5fd);border-radius:12px;font-weight:700;color:#1a1a2e;text-decoration:none;">
-      เลือกซื้อฟอนต์เพิ่ม
-    </a>
+    <div id="downloadList"></div>
+    <div style="text-align:center;margin-top:20px;">
+      <a href="shop.html" style="display:inline-block;padding:12px 28px;background:linear-gradient(135deg,#f9a8d4,#c4b5fd);border-radius:12px;font-weight:700;color:#1a1a2e;text-decoration:none;">
+        เลือกซื้อฟอนต์เพิ่ม
+      </a>
+    </div>
   </div>
 </div>
 
 <button class="scroll-top" id="scrollTop">↑</button>
+
 <script src="script.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-functions-compat.js"></script>
 <script src="firebase-config.js"></script>
 <script src="auth.js"></script>
 <script>
+const stripeClient = Stripe('pk_live_51TDKKk2LK109DEDRK5Y9LziTTpTauFxVixnVhiZP1GSatiFwROEn5A82RL19vcr7L9xjBdWX6mGabax6kGqi0DdC00s7Hd7Zip');
+const fbFunctions = firebase.functions('asia-southeast1');
+const fnCreatePaymentIntent = fbFunctions.httpsCallable('createPaymentIntent');
+const fnGetDownloadLinks = fbFunctions.httpsCallable('getDownloadLinks');
+
+let cardElement = null;
+let currentClientSecret = null;
+let currentPaymentIntentId = null;
+
+function initStripeElement() {
+  if (cardElement) return;
+  const elements = stripeClient.elements();
+  cardElement = elements.create('card', {
+    style: {
+      base: {
+        fontFamily: 'Sarabun, sans-serif',
+        fontSize: '15px',
+        color: '#1a1a2e',
+        '::placeholder': { color: '#9ca3af' },
+      },
+      invalid: { color: '#ef4444' },
+    },
+    hidePostalCode: true,
+  });
+  cardElement.mount('#card-element');
+  cardElement.on('change', e => {
+    document.getElementById('card-errors').textContent = e.error ? e.error.message : '';
+  });
+}
+
 function renderCart() {
   const cart = cartGet();
   const container = document.getElementById('cartContent');
-
   if (cart.length === 0) {
     container.innerHTML = `
       <div class="cart-empty">
@@ -167,47 +214,37 @@ function renderCart() {
       </div>`;
     return;
   }
-
   const subtotal = cart.reduce((sum, i) => sum + i.price, 0);
   const hasDiscount = cart.length >= 10;
   const discount = hasDiscount ? Math.round(subtotal * 0.10) : 0;
   const total = subtotal - discount;
 
-  const itemsHTML = cart.map(item => `
-    <div class="cart-item">
-      <div class="cart-item-info">
-        <div class="cart-item-name">${item.name}</div>
-        <div class="cart-item-license">${item.license}</div>
-      </div>
-      <div class="cart-item-price">฿${item.price.toLocaleString()}</div>
-      <button class="cart-item-remove" onclick="removeItem('${item.key.replace(/'/g, "\\'")}')">✕</button>
-    </div>`).join('');
-
-  const discountRow = hasDiscount ? `
-    <div class="cart-summary-row" style="color:#16a34a;font-weight:600;">
-      <span>🎉 ส่วนลด 10% (ซื้อครบ 10 ฟอนต์)</span>
-      <span>-฿${discount.toLocaleString()}</span>
-    </div>` : `
-    <div class="cart-summary-row" style="color:#888;font-size:0.82rem;">
-      <span>💡 ซื้อครบ 10 ฟอนต์ รับส่วนลด 10%</span>
-      <span>เหลืออีก ${10 - cart.length} ฟอนต์</span>
-    </div>`;
-
   container.innerHTML = `
-    <div class="cart-items">${itemsHTML}</div>
+    <div class="cart-items">
+      ${cart.map(item => `
+        <div class="cart-item">
+          <div class="cart-item-info">
+            <div class="cart-item-name">${item.name}</div>
+            <div class="cart-item-license">${item.license}</div>
+          </div>
+          <div class="cart-item-price">฿${item.price.toLocaleString()}</div>
+          <button class="cart-item-remove" onclick="removeItem('${item.key.replace(/'/g,"\\'")}')">✕</button>
+        </div>`).join('')}
+    </div>
     <div class="cart-summary">
-      <div class="cart-summary-row">
-        <span>จำนวนสินค้า</span>
-        <span>${cart.length} รายการ</span>
-      </div>
-      <div class="cart-summary-row">
-        <span>ราคารวม</span>
-        <span>฿${subtotal.toLocaleString()}</span>
-      </div>
-      ${discountRow}
+      <div class="cart-summary-row"><span>จำนวนสินค้า</span><span>${cart.length} รายการ</span></div>
+      <div class="cart-summary-row"><span>ราคารวม</span><span>฿${subtotal.toLocaleString()}</span></div>
+      ${hasDiscount
+        ? `<div class="cart-summary-row" style="color:#16a34a;font-weight:600;">
+            <span>🎉 ส่วนลด 10% (ซื้อครบ 10 ฟอนต์)</span>
+            <span>-฿${discount.toLocaleString()}</span>
+           </div>`
+        : `<div class="cart-summary-row" style="color:#888;font-size:0.82rem;">
+            <span>💡 ซื้อครบ 10 ฟอนต์ รับส่วนลด 10%</span>
+            <span>เหลืออีก ${10 - cart.length} ฟอนต์</span>
+           </div>`}
       <div class="cart-summary-total">
-        <span>ยอดที่ต้องชำระ</span>
-        <span>฿${total.toLocaleString()}</span>
+        <span>ยอดที่ต้องชำระ</span><span>฿${total.toLocaleString()}</span>
       </div>
       <div class="cart-actions">
         <a href="shop.html" class="btn btn-ghost" style="padding:14px 20px;">เลือกซื้อเพิ่ม</a>
@@ -216,54 +253,115 @@ function renderCart() {
     </div>`;
 }
 
-function removeItem(key) {
-  cartRemove(key);
-  renderCart();
-}
+function removeItem(key) { cartRemove(key); renderCart(); }
 
 function checkout() {
   const cart = cartGet();
-  if (cart.length === 0) return;
+  if (!cart.length) return;
   const subtotal = cart.reduce((sum, i) => sum + i.price, 0);
   const hasDiscount = cart.length >= 10;
   const discount = hasDiscount ? Math.round(subtotal * 0.10) : 0;
   const total = subtotal - discount;
 
-  // Fill payment modal items
-  document.getElementById('paymentItems').innerHTML = cart.map(i =>
-    `<div style="display:flex;justify-content:space-between;font-size:0.88rem;padding:3px 0;">
-      <span style="color:#333;">${i.name} <span style="color:#888;font-size:0.78rem;">(${i.license})</span></span>
-      <span style="font-weight:600;">฿${i.price.toLocaleString()}</span>
-    </div>`).join('')
-    + (hasDiscount ? `<div style="display:flex;justify-content:space-between;font-size:0.88rem;padding:4px 0;color:#16a34a;font-weight:600;">
-      <span>🎉 ส่วนลด 10%</span><span>-฿${discount.toLocaleString()}</span></div>` : '');
+  document.getElementById('paymentItems').innerHTML =
+    cart.map(i => `
+      <div style="display:flex;justify-content:space-between;font-size:0.88rem;padding:3px 0;">
+        <span style="color:#333;">${i.name} <span style="color:#888;font-size:0.78rem;">(${i.license})</span></span>
+        <span style="font-weight:600;">฿${i.price.toLocaleString()}</span>
+      </div>`).join('')
+    + (hasDiscount ? `
+      <div style="display:flex;justify-content:space-between;font-size:0.88rem;padding:4px 0;color:#16a34a;font-weight:600;">
+        <span>🎉 ส่วนลด 10%</span><span>-฿${discount.toLocaleString()}</span>
+      </div>` : '');
+
   document.getElementById('paymentTotal').textContent = '฿' + total.toLocaleString();
+  document.getElementById('payBtnAmount').textContent = '฿' + total.toLocaleString();
+
+  const user = firebase.auth().currentUser;
+  if (user && user.email) document.getElementById('paymentEmail').value = user.email;
 
   document.getElementById('paymentOverlay').style.display = 'flex';
-  selectPayMethod('promptpay');
-}
-
-function selectPayMethod(method) {
-  document.getElementById('promptpayInfo').style.display = method === 'promptpay' ? '' : 'none';
-  document.getElementById('bankInfo').style.display = method === 'bank' ? '' : 'none';
-  document.getElementById('btnPromptpay').style.borderColor = method === 'promptpay' ? '#ec4899' : '#e5e7eb';
-  document.getElementById('btnPromptpay').style.background = method === 'promptpay' ? '#fff0f7' : 'white';
-  document.getElementById('btnBank').style.borderColor = method === 'bank' ? '#ec4899' : '#e5e7eb';
-  document.getElementById('btnBank').style.background = method === 'bank' ? '#fff0f7' : 'white';
+  setTimeout(initStripeElement, 100);
 }
 
 function closePayment() {
   document.getElementById('paymentOverlay').style.display = 'none';
 }
 
-function confirmPayment() {
-  const cart = cartGet();
-  if (typeof savePurchaseHistory === 'function') savePurchaseHistory(cart);
-  localStorage.removeItem('dsiin_cart');
-  cartUpdateBadge();
-  document.getElementById('paymentOverlay').style.display = 'none';
-  document.getElementById('successOverlay').style.display = 'flex';
-  renderCart();
+async function handlePayment() {
+  const payBtn = document.getElementById('payBtn');
+  const errorEl = document.getElementById('card-errors');
+  const totalText = document.getElementById('paymentTotal').textContent;
+  const email = document.getElementById('paymentEmail').value.trim();
+  if (!cardElement) return;
+
+  payBtn.disabled = true;
+  payBtn.innerHTML = '<span class="spinner"></span>กำลังดำเนินการ...';
+  errorEl.textContent = '';
+
+  try {
+    const cart = cartGet();
+    if (!cart.length) throw new Error('ตะกร้าว่างเปล่า');
+
+    // 1. สร้าง Payment Intent
+    const result = await fnCreatePaymentIntent({ items: cart, email });
+    currentClientSecret = result.data.clientSecret;
+    currentPaymentIntentId = result.data.paymentIntentId;
+
+    // 2. ยืนยันบัตรกับ Stripe
+    const { error, paymentIntent } = await stripeClient.confirmCardPayment(currentClientSecret, {
+      payment_method: {
+        card: cardElement,
+        billing_details: { email: email || undefined },
+      },
+    });
+
+    if (error) {
+      errorEl.textContent = error.message;
+      payBtn.disabled = false;
+      payBtn.innerHTML = 'จ่ายเงิน ' + totalText;
+      return;
+    }
+
+    if (paymentIntent.status === 'succeeded') {
+      // 3. ดึง download links
+      payBtn.innerHTML = '<span class="spinner"></span>กำลังเตรียมไฟล์...';
+      const dlResult = await fnGetDownloadLinks({ paymentIntentId: currentPaymentIntentId });
+
+      // 4. เคลียร์ตะกร้า + บันทึก history
+      localStorage.removeItem('dsiin_cart');
+      cartUpdateBadge();
+      if (typeof savePurchaseHistory === 'function') savePurchaseHistory(cart);
+
+      // 5. แสดง download
+      closePayment();
+      showDownloads(dlResult.data.downloadLinks, dlResult.data.items);
+      renderCart();
+    }
+  } catch (err) {
+    console.error(err);
+    errorEl.textContent = err.message || 'เกิดข้อผิดพลาด กรุณาลองใหม่';
+    payBtn.disabled = false;
+    payBtn.innerHTML = 'จ่ายเงิน ' + totalText;
+  }
+}
+
+function showDownloads(downloadLinks, items) {
+  document.getElementById('downloadList').innerHTML = items.map(item => {
+    const files = downloadLinks[item.name] || [];
+    return `
+      <div class="download-item">
+        <div class="download-item-name">🎨 ${item.name}
+          <span style="font-size:0.78rem;color:#888;font-weight:400;">(${item.license})</span>
+        </div>
+        <div>
+          ${files.length
+            ? files.map(f => `<a href="${f.url}" download="${f.fileName}" class="download-file-btn">⬇ ${f.fileName}</a>`).join('')
+            : '<span style="font-size:0.82rem;color:#888;">ไม่พบไฟล์</span>'}
+        </div>
+      </div>`;
+  }).join('');
+  document.getElementById('downloadOverlay').style.display = 'flex';
 }
 
 renderCart();
