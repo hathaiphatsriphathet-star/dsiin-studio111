@@ -1,16 +1,19 @@
 const functions = require('firebase-functions');
+const { defineSecret } = require('firebase-functions/params');
 const admin = require('firebase-admin');
 
 admin.initializeApp();
 
-const stripe = require('stripe')(functions.config().stripe.secret);
+const stripeSecretKey = defineSecret('STRIPE_SECRET_KEY');
 
 // ==============================
 // สร้าง Payment Intent
 // ==============================
 exports.createPaymentIntent = functions
   .region('asia-southeast1')
+  .runWith({ secrets: ['STRIPE_SECRET_KEY'] })
   .https.onCall(async (data, context) => {
+    const stripe = require('stripe')(stripeSecretKey.value());
     const { items, email } = data;
 
     if (!items || items.length === 0) {
@@ -61,7 +64,9 @@ exports.createPaymentIntent = functions
 // ==============================
 exports.getDownloadLinks = functions
   .region('asia-southeast1')
+  .runWith({ secrets: ['STRIPE_SECRET_KEY'] })
   .https.onCall(async (data, context) => {
+    const stripe = require('stripe')(stripeSecretKey.value());
     const { paymentIntentId } = data;
 
     if (!paymentIntentId) {
