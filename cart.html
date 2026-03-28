@@ -291,15 +291,22 @@ function removeItem(key) { cartRemove(key); renderCart(); }
 renderCart();
 
 // ===== PAYMENT SYSTEM =====
-let stripeClient, fbFunctions, fnCreatePaymentIntent, fnGetDownloadLinks, fnCheckPaymentStatus;
+let stripeClient = null;
+let fbFunctions = null, fnCreatePaymentIntent = null, fnGetDownloadLinks = null, fnCheckPaymentStatus = null;
+
 try {
   stripeClient = Stripe('pk_test_51TDKKk2LK109DEDRaXrX1sEyjS7mXkdiduTG2q83MONNxWoOLAi7t9T7f4qWBKSWyBWC0unbsuvRtzLEC54WcAB100dJAK10f6');
+} catch(e) {
+  console.error('Stripe init error:', e);
+}
+
+try {
   fbFunctions = firebase.functions('asia-southeast1');
   fnCreatePaymentIntent = fbFunctions.httpsCallable('createPaymentIntent');
   fnGetDownloadLinks = fbFunctions.httpsCallable('getDownloadLinks');
   fnCheckPaymentStatus = fbFunctions.httpsCallable('checkPaymentStatus');
 } catch(e) {
-  console.error('Payment system init error:', e);
+  console.error('Firebase Functions init error:', e);
 }
 
 let cardElement = null;
