@@ -314,38 +314,6 @@
 
 
 <!-- ===== NEW FONTS ===== -->
-<section id="new-fonts" style="padding:60px 0 20px;">
-  <div class="container">
-    <div class="section-header">
-      <div>
-        <h2 class="section-title">✨ ฟอนต์ใหม่</h2>
-        <p class="section-sub" style="margin-bottom:0;">ฟอนต์ล่าสุดที่เพิ่งเข้าร้าน อัปเดตเรื่อยๆ</p>
-      </div>
-      <a href="shop.html" class="btn btn-ghost">ดูทั้งหมด →</a>
-    </div>
-    <div class="fonts-grid" id="newFontsGrid"></div>
-  </div>
-</section>
-<script>
-(function() {
-  const grid = document.getElementById('newFontsGrid');
-  if (!grid || typeof FONTS_DATA === 'undefined') return;
-  const newFonts = FONTS_DATA.slice(-8).reverse();
-  grid.innerHTML = newFonts.map(f => `
-    <div class="font-card" onclick="location.href='product.html?name=${encodeURIComponent(f.name)}'">
-      <div class="card-image-wrap">
-        ${f.image ? `<img src="${f.image}" alt="${f.name}" class="card-image" loading="lazy">` : `<div class="card-image-placeholder"></div>`}
-        <div class="card-badge"><span class="badge badge-mint">✨ ใหม่</span></div>
-      </div>
-      <div class="card-body">
-        <div class="card-title">${f.name}</div>
-        <div class="card-price">฿${f.price}</div>
-        <button class="btn btn-pink btn-add-cart" onclick="event.stopPropagation();addToCart('${f.name}',${f.price})">+ ตะกร้า</button>
-      </div>
-    </div>
-  `).join('');
-})();
-</script>
 
 <!-- ===== FONTS ALL ===== -->
 <section id="all-fonts">
