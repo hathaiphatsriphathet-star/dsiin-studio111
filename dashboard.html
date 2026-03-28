@@ -382,50 +382,60 @@
       container.innerHTML = `<div class="my-font-grid">${fonts.map(f => `
         <div class="my-font-card">
           <div class="font-name">${f.name}</div>
-          <button class="btn-download" onclick="downloadFont('${f.name.replace(/'/g, "\\'")}', this)">⬇ ดาวน์โหลด</button>
+          <button class="btn-download" onclick="showFontFiles('${f.name.replace(/'/g, "\\'")}', this)">⬇ ดาวน์โหลด</button>
         </div>`).join('')}</div>`;
     });
   }
 
-  function downloadFont(fontName, btn) {
+  function showFontFiles(fontName, btn) {
     const files = FONT_STORAGE_MAP[fontName];
     if (!files || files.length === 0) {
       alert('ไม่พบไฟล์ฟอนต์ กรุณาติดต่อ @dsiinstudio');
       return;
     }
-    btn.disabled = true;
-    btn.textContent = 'กำลังโหลด...';
+    const card = btn.closest('.my-font-card');
+    btn.style.display = 'none';
+    const existing = card.querySelector('.file-list');
+    if (existing) { existing.remove(); btn.style.display = ''; return; }
 
-    let tried = 0;
-    let downloaded = 0;
+    const list = document.createElement('div');
+    list.className = 'file-list';
+    list.style.cssText = 'margin-top:10px;display:flex;flex-direction:column;gap:6px;';
 
-    files.forEach((fileName, i) => {
-      storage.ref('TK studio/' + fileName).getDownloadURL()
-        .then(url => {
-          downloaded++;
-          setTimeout(() => {
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = fileName;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-          }, i * 800);
-        })
-        .catch(() => { /* ไม่มีไฟล์ → ข้ามไป */ })
-        .finally(() => {
-          tried++;
-          if (tried === files.length) {
-            setTimeout(() => {
-              btn.disabled = false;
-              btn.textContent = '⬇ ดาวน์โหลด';
-            }, files.length * 800);
-            if (downloaded === 0) {
-              alert('ไม่พบไฟล์ฟอนต์ กรุณาติดต่อ @dsiinstudio');
-            }
-          }
+    files.forEach(fileName => {
+      const row = document.createElement('div');
+      row.style.cssText = 'display:flex;align-items:center;justify-content:space-between;gap:8px;';
+      const label = document.createElement('span');
+      label.style.cssText = 'font-size:0.75rem;color:#666;word-break:break-all;';
+      label.textContent = fileName;
+      const dlBtn = document.createElement('a');
+      dlBtn.style.cssText = 'flex-shrink:0;padding:5px 10px;background:#ec4899;color:white;border-radius:8px;font-size:0.75rem;font-weight:600;text-decoration:none;cursor:pointer;';
+      dlBtn.textContent = '⬇';
+      dlBtn.title = 'ดาวน์โหลด ' + fileName;
+      dlBtn.addEventListener('click', () => {
+        dlBtn.textContent = '...';
+        storage.ref('TK studio/' + fileName).getDownloadURL().then(url => {
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = fileName;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          dlBtn.textContent = '✓';
+        }).catch(() => {
+          dlBtn.textContent = '✕';
+          dlBtn.title = 'ไม่พบไฟล์นี้';
         });
+      });
+      row.appendChild(label);
+      row.appendChild(dlBtn);
+      list.appendChild(row);
     });
+
+    card.appendChild(list);
+    btn.style.display = '';
+    btn.textContent = '✕ ปิด';
+    btn.onclick = () => { list.remove(); btn.textContent = '⬇ ดาวน์โหลด'; btn.onclick = () => showFontFiles(fontName, btn); };
   }
 
   function loadOrders() {
