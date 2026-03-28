@@ -2285,8 +2285,12 @@
     if (!item) return;
     document.querySelectorAll('.font-item').forEach(i => i.classList.remove('selected'));
     item.classList.add('selected');
-    const idx = Array.from(item.parentElement.children).indexOf(item);
-    state.font = fonts[idx];
+    state.font = {
+      name: item.dataset.name,
+      family: item.dataset.font,
+      lang: 'ไทย',
+      sample: 'สวัสดี'
+    };
     applyState();
     document.getElementById('waterfallFontName').textContent = state.font.name;
   });
@@ -2467,11 +2471,16 @@
   }
 
   function selectFont(idx) {
-    state.font = fonts[idx];
-    document.querySelectorAll('.font-item').forEach((item, i) => {
-      item.classList.toggle('selected', i === idx);
-    });
-    document.getElementById('waterfallFontName').textContent = fonts[idx].name;
+    const items = document.querySelectorAll('.font-item');
+    const item = items[idx];
+    state.font = item ? {
+      name: item.dataset.name,
+      family: item.dataset.font,
+      lang: 'ไทย',
+      sample: 'สวัสดี'
+    } : fonts[idx];
+    items.forEach((el, i) => el.classList.toggle('selected', i === idx));
+    document.getElementById('waterfallFontName').textContent = state.font.name;
     // Switch to single view
     document.querySelectorAll('.view-tab').forEach(t => t.classList.toggle('active', t.dataset.view === 'single'));
     document.getElementById('viewSingle').style.display = 'block';
