@@ -439,13 +439,11 @@ async function handlePromptPay() {
           const statusEl = document.getElementById('qrStatusText');
           if (statusEl) statusEl.textContent = 'ชำระเงินสำเร็จ! กำลังเตรียมไฟล์...';
 
-          const dlResult = await fnGetDownloadLinks({ paymentIntentId: currentPaymentIntentId });
+          await fnGetDownloadLinks({ paymentIntentId: currentPaymentIntentId });
           localStorage.removeItem('dsiin_cart');
           cartUpdateBadge();
           if (typeof savePurchaseHistory === 'function') savePurchaseHistory(cart);
-          closePayment();
-          showDownloads(dlResult.data.downloadLinks, dlResult.data.items);
-          renderCart();
+          window.location.href = 'dashboard.html?paid=true';
         }
       } catch (e) { /* ยังไม่ได้ชำระ รอต่อ */ }
     }, 4000);
@@ -494,19 +492,12 @@ async function handlePayment() {
     }
 
     if (paymentIntent.status === 'succeeded') {
-      // 3. ดึง download links
       payBtn.innerHTML = '<span class="spinner"></span>กำลังเตรียมไฟล์...';
-      const dlResult = await fnGetDownloadLinks({ paymentIntentId: currentPaymentIntentId });
-
-      // 4. เคลียร์ตะกร้า + บันทึก history
+      await fnGetDownloadLinks({ paymentIntentId: currentPaymentIntentId });
       localStorage.removeItem('dsiin_cart');
       cartUpdateBadge();
       if (typeof savePurchaseHistory === 'function') savePurchaseHistory(cart);
-
-      // 5. แสดง download
-      closePayment();
-      showDownloads(dlResult.data.downloadLinks, dlResult.data.items);
-      renderCart();
+      window.location.href = 'dashboard.html?paid=true';
     }
   } catch (err) {
     console.error(err);

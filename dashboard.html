@@ -532,6 +532,18 @@
       document.getElementById('profileEmail').value = user.email;
       loadMyFonts();
       loadOrders();
+
+      // redirect หลังชำระเงิน
+      if (new URLSearchParams(window.location.search).get('paid') === 'true') {
+        const fontsBtn = document.querySelector('.dash-nav-btn[onclick*="fonts"]');
+        if (fontsBtn) showSection('fonts', fontsBtn);
+        const banner = document.createElement('div');
+        banner.style.cssText = 'background:#f0fdf4;border:1.5px solid #bbf7d0;border-radius:14px;padding:16px 20px;margin-bottom:24px;display:flex;align-items:center;gap:12px;font-weight:600;color:#16a34a;font-size:0.95rem;';
+        banner.innerHTML = '<span style="font-size:1.4rem;">✅</span> ชำระเงินสำเร็จ! ฟอนต์ของคุณพร้อมดาวน์โหลดแล้ว';
+        const section = document.getElementById('section-fonts');
+        if (section) section.insertAdjacentElement('afterbegin', banner);
+        history.replaceState({}, '', 'dashboard.html');
+      }
     } else {
       document.getElementById('loginPrompt').style.display = 'block';
       document.getElementById('dashboardMain').style.display = 'none';

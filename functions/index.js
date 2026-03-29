@@ -1,6 +1,7 @@
 const functions = require('firebase-functions/v1');
 const admin = require('firebase-admin');
-// v1.1 - redeploy after Blaze upgrade
+const FONT_MAP = require('./font-map');
+const STORAGE_FOLDER = 'TK studio';
 
 admin.initializeApp();
 
@@ -12,9 +13,10 @@ exports.createPaymentIntent = functions
   .runWith({ secrets: ['STRIPE_SECRET_KEY'] })
   .https.onCall(async (data, context) => {
     const Stripe = require('stripe');
-    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+    const stripe = new Stripe((process.env.STRIPE_SECRET_KEY || '').trim(), {
       httpClient: Stripe.createNodeHttpClient(),
     });
+
     const { items, email, paymentMethod = 'card' } = data;
 
     if (!items || items.length === 0) {
@@ -27,14 +29,12 @@ exports.createPaymentIntent = functions
     const total = subtotal - discount;
     const amount = total * 100;
 
+    const itemsSummary = items.map(i => i.name).join(', ');
     const metadata = {
-      items: JSON.stringify(items.map(i => ({
-        name: i.name,
-        price: i.price,
-        license: i.license,
-      }))),
+      items: itemsSummary.length <= 500 ? itemsSummary : itemsSummary.substring(0, 497) + '...',
+      item_count: String(items.length),
       userId: context.auth ? context.auth.uid : 'guest',
-      email: email || '',
+      email: (email || '').substring(0, 500),
     };
 
     try {
@@ -47,7 +47,10 @@ exports.createPaymentIntent = functions
         });
 
         const confirmed = await stripe.paymentIntents.confirm(paymentIntent.id, {
-          payment_method: { type: 'promptpay' },
+          payment_method_data: {
+            type: 'promptpay',
+            billing_details: { email: email || 'noemail@example.com' },
+          },
         });
 
         await admin.firestore().collection('orders').doc(confirmed.id).set({
@@ -96,9 +99,7 @@ exports.createPaymentIntent = functions
       };
 
     } catch (err) {
-      console.error('createPaymentIntent error:', err.message, err.type, err.code);
-      console.error('createPaymentIntent cause:', err.cause ? String(err.cause) : 'no cause');
-      console.error('createPaymentIntent stack:', err.stack ? err.stack.split('\n')[0] : 'no stack');
+      console.error('createPaymentIntent error:', err.message);
       throw new functions.https.HttpsError('internal', err.message || 'Payment error');
     }
   });
@@ -111,7 +112,7 @@ exports.checkPaymentStatus = functions
   .runWith({ secrets: ['STRIPE_SECRET_KEY'] })
   .https.onCall(async (data, context) => {
     const Stripe = require('stripe');
-    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+    const stripe = new Stripe((process.env.STRIPE_SECRET_KEY || '').trim(), {
       httpClient: Stripe.createNodeHttpClient(),
     });
     const { paymentIntentId } = data;
@@ -132,7 +133,7 @@ exports.getDownloadLinks = functions
   .runWith({ secrets: ['STRIPE_SECRET_KEY'] })
   .https.onCall(async (data, context) => {
     const Stripe = require('stripe');
-    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+    const stripe = new Stripe((process.env.STRIPE_SECRET_KEY || '').trim(), {
       httpClient: Stripe.createNodeHttpClient(),
     });
     const { paymentIntentId } = data;
@@ -161,18 +162,34 @@ exports.getDownloadLinks = functions
     const downloadLinks = {};
 
     for (const item of order.items) {
-      const fontFolder = item.name;
-      const [files] = await bucket.getFiles({ prefix: fontFolder + '/' });
-
+      const fileNames = FONT_MAP[item.name] || [];
       downloadLinks[item.name] = [];
-      for (const file of files) {
-        if (file.name.endsWith('/')) continue;
-        const [url] = await file.getSignedUrl({
-          action: 'read',
-          expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
-        });
-        const fileName = file.name.split('/').pop();
-        downloadLinks[item.name].push({ fileName, url });
+
+      for (const fileName of fileNames) {
+        const filePath = STORAGE_FOLDER + '/' + fileName;
+        const file = bucket.file(filePath);
+        try {
+          const [url] = await file.getSignedUrl({
+            action: 'read',
+            expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
+          });
+          downloadLinks[item.name].push({ fileName, url });
+        } catch (e) {
+          console.warn('File not found in storage:', filePath);
+        }
+      }
+
+      // fallback: ถ้าไม่เจอใน font-map ให้ค้นหา folder เดิม
+      if (downloadLinks[item.name].length === 0) {
+        const [files] = await bucket.getFiles({ prefix: item.name + '/' });
+        for (const file of files) {
+          if (file.name.endsWith('/')) continue;
+          const [url] = await file.getSignedUrl({
+            action: 'read',
+            expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
+          });
+          downloadLinks[item.name].push({ fileName: file.name.split('/').pop(), url });
+        }
       }
     }
 
