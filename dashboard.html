@@ -572,7 +572,7 @@
     const user = firebase.auth().currentUser;
     if (!user) return;
     db.collection('orders')
-      .where('uid', '==', user.uid)
+      .where('userId', '==', user.uid)
       .get()
       .then(snapshot => {
         const list = document.getElementById('ordersList');
