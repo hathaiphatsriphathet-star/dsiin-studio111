@@ -177,6 +177,34 @@
     }
     .msg-box.success { background: #f0fdf4; color: #16a34a; display: block; }
     .msg-box.error { background: #fff1f2; color: #e11d48; display: block; }
+    .font-search-bar {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+    .font-search-bar input {
+      flex: 1;
+      padding: 10px 14px;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .font-search-bar input:focus { border-color: #f9a8d4; }
+    .font-search-bar button {
+      padding: 10px 18px;
+      background: linear-gradient(135deg, #f9a8d4, #c4b5fd);
+      border: none;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #1a1a2e;
+      cursor: pointer;
+      font-family: inherit;
+      white-space: nowrap;
+    }
     .my-font-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -187,6 +215,15 @@
       border-radius: 12px;
       padding: 16px;
       text-align: center;
+      position: relative;
+    }
+    .my-font-card .font-num {
+      position: absolute;
+      top: 10px;
+      left: 12px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #bbb;
     }
     .my-font-card .font-name {
       font-size: 0.88rem;
@@ -194,6 +231,28 @@
       color: #1a1a2e;
       margin-bottom: 12px;
       line-height: 1.4;
+    }
+    .badge-owned {
+      display: inline-block;
+      background: #f0fdf4;
+      color: #16a34a;
+      border: 1px solid #bbf7d0;
+      border-radius: 20px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      margin-bottom: 10px;
+    }
+    .badge-not-owned {
+      display: inline-block;
+      background: #fff7ed;
+      color: #ea580c;
+      border: 1px solid #fed7aa;
+      border-radius: 20px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      margin-bottom: 10px;
     }
     .btn-download {
       width: 100%;
@@ -211,6 +270,20 @@
       background: #f0f0f0;
       color: #aaa;
       cursor: not-allowed;
+    }
+    .btn-buy-font {
+      width: 100%;
+      padding: 9px;
+      background: #f5f5f5;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #555;
+      cursor: pointer;
+      font-family: inherit;
+      text-decoration: none;
+      display: block;
     }
     #loginPrompt {
       display: none;
@@ -296,6 +369,10 @@
       <!-- ฟอนต์ของฉัน -->
       <div class="dash-section active" id="section-fonts">
         <div class="dash-section-title">🔤 ฟอนต์ของฉัน</div>
+        <div class="font-search-bar">
+          <input type="text" id="fontSearchInput" placeholder="ค้นหาฟอนต์..." oninput="searchFonts(this.value)">
+          <button onclick="searchFonts(document.getElementById('fontSearchInput').value)">🔍 ค้นหา</button>
+        </div>
         <div id="myFontsList"><p style="color:#aaa;text-align:center;padding:40px 0;">กำลังโหลด...</p></div>
       </div>
 
@@ -358,10 +435,12 @@
     btn.classList.add('active');
   }
 
+  let _purchasedFontNames = new Set();
+
   function loadMyFonts() {
     const user = firebase.auth().currentUser;
     if (!user) return;
-    db.collection('orders').where('uid', '==', user.uid).get().then(snapshot => {
+    db.collection('users').doc(user.uid).collection('orders').get().then(snapshot => {
       const fontSet = {};
       snapshot.forEach(doc => {
         const o = doc.data();
@@ -369,22 +448,72 @@
           fontSet[item.name] = item;
         });
       });
+      // fallback: also query top-level orders by userId
+      return db.collection('orders').where('userId', '==', user.uid).get().then(snap2 => {
+        snap2.forEach(doc => {
+          const o = doc.data();
+          if (o.status === 'paid') {
+            (o.items || []).forEach(item => { fontSet[item.name] = item; });
+          }
+        });
+        return fontSet;
+      });
+    }).then(fontSet => {
+      _purchasedFontNames = new Set(Object.keys(fontSet));
       const fonts = Object.values(fontSet);
-      const container = document.getElementById('myFontsList');
-      if (fonts.length === 0) {
-        container.innerHTML = `<div style="text-align:center;padding:40px 0;color:#aaa;">
-          <div style="font-size:2rem;margin-bottom:10px;">🔤</div>
-          <p>ยังไม่มีฟอนต์ที่ซื้อ</p>
-          <a href="shop.html" style="color:#ec4899;font-weight:600;text-decoration:none;">เลือกซื้อฟอนต์ →</a>
-        </div>`;
-        return;
-      }
-      container.innerHTML = `<div class="my-font-grid">${fonts.map(f => `
-        <div class="my-font-card">
-          <div class="font-name">${f.name}</div>
-          <button class="btn-download" onclick="showFontFiles('${f.name.replace(/'/g, "\\'")}', this)">⬇ ดาวน์โหลด</button>
-        </div>`).join('')}</div>`;
+      renderPurchasedFonts(fonts);
+    }).catch(() => {
+      document.getElementById('myFontsList').innerHTML = `<p style="color:#aaa;text-align:center;padding:40px 0;">ไม่สามารถโหลดข้อมูลได้</p>`;
     });
+  }
+
+  function renderPurchasedFonts(fonts) {
+    const container = document.getElementById('myFontsList');
+    if (fonts.length === 0) {
+      container.innerHTML = `<div style="text-align:center;padding:40px 0;color:#aaa;">
+        <div style="font-size:2rem;margin-bottom:10px;">🔤</div>
+        <p>ยังไม่มีฟอนต์ที่ซื้อ</p>
+        <a href="shop.html" style="color:#ec4899;font-weight:600;text-decoration:none;">เลือกซื้อฟอนต์ →</a>
+      </div>`;
+      return;
+    }
+    container.innerHTML = `<div class="my-font-grid">${fonts.map((f, i) => `
+      <div class="my-font-card">
+        <span class="font-num">${i + 1}</span>
+        <div class="font-name">${f.name}</div>
+        <button class="btn-download" onclick="showFontFiles('${f.name.replace(/'/g, "\\'")}', this)">⬇ ดาวน์โหลด</button>
+      </div>`).join('')}</div>`;
+  }
+
+  function searchFonts(query) {
+    const container = document.getElementById('myFontsList');
+    const q = query.trim();
+    if (!q) {
+      // ถ้าไม่มีคำค้นหา กลับมาแสดงฟอนต์ที่ซื้อแล้ว
+      const purchasedFonts = (typeof FONTS_DATA !== 'undefined' ? FONTS_DATA : [])
+        .filter(f => _purchasedFontNames.has(f.name));
+      const fallback = Array.from(_purchasedFontNames).map(n => ({ name: n }));
+      renderPurchasedFonts(purchasedFonts.length > 0 ? purchasedFonts : fallback);
+      return;
+    }
+    const allFonts = typeof FONTS_DATA !== 'undefined' ? FONTS_DATA : [];
+    const results = allFonts.filter(f => f.name.includes(q));
+    if (results.length === 0) {
+      container.innerHTML = `<div style="text-align:center;padding:40px 0;color:#aaa;"><p>ไม่พบฟอนต์ที่ค้นหา</p></div>`;
+      return;
+    }
+    container.innerHTML = `<div class="my-font-grid">${results.map((f, i) => {
+      const owned = _purchasedFontNames.has(f.name);
+      const escapedName = f.name.replace(/'/g, "\\'");
+      return `<div class="my-font-card">
+        <span class="font-num">${i + 1}</span>
+        <div class="font-name">${f.name}</div>
+        ${owned
+          ? `<div class="badge-owned">✓ ซื้อแล้ว</div><button class="btn-download" onclick="showFontFiles('${escapedName}', this)">⬇ ดาวน์โหลด</button>`
+          : `<div class="badge-not-owned">ยังไม่ได้ซื้อ</div><a class="btn-buy-font" href="shop.html">เลือกซื้อ →</a>`
+        }
+      </div>`;
+    }).join('')}</div>`;
   }
 
   function showFontFiles(fontName, btn) {
