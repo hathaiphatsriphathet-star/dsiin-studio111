@@ -207,29 +207,56 @@
     }
     .my-font-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
       gap: 14px;
     }
     .my-font-card {
       border: 1px solid #f0f0f0;
-      border-radius: 12px;
-      padding: 16px;
+      border-radius: 14px;
+      overflow: hidden;
       text-align: center;
       position: relative;
+      background: white;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      transition: box-shadow 0.2s;
+    }
+    .my-font-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.10); }
+    .my-font-card .font-img {
+      width: 100%;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+      display: block;
+      background: #f9f0f9;
+    }
+    .my-font-card .font-img-placeholder {
+      width: 100%;
+      aspect-ratio: 4/3;
+      background: linear-gradient(135deg, rgba(249,168,212,0.15), rgba(196,181,253,0.15));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+    }
+    .my-font-card .font-card-body {
+      padding: 10px 12px 12px;
     }
     .my-font-card .font-num {
       position: absolute;
-      top: 10px;
-      left: 12px;
-      font-size: 0.72rem;
+      top: 8px;
+      left: 10px;
+      font-size: 0.7rem;
       font-weight: 700;
-      color: #bbb;
+      color: white;
+      background: rgba(0,0,0,0.35);
+      border-radius: 20px;
+      padding: 2px 7px;
+      line-height: 1.6;
     }
     .my-font-card .font-name {
-      font-size: 0.88rem;
-      font-weight: 600;
+      font-size: 0.82rem;
+      font-weight: 700;
       color: #1a1a2e;
-      margin-bottom: 12px;
+      margin-bottom: 8px;
       line-height: 1.4;
     }
     .badge-owned {
@@ -468,6 +495,21 @@
     });
   }
 
+  function fontCardImg(f) {
+    if (f.image) {
+      return `<img class="font-img" src="${f.image}" alt="${f.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+              <div class="font-img-placeholder" style="display:none;">🔤</div>`;
+    }
+    return `<div class="font-img-placeholder">🔤</div>`;
+  }
+
+  function getFontData(name) {
+    if (typeof FONTS_DATA !== 'undefined') {
+      return FONTS_DATA.find(f => f.name === name) || { name };
+    }
+    return { name };
+  }
+
   function renderPurchasedFonts(fonts) {
     const container = document.getElementById('myFontsList');
     if (fonts.length === 0) {
@@ -478,11 +520,16 @@
       </div>`;
       return;
     }
-    container.innerHTML = `<div class="my-font-grid">${fonts.map((f, i) => `
+    // เติม image จาก FONTS_DATA ถ้า fonts มาจาก Firestore (ไม่มี image field)
+    const enriched = fonts.map(f => f.image ? f : getFontData(f.name));
+    container.innerHTML = `<div class="my-font-grid">${enriched.map((f, i) => `
       <div class="my-font-card">
         <span class="font-num">${i + 1}</span>
-        <div class="font-name">${f.name}</div>
-        <button class="btn-download" onclick="showFontFiles('${f.name.replace(/'/g, "\\'")}', this)">⬇ ดาวน์โหลด</button>
+        ${fontCardImg(f)}
+        <div class="font-card-body">
+          <div class="font-name">${f.name}</div>
+          <button class="btn-download" onclick="showFontFiles('${f.name.replace(/'/g, "\\'")}', this)">⬇ ดาวน์โหลด</button>
+        </div>
       </div>`).join('')}</div>`;
   }
 
@@ -490,10 +537,9 @@
     const container = document.getElementById('myFontsList');
     const q = query.trim();
     if (!q) {
-      // ถ้าไม่มีคำค้นหา กลับมาแสดงฟอนต์ที่ซื้อแล้ว
       const purchasedFonts = (typeof FONTS_DATA !== 'undefined' ? FONTS_DATA : [])
         .filter(f => _purchasedFontNames.has(f.name));
-      const fallback = Array.from(_purchasedFontNames).map(n => ({ name: n }));
+      const fallback = Array.from(_purchasedFontNames).map(n => getFontData(n));
       renderPurchasedFonts(purchasedFonts.length > 0 ? purchasedFonts : fallback);
       return;
     }
@@ -508,11 +554,14 @@
       const escapedName = f.name.replace(/'/g, "\\'");
       return `<div class="my-font-card">
         <span class="font-num">${i + 1}</span>
-        <div class="font-name">${f.name}</div>
-        ${owned
-          ? `<div class="badge-owned">✓ ซื้อแล้ว</div><button class="btn-download" onclick="showFontFiles('${escapedName}', this)">⬇ ดาวน์โหลด</button>`
-          : `<div class="badge-not-owned">ยังไม่ได้ซื้อ</div><a class="btn-buy-font" href="shop.html">เลือกซื้อ →</a>`
-        }
+        ${fontCardImg(f)}
+        <div class="font-card-body">
+          <div class="font-name">${f.name}</div>
+          ${owned
+            ? `<div class="badge-owned">✓ ซื้อแล้ว</div><button class="btn-download" onclick="showFontFiles('${escapedName}', this)">⬇ ดาวน์โหลด</button>`
+            : `<div class="badge-not-owned">ยังไม่ได้ซื้อ</div><a class="btn-buy-font" href="shop.html">เลือกซื้อ →</a>`
+          }
+        </div>
       </div>`;
     }).join('')}</div>`;
   }
@@ -524,6 +573,7 @@
       return;
     }
     const card = btn.closest('.my-font-card');
+    const body = card.querySelector('.font-card-body') || card;
     btn.style.display = 'none';
     const existing = card.querySelector('.file-list');
     if (existing) { existing.remove(); btn.style.display = ''; return; }
@@ -562,7 +612,7 @@
       list.appendChild(row);
     });
 
-    card.appendChild(list);
+    body.appendChild(list);
     btn.style.display = '';
     btn.textContent = '✕ ปิด';
     btn.onclick = () => { list.remove(); btn.textContent = '⬇ ดาวน์โหลด'; btn.onclick = () => showFontFiles(fontName, btn); };
