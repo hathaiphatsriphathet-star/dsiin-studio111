@@ -21,11 +21,9 @@ function cartUpdateBadge() {
 document.addEventListener('DOMContentLoaded', cartUpdateBadge);
 
 // ===== PAGE LOADER =====
-window.addEventListener('load', () => {
-  setTimeout(() => {
-    const loader = document.getElementById('pageLoader');
-    if (loader) loader.classList.add('hidden');
-  }, 200);
+document.addEventListener('DOMContentLoaded', () => {
+  const loader = document.getElementById('pageLoader');
+  if (loader) loader.classList.add('hidden');
 });
 
 // ===== MOBILE NAV =====
