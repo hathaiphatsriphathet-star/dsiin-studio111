@@ -1,22 +1,24 @@
-const { onCall, HttpsError } = require('firebase-functions/v2/https');
-const { defineSecret } = require('firebase-functions/params');
+const functions = require('firebase-functions/v1');
 const admin = require('firebase-admin');
+// v1.1 - redeploy after Blaze upgrade
 
 admin.initializeApp();
-
-const stripeSecretKey = defineSecret('STRIPE_SECRET_KEY');
 
 // ==============================
 // สร้าง Payment Intent (Card & PromptPay)
 // ==============================
-exports.createPaymentIntent = onCall(
-  { region: 'asia-southeast1', secrets: [stripeSecretKey] },
-  async (request) => {
-    const stripe = require('stripe')(stripeSecretKey.value());
-    const { items, email, paymentMethod = 'card' } = request.data;
+exports.createPaymentIntent = functions
+  .region('asia-southeast1')
+  .runWith({ secrets: ['STRIPE_SECRET_KEY'] })
+  .https.onCall(async (data, context) => {
+    const Stripe = require('stripe');
+    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+      httpClient: Stripe.createNodeHttpClient(),
+    });
+    const { items, email, paymentMethod = 'card' } = data;
 
     if (!items || items.length === 0) {
-      throw new HttpsError('invalid-argument', 'ไม่มีสินค้าในตะกร้า');
+      throw new functions.https.HttpsError('invalid-argument', 'ไม่มีสินค้าในตะกร้า');
     }
 
     const subtotal = items.reduce((sum, item) => sum + item.price, 0);
@@ -31,108 +33,122 @@ exports.createPaymentIntent = onCall(
         price: i.price,
         license: i.license,
       }))),
-      userId: request.auth ? request.auth.uid : 'guest',
+      userId: context.auth ? context.auth.uid : 'guest',
       email: email || '',
     };
 
-    if (paymentMethod === 'promptpay') {
+    try {
+      if (paymentMethod === 'promptpay') {
+        const paymentIntent = await stripe.paymentIntents.create({
+          amount,
+          currency: 'thb',
+          payment_method_types: ['promptpay'],
+          metadata,
+        });
+
+        const confirmed = await stripe.paymentIntents.confirm(paymentIntent.id, {
+          payment_method: { type: 'promptpay' },
+        });
+
+        await admin.firestore().collection('orders').doc(confirmed.id).set({
+          paymentIntentId: confirmed.id,
+          userId: context.auth ? context.auth.uid : null,
+          email: email || '',
+          items,
+          subtotal,
+          discount,
+          total,
+          status: 'pending',
+          paymentMethod: 'promptpay',
+          createdAt: admin.firestore.FieldValue.serverTimestamp(),
+        });
+
+        return {
+          paymentIntentId: confirmed.id,
+          qrCodeUrl: confirmed.next_action.promptpay_display_qr_code.image_url_png,
+        };
+      }
+
+      // Card payment
       const paymentIntent = await stripe.paymentIntents.create({
         amount,
         currency: 'thb',
-        payment_method_types: ['promptpay'],
+        payment_method_types: ['card'],
         metadata,
       });
 
-      const confirmed = await stripe.paymentIntents.confirm(paymentIntent.id, {
-        payment_method: { type: 'promptpay' },
-      });
-
-      await admin.firestore().collection('orders').doc(confirmed.id).set({
-        paymentIntentId: confirmed.id,
-        userId: request.auth ? request.auth.uid : null,
+      await admin.firestore().collection('orders').doc(paymentIntent.id).set({
+        paymentIntentId: paymentIntent.id,
+        userId: context.auth ? context.auth.uid : null,
         email: email || '',
         items,
         subtotal,
         discount,
         total,
         status: 'pending',
-        paymentMethod: 'promptpay',
+        paymentMethod: 'card',
         createdAt: admin.firestore.FieldValue.serverTimestamp(),
       });
 
       return {
-        paymentIntentId: confirmed.id,
-        qrCodeUrl: confirmed.next_action.promptpay_display_qr_code.image_url_png,
+        clientSecret: paymentIntent.client_secret,
+        paymentIntentId: paymentIntent.id,
       };
+
+    } catch (err) {
+      console.error('createPaymentIntent error:', err.message, err.type, err.code);
+      console.error('createPaymentIntent cause:', err.cause ? String(err.cause) : 'no cause');
+      console.error('createPaymentIntent stack:', err.stack ? err.stack.split('\n')[0] : 'no stack');
+      throw new functions.https.HttpsError('internal', err.message || 'Payment error');
     }
-
-    // Card payment (default)
-    const paymentIntent = await stripe.paymentIntents.create({
-      amount,
-      currency: 'thb',
-      payment_method_types: ['card'],
-      metadata,
-    });
-
-    await admin.firestore().collection('orders').doc(paymentIntent.id).set({
-      paymentIntentId: paymentIntent.id,
-      userId: request.auth ? request.auth.uid : null,
-      email: email || '',
-      items,
-      subtotal,
-      discount,
-      total,
-      status: 'pending',
-      paymentMethod: 'card',
-      createdAt: admin.firestore.FieldValue.serverTimestamp(),
-    });
-
-    return {
-      clientSecret: paymentIntent.client_secret,
-      paymentIntentId: paymentIntent.id,
-    };
-  }
-);
+  });
 
 // ==============================
 // ตรวจสอบสถานะ PromptPay
 // ==============================
-exports.checkPaymentStatus = onCall(
-  { region: 'asia-southeast1', secrets: [stripeSecretKey] },
-  async (request) => {
-    const stripe = require('stripe')(stripeSecretKey.value());
-    const { paymentIntentId } = request.data;
+exports.checkPaymentStatus = functions
+  .region('asia-southeast1')
+  .runWith({ secrets: ['STRIPE_SECRET_KEY'] })
+  .https.onCall(async (data, context) => {
+    const Stripe = require('stripe');
+    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+      httpClient: Stripe.createNodeHttpClient(),
+    });
+    const { paymentIntentId } = data;
 
     if (!paymentIntentId) {
-      throw new HttpsError('invalid-argument', 'ไม่พบ paymentIntentId');
+      throw new functions.https.HttpsError('invalid-argument', 'ไม่พบ paymentIntentId');
     }
 
     const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
     return { status: paymentIntent.status };
-  }
-);
+  });
 
 // ==============================
 // ดึง Download Links หลังชำระเงินสำเร็จ
 // ==============================
-exports.getDownloadLinks = onCall(
-  { region: 'asia-southeast1', secrets: [stripeSecretKey] },
-  async (request) => {
-    const stripe = require('stripe')(stripeSecretKey.value());
-    const { paymentIntentId } = request.data;
+exports.getDownloadLinks = functions
+  .region('asia-southeast1')
+  .runWith({ secrets: ['STRIPE_SECRET_KEY'] })
+  .https.onCall(async (data, context) => {
+    const Stripe = require('stripe');
+    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+      httpClient: Stripe.createNodeHttpClient(),
+    });
+    const { paymentIntentId } = data;
 
     if (!paymentIntentId) {
-      throw new HttpsError('invalid-argument', 'ไม่พบ paymentIntentId');
+      throw new functions.https.HttpsError('invalid-argument', 'ไม่พบ paymentIntentId');
     }
 
     const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
     if (paymentIntent.status !== 'succeeded') {
-      throw new HttpsError('failed-precondition', 'การชำระเงินยังไม่สำเร็จ');
+      throw new functions.https.HttpsError('failed-precondition', 'การชำระเงินยังไม่สำเร็จ');
     }
 
     const orderDoc = await admin.firestore().collection('orders').doc(paymentIntentId).get();
     if (!orderDoc.exists) {
-      throw new HttpsError('not-found', 'ไม่พบคำสั่งซื้อ');
+      throw new functions.https.HttpsError('not-found', 'ไม่พบคำสั่งซื้อ');
     }
 
     const order = orderDoc.data();
@@ -166,9 +182,9 @@ exports.getDownloadLinks = onCall(
       paidAt: admin.firestore.FieldValue.serverTimestamp(),
     });
 
-    if (request.auth) {
+    if (context.auth) {
       await admin.firestore()
-        .collection('users').doc(request.auth.uid)
+        .collection('users').doc(context.auth.uid)
         .collection('orders').doc(paymentIntentId)
         .set({
           paymentIntentId,
@@ -181,5 +197,4 @@ exports.getDownloadLinks = onCall(
     }
 
     return { downloadLinks, items: order.items };
-  }
-);
+  });
