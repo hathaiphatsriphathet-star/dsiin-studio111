@@ -610,35 +610,37 @@ document.querySelectorAll('a.font-card').forEach(card => {
     setTimeout(() => { if (card.style.transition) card.style.transition = ''; }, 520);
   }
 
-  document.querySelectorAll('.fonts-grid').forEach(grid => {
-    grid.addEventListener('mousemove', e => {
-      if (rafId) return;
-      rafId = requestAnimationFrame(() => {
-        rafId = null;
-        const card = e.target.closest('.font-card');
-        if (!card || card.classList.contains('font-card-load-more')) return;
+    // Only enable 3D hover on devices with a fine pointer (mouse)
+    const isDesktop = window.matchMedia('(pointer: fine)').matches;
+    if (isDesktop) {
+      grid.addEventListener('mousemove', e => {
+        if (rafId) return;
+        rafId = requestAnimationFrame(() => {
+          rafId = null;
+          const card = e.target.closest('.font-card');
+          if (!card || card.classList.contains('font-card-load-more')) return;
 
-        if (activeCard && activeCard !== card) resetCard(activeCard);
-        activeCard = card;
+          if (activeCard && activeCard !== card) resetCard(activeCard);
+          activeCard = card;
 
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        const cx = rect.width / 2;
-        const cy = rect.height / 2;
-        const rotY =  ((x - cx) / cx) * 9;
-        const rotX = -((y - cy) / cy) * 6;
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          const cx = rect.width / 2;
+          const cy = rect.height / 2;
+          const rotY =  ((x - cx) / cx) * 9;
+          const rotX = -((y - cy) / cy) * 6;
 
-        card.style.transition = 'box-shadow 0.25s ease, border-color 0.25s ease';
-        card.style.transform = `perspective(900px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateY(-8px) scale(1.02)`;
+          card.style.transition = 'box-shadow 0.25s ease, border-color 0.25s ease';
+          card.style.transform = `perspective(900px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateY(-8px) scale(1.02)`;
+        });
+      }, { passive: true });
+
+      grid.addEventListener('mouseleave', () => {
+        if (activeCard) { resetCard(activeCard); activeCard = null; }
+        if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
       });
-    }, { passive: true });
-
-    grid.addEventListener('mouseleave', () => {
-      if (activeCard) { resetCard(activeCard); activeCard = null; }
-      if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
-    });
-  });
+    }
 })();
 
 // ===== SCROLL ANIMATIONS =====
@@ -655,9 +657,9 @@ if (!prefersReducedMotion && 'IntersectionObserver' in window) {
 
   document.querySelectorAll('.testimonial-card, .value-card, .team-card, .category-card').forEach((el, i) => {
     el.classList.add('animate-on-scroll');
-    // stagger within siblings (cap at 6 steps)
+    // stagger within siblings (faster stagger for better feel)
     const siblingIndex = Array.from(el.parentElement?.children || []).indexOf(el);
-    const delay = Math.min(siblingIndex * 0.07, 0.42);
+    const delay = Math.min(siblingIndex * 0.04, 0.24);
     el.style.transitionDelay = delay + 's';
     scrollObserver.observe(el);
   });

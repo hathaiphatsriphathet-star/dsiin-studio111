@@ -39,12 +39,12 @@
   --radius-lg: 16px;
   --font-display: 'Noto Serif Thai', 'Sarabun', serif;
   --font-body: 'Sarabun', 'Noto Sans Thai', sans-serif;
-  --transition: color 0.25s cubic-bezier(0.4, 0, 0.2, 1),
-               background-color 0.25s cubic-bezier(0.4, 0, 0.2, 1),
-               border-color 0.25s cubic-bezier(0.4, 0, 0.2, 1),
-               box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1),
-               transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
-               opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition: color 0.15s ease,
+               background-color 0.15s ease,
+               border-color 0.15s ease,
+               box-shadow 0.15s ease,
+               transform 0.15s ease,
+               opacity 0.15s ease;
 }
 
 html { scroll-behavior: smooth; }
@@ -2579,3 +2579,40 @@ a.hero-specimen-card:hover .hero-specimen-buy {
     transition: none !important;
   }
 }
+
+/* ===== PERFORMANCE & MOBILE OPTIMIZATION ===== */
+@media (max-width: 768px) {
+  /* Disable continuous floating animations on mobile to save CPU/Battery */
+  .hero-card-animated {
+    animation: heroCardIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) both !important;
+  }
+  
+  /* Slow down marquee on mobile for better readability and performance */
+  .marquee-track {
+    animation-duration: 45s !important;
+  }
+
+  /* Disable expensive shimmer/shine effects on mobile */
+  .font-card::after,
+  .hero-card-shine {
+    display: none !important;
+    animation: none !important;
+  }
+  
+  /* Faster scrolling reveal on mobile */
+  .animate-on-scroll {
+    transition-duration: 0.4s !important;
+    transform: translateY(20px) scale(0.98);
+  }
+  
+  /* Reduce hover scale to prevent "jumpy" feel on touch devices */
+  .font-card:hover .font-card-preview {
+    transform: scale(1.02);
+  }
+
+  /* Optimize page loader for mobile */
+  .loader-logo {
+    animation-duration: 1s !important;
+  }
+}
+
