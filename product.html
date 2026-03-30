@@ -373,6 +373,7 @@
 <script src="firebase-config.js"></script>
 <script src="auth.js"></script>
 <script src="fonts-data.js"></script>
+<script src="fonts-metadata.js"></script>
 <script>
 (function() {
   const grid = document.getElementById('relatedFontsGrid');
@@ -961,6 +962,15 @@ const fontMap = {
   // หา font-family ที่ตรงกับชื่อ
   const family = fontMap[fontName] || fontMap[fontName.trim()] || fontMap[fontName.replace(/\s+/g, '')];
   if (!family) return;
+
+  // อัปเดตจำนวนน้ำหนักตามไฟล์ที่มีจริง
+  const weights = typeof FONT_METADATA !== 'undefined' ? FONT_METADATA[family] : null;
+  if (weights && weights.length > 0) {
+    const wVal = document.getElementById('weightVal');
+    if (wVal) {
+      wVal.textContent = weights.length + ' น้ำหนัก (' + weights.join(', ') + ')';
+    }
+  }
 
   const fontCSS = "'" + family + "', sans-serif";
 
