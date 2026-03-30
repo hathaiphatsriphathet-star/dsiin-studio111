@@ -1,3 +1,27 @@
+// ===== LAZY LOAD BACKGROUND IMAGES =====
+(function() {
+  if (!('IntersectionObserver' in window)) {
+    // Fallback: load all immediately for old browsers
+    document.querySelectorAll('[data-bg]').forEach(el => {
+      el.style.backgroundImage = "url('" + el.dataset.bg + "')";
+    });
+    return;
+  }
+  const bgObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        const el = entry.target;
+        el.style.backgroundImage = "url('" + el.dataset.bg + "')";
+        bgObserver.unobserve(el);
+      }
+    });
+  }, { rootMargin: '200px' });
+
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('[data-bg]').forEach(el => bgObserver.observe(el));
+  });
+})();
+
 // ===== CART UTILITIES =====
 function cartGet() { return JSON.parse(localStorage.getItem('dsiin_cart') || '[]'); }
 function cartSave(cart) { localStorage.setItem('dsiin_cart', JSON.stringify(cart)); }

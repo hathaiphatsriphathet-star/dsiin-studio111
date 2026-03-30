@@ -11,7 +11,7 @@
     const months = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
     const date = now.getDate() + ' ' + months[now.getMonth()] + ' ' + (now.getFullYear() + 543);
     db.collection('orders').add({
-      uid: user.uid,
+      userId: user.uid,
       email: user.email,
       date: date,
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
@@ -24,7 +24,7 @@
     const user = auth.currentUser;
     if (!user) { callback([]); return; }
     db.collection('orders')
-      .where('uid', '==', user.uid)
+      .where('userId', '==', user.uid)
       .get()
       .then(snapshot => {
         const orders = [];
@@ -244,6 +244,11 @@
       })
       .catch(err => {
         console.error('Google login error:', err);
+        const msg = document.getElementById('loginMsg');
+        if (msg) {
+          msg.style.color = '#e11d48';
+          msg.textContent = 'ไม่สามารถเข้าสู่ระบบด้วย Google ได้ กรุณาลองใหม่';
+        }
       });
   };
 
@@ -303,6 +308,7 @@
 
   window.authLogout = function () {
     auth.signOut();
+    localStorage.removeItem('dsiin_cart');
     document.getElementById('profileOverlay').style.display = 'none';
   };
 
