@@ -463,7 +463,7 @@ document.querySelectorAll('a.font-card').forEach(card => {
     { family: 'DSSubway',           name: 'ฟอนต์ซับเวย์',       text: 'สวยงาม'    },
     { family: 'TKDragon',           name: 'ฟอนต์ดราก้อน',       text: 'ครีเอทีฟ'  },
     { family: 'DSMotor',            name: 'ฟอนต์มอเตอร์',       text: 'สไตล์'     },
-    { family: 'DSHawkins',          name: 'ฟอนต์ฮอว์กินส์',     text: 'ลายมือ'    },
+
     { family: 'DSSomwhan',          name: 'ฟอนต์ส้มหวาน',       text: 'สวัสดี'    },
     { family: 'TKMooDeng',          name: 'ฟอนต์หมูเด้ง',       text: 'น่ารัก'    },
     { family: 'DSPhloenWan',        name: 'ฟอนต์เพลินวาน',      text: 'ความสุข'   },
@@ -651,9 +651,9 @@ if (!prefersReducedMotion && 'IntersectionObserver' in window) {
         scrollObserver.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  }, { threshold: 0.08, rootMargin: '0px 0px 50px 0px' });
 
-  document.querySelectorAll('.font-card, .testimonial-card, .value-card, .team-card, .category-card').forEach((el, i) => {
+  document.querySelectorAll('.testimonial-card, .value-card, .team-card, .category-card').forEach((el, i) => {
     el.classList.add('animate-on-scroll');
     // stagger within siblings (cap at 6 steps)
     const siblingIndex = Array.from(el.parentElement?.children || []).indexOf(el);
