@@ -473,28 +473,33 @@
   function loadMyFonts() {
     const user = firebase.auth().currentUser;
     if (!user) return;
-    db.collection('users').doc(user.uid).collection('orders').get().then(snapshot => {
-      const fontSet = {};
+    const fontSet = {};
+
+    function collectItems(snapshot, requirePaid) {
       snapshot.forEach(doc => {
         const o = doc.data();
+        if (requirePaid && o.status !== 'paid') return;
         (o.items || []).forEach(item => {
-          fontSet[item.name] = item;
+          if (item.name) fontSet[item.name] = item;
         });
       });
-      // fallback: also query top-level orders by userId
-      return db.collection('orders').where('userId', '==', user.uid).get().then(snap2 => {
-        snap2.forEach(doc => {
-          const o = doc.data();
-          if (o.status === 'paid') {
-            (o.items || []).forEach(item => { fontSet[item.name] = item; });
-          }
-        });
-        return fontSet;
-      });
-    }).then(fontSet => {
+    }
+
+    // Query 1: users/{uid}/orders sub-collection (from getDownloadLinks)
+    const q1 = db.collection('users').doc(user.uid).collection('orders').get()
+      .then(s => collectItems(s, false)).catch(() => {});
+
+    // Query 2: top-level orders with userId field (new payment system)
+    const q2 = db.collection('orders').where('userId', '==', user.uid).get()
+      .then(s => collectItems(s, true)).catch(() => {});
+
+    // Query 3: top-level orders with uid field (old payment system)
+    const q3 = db.collection('orders').where('uid', '==', user.uid).get()
+      .then(s => collectItems(s, false)).catch(() => {});
+
+    Promise.all([q1, q2, q3]).then(() => {
       _purchasedFontNames = new Set(Object.keys(fontSet));
-      const fonts = Object.values(fontSet);
-      renderPurchasedFonts(fonts);
+      renderPurchasedFonts(Object.values(fontSet));
     }).catch(() => {
       document.getElementById('myFontsList').innerHTML = `<p style="color:#aaa;text-align:center;padding:40px 0;">ไม่สามารถโหลดข้อมูลได้</p>`;
     });
@@ -508,11 +513,25 @@
     return `<div class="font-img-placeholder">🔤</div>`;
   }
 
+  // normalize: ลบช่องว่างซ้ำ trim เพื่อ fuzzy match ชื่อฟอนต์
+  function normalizeName(n) {
+    return (n || '').replace(/\s+/g, ' ').trim();
+  }
+
   function getFontData(name) {
     if (typeof FONTS_DATA !== 'undefined') {
-      return FONTS_DATA.find(f => f.name === name) || { name };
+      const norm = normalizeName(name);
+      return FONTS_DATA.find(f => normalizeName(f.name) === norm) || { name };
     }
     return { name };
+  }
+
+  function getFontMapKey(name) {
+    if (typeof FONT_STORAGE_MAP === 'undefined') return name;
+    if (FONT_STORAGE_MAP[name]) return name;
+    // fuzzy: normalize whitespace
+    const norm = normalizeName(name);
+    return Object.keys(FONT_STORAGE_MAP).find(k => normalizeName(k) === norm) || name;
   }
 
   function renderPurchasedFonts(fonts) {
@@ -572,9 +591,10 @@
   }
 
   function showFontFiles(fontName, btn) {
-    const files = FONT_STORAGE_MAP[fontName];
+    const resolvedKey = getFontMapKey(fontName);
+    const files = FONT_STORAGE_MAP[resolvedKey];
     if (!files || files.length === 0) {
-      alert('ไม่พบไฟล์ฟอนต์ กรุณาติดต่อ @dsiinstudio');
+      alert('ไม่พบไฟล์ฟอนต์: ' + fontName + '\nกรุณาติดต่อ @dsiinstudio');
       return;
     }
     const card = btn.closest('.my-font-card');
