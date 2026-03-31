@@ -35,8 +35,8 @@
       gap: 20px;
     }
     .dashboard-avatar {
-      width: 64px;
-      height: 64px;
+      width: 72px;
+      height: 72px;
       border-radius: 50%;
       background: linear-gradient(135deg, #f9a8d4, #c4b5fd);
       display: flex;
@@ -46,6 +46,34 @@
       font-weight: 800;
       color: #1a1a2e;
       flex-shrink: 0;
+      position: relative;
+      cursor: pointer;
+      overflow: hidden;
+    }
+    .dashboard-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      display: none;
+    }
+    .avatar-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      opacity: 0;
+      transition: opacity 0.2s;
+      border-radius: 50%;
+    }
+    .dashboard-avatar:hover .avatar-overlay { opacity: 1; }
+    .avatar-upload-hint {
+      font-size: 0.75rem;
+      color: #aaa;
+      margin-top: 4px;
     }
     .dashboard-name {
       font-size: 1.3rem;
@@ -391,10 +419,19 @@
 
   <div class="dashboard-header">
     <div class="dashboard-header-inner">
-      <div class="dashboard-avatar" id="dashAvatar">?</div>
+      <div>
+        <div class="dashboard-avatar" id="dashAvatar" onclick="document.getElementById('avatarInput').click()" title="คลิกเพื่อเปลี่ยนรูปโปรไฟล์">
+          <img id="dashAvatarImg" alt="profile">
+          <span id="dashAvatarInitial">?</span>
+          <div class="avatar-overlay">📷</div>
+        </div>
+        <div class="avatar-upload-hint">คลิกเปลี่ยนรูป</div>
+        <input type="file" id="avatarInput" accept="image/*" style="display:none;" onchange="uploadAvatar(this)">
+      </div>
       <div>
         <div class="dashboard-name" id="dashName">—</div>
         <div class="dashboard-email" id="dashEmail">—</div>
+        <button onclick="showSection('profile', document.querySelector('.dash-nav-btn[onclick*=profile]'))" style="margin-top:6px;font-size:0.78rem;color:#ec4899;background:none;border:none;cursor:pointer;padding:0;font-family:inherit;">✏️ แก้ไขข้อมูล</button>
       </div>
     </div>
   </div>
@@ -442,15 +479,29 @@
       <div class="dash-section" id="section-profile">
         <div class="dash-section-title">👤 ข้อมูลส่วนตัว</div>
         <div id="profileMsg" class="msg-box"></div>
+
+        <!-- รูปโปรไฟล์ -->
+        <div class="profile-form-group" style="display:flex;align-items:center;gap:20px;padding:16px;background:#faf5ff;border-radius:14px;margin-bottom:20px;">
+          <div id="profileAvatarPreview" onclick="document.getElementById('avatarInput').click()" style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#f9a8d4,#c4b5fd);display:flex;align-items:center;justify-content:center;font-size:1.6rem;font-weight:800;color:#1a1a2e;cursor:pointer;overflow:hidden;flex-shrink:0;position:relative;">
+            <img id="profileAvatarImg" alt="profile" style="width:100%;height:100%;object-fit:cover;display:none;">
+            <span id="profileAvatarInitial">?</span>
+          </div>
+          <div>
+            <div style="font-size:0.85rem;font-weight:600;color:#1a1a2e;margin-bottom:4px;">รูปโปรไฟล์</div>
+            <button onclick="document.getElementById('avatarInput').click()" style="padding:8px 16px;background:linear-gradient(135deg,#f9a8d4,#c4b5fd);border:none;border-radius:8px;font-size:0.82rem;font-weight:600;color:#1a1a2e;cursor:pointer;font-family:inherit;">📷 เปลี่ยนรูปภาพ</button>
+            <div id="avatarUploadStatus" style="font-size:0.75rem;color:#888;margin-top:4px;"></div>
+          </div>
+        </div>
+
         <div class="profile-form-group">
-          <label>ชื่อ-นามสกุล</label>
+          <label>ชื่อที่แสดง</label>
           <input type="text" id="profileName" placeholder="ชื่อของคุณ">
         </div>
         <div class="profile-form-group">
           <label>อีเมล</label>
           <input type="email" id="profileEmail" disabled style="background:#f9f9f9;color:#999;">
         </div>
-        <button class="btn-save" onclick="saveProfile()">บันทึกการเปลี่ยนแปลง</button>
+        <button class="btn-save" onclick="saveProfile()">💾 บันทึกการเปลี่ยนแปลง</button>
       </div>
 
       <!-- เปลี่ยนรหัสผ่าน -->
@@ -716,6 +767,44 @@
       });
   }
 
+  function setAvatarDisplay(photoURL, initial) {
+    const imgHeader = document.getElementById('dashAvatarImg');
+    const initHeader = document.getElementById('dashAvatarInitial');
+    const imgProfile = document.getElementById('profileAvatarImg');
+    const initProfile = document.getElementById('profileAvatarInitial');
+    if (photoURL) {
+      imgHeader.src = photoURL; imgHeader.style.display = 'block';
+      if (initHeader) initHeader.style.display = 'none';
+      imgProfile.src = photoURL; imgProfile.style.display = 'block';
+      if (initProfile) initProfile.style.display = 'none';
+    } else {
+      imgHeader.style.display = 'none';
+      if (initHeader) { initHeader.style.display = ''; initHeader.textContent = initial; }
+      imgProfile.style.display = 'none';
+      if (initProfile) { initProfile.style.display = ''; initProfile.textContent = initial; }
+    }
+  }
+
+  function uploadAvatar(input) {
+    const file = input.files[0];
+    if (!file) return;
+    const user = firebase.auth().currentUser;
+    if (!user) return;
+    const status = document.getElementById('avatarUploadStatus');
+    if (status) { status.textContent = 'กำลังอัปโหลด...'; status.style.color = '#888'; }
+    const ext = file.name.split('.').pop();
+    const ref = storage.ref(`profile-photos/${user.uid}/avatar.${ext}`);
+    ref.put(file).then(snap => snap.ref.getDownloadURL()).then(url => {
+      return firebase.auth().currentUser.updateProfile({ photoURL: url }).then(() => url);
+    }).then(url => {
+      setAvatarDisplay(url, '');
+      if (status) { status.textContent = '✓ อัปโหลดสำเร็จ'; status.style.color = '#16a34a'; }
+      input.value = '';
+    }).catch(() => {
+      if (status) { status.textContent = '✕ เกิดข้อผิดพลาด'; status.style.color = '#e11d48'; }
+    });
+  }
+
   function saveProfile() {
     const name = document.getElementById('profileName').value.trim();
     const msg = document.getElementById('profileMsg');
@@ -726,7 +815,11 @@
         msg.className = 'msg-box success';
         msg.textContent = '✓ บันทึกสำเร็จ';
         document.getElementById('dashName').textContent = name;
-        document.getElementById('dashAvatar').textContent = name[0].toUpperCase();
+        const initial = name[0].toUpperCase();
+        const initHeader = document.getElementById('dashAvatarInitial');
+        const initProfile = document.getElementById('profileAvatarInitial');
+        if (initHeader) initHeader.textContent = initial;
+        if (initProfile) initProfile.textContent = initial;
       })
       .catch(() => { msg.className = 'msg-box error'; msg.textContent = 'เกิดข้อผิดพลาด'; });
   }
@@ -767,7 +860,8 @@
       document.getElementById('loginPrompt').style.display = 'none';
       document.getElementById('dashboardMain').style.display = 'block';
       const name = user.displayName || user.email.split('@')[0];
-      document.getElementById('dashAvatar').textContent = name[0].toUpperCase();
+      const initial = name[0].toUpperCase();
+      setAvatarDisplay(user.photoURL || null, initial);
       document.getElementById('dashName').textContent = name;
       document.getElementById('dashEmail').textContent = user.email;
       document.getElementById('profileName').value = name;
