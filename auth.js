@@ -148,12 +148,15 @@
     if (user) {
       const name = user.displayName || user.email.split('@')[0];
       const initial = name[0].toUpperCase();
+      const avatarHTML = user.photoURL
+        ? `<img src="${escapeHtml(user.photoURL)}" style="width:34px;height:34px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,0.5);" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span style="display:none;width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#f9a8d4,#c4b5fd);align-items:center;justify-content:center;font-size:0.85rem;font-weight:700;color:#1a1a2e;">${escapeHtml(initial)}</span>`
+        : `<span style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#f9a8d4,#c4b5fd);display:flex;align-items:center;justify-content:center;font-size:0.85rem;font-weight:700;color:#1a1a2e;">${escapeHtml(initial)}</span>`;
       if (navLinks) {
         const el = document.createElement('li');
         el.className = 'nav-auth-item';
         el.innerHTML = `<a href="#" onclick="authShowProfile();return false;" style="display:flex;align-items:center;gap:8px;font-weight:600;">
-          <span style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#f9a8d4,#c4b5fd);display:flex;align-items:center;justify-content:center;font-size:0.8rem;font-weight:700;color:#1a1a2e;">${escapeHtml(initial)}</span>
-          <span style="font-size:0.85rem;">${escapeHtml(name.split(' ')[0])}</span>
+          ${avatarHTML}
+          <span style="font-size:0.85rem;color:#fff;">${escapeHtml(name.split(' ')[0])}</span>
         </a>`;
         navLinks.appendChild(el);
       }
