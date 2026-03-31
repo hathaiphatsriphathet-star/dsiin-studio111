@@ -2,8 +2,21 @@ const functions = require('firebase-functions/v1');
 const admin = require('firebase-admin');
 const FONT_MAP = require('./font-map');
 const STORAGE_FOLDER = 'TK studio';
+const STORAGE_BUCKET = 'dsiinstodio.firebasestorage.app';
 
 admin.initializeApp();
+
+// สร้าง download URL จาก metadata token (ไม่ต้องการ IAM permission พิเศษ)
+async function getFileDownloadUrl(bucket, filePath) {
+  const file = bucket.file(filePath);
+  const [exists] = await file.exists();
+  if (!exists) return null;
+  const [metadata] = await file.getMetadata();
+  const token = metadata.metadata && metadata.metadata.firebaseStorageDownloadTokens;
+  if (!token) return null;
+  const encodedPath = encodeURIComponent(filePath);
+  return `https://firebasestorage.googleapis.com/v0/b/${STORAGE_BUCKET}/o/${encodedPath}?alt=media&token=${token}`;
+}
 
 // ==============================
 // สร้าง Payment Intent (Card & PromptPay)
@@ -21,6 +34,12 @@ exports.createPaymentIntent = functions
 
     if (!items || items.length === 0) {
       throw new functions.https.HttpsError('invalid-argument', 'ไม่มีสินค้าในตะกร้า');
+    }
+
+    // ตรวจสอบว่าฟอนต์ทุกรายการมีอยู่ในระบบจริง
+    const invalidItems = items.filter(item => !item.name || !FONT_MAP[item.name]);
+    if (invalidItems.length > 0) {
+      throw new functions.https.HttpsError('invalid-argument', `ไม่พบฟอนต์ในระบบ: ${invalidItems.map(i => i.name || '(ไม่มีชื่อ)').join(', ')}`);
     }
 
     const subtotal = items.reduce((sum, item) => sum + item.price, 0);
@@ -100,7 +119,7 @@ exports.createPaymentIntent = functions
 
     } catch (err) {
       console.error('createPaymentIntent error:', err.message);
-      throw new functions.https.HttpsError('internal', err.message || 'Payment error');
+      throw new functions.https.HttpsError('internal', 'เกิดข้อผิดพลาดในการชำระเงิน กรุณาลองใหม่');
     }
   });
 
@@ -158,8 +177,19 @@ exports.getDownloadLinks = functions
       return { downloadLinks: order.downloadLinks, items: order.items };
     }
 
-    const bucket = admin.storage().bucket();
+    const bucket = admin.storage().bucket(STORAGE_BUCKET);
     const downloadLinks = {};
+
+    // ตรวจสอบก่อนว่ามี item ใดที่ FONT_MAP ไม่มีไฟล์ เพื่อ scan bucket ครั้งเดียว
+    const needsFallback = order.items.some(item => (FONT_MAP[item.name] || []).length === 0);
+    let allBucketFiles = null;
+    if (needsFallback) {
+      try {
+        [allBucketFiles] = await bucket.getFiles({ prefix: STORAGE_FOLDER + '/' });
+      } catch (e) {
+        console.warn('Bucket scan failed:', e.message);
+      }
+    }
 
     for (const item of order.items) {
       const fileNames = FONT_MAP[item.name] || [];
@@ -167,28 +197,24 @@ exports.getDownloadLinks = functions
 
       for (const fileName of fileNames) {
         const filePath = STORAGE_FOLDER + '/' + fileName;
-        const file = bucket.file(filePath);
-        try {
-          const [url] = await file.getSignedUrl({
-            action: 'read',
-            expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
-          });
+        const url = await getFileDownloadUrl(bucket, filePath);
+        if (url) {
           downloadLinks[item.name].push({ fileName, url });
-        } catch (e) {
-          console.warn('File not found in storage:', filePath);
+        } else {
+          console.warn('File not found:', filePath);
         }
       }
 
-      // fallback: ถ้าไม่เจอใน font-map ให้ค้นหา folder เดิม
-      if (downloadLinks[item.name].length === 0) {
-        const [files] = await bucket.getFiles({ prefix: item.name + '/' });
-        for (const file of files) {
+      // fallback: ค้นหาจากชื่อไฟล์ใน bucket (ใช้ผลที่ scan ไว้แล้ว)
+      if (downloadLinks[item.name].length === 0 && allBucketFiles) {
+        const lowerName = item.name.toLowerCase().replace(/\s+/g, '');
+        for (const file of allBucketFiles) {
           if (file.name.endsWith('/')) continue;
-          const [url] = await file.getSignedUrl({
-            action: 'read',
-            expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
-          });
-          downloadLinks[item.name].push({ fileName: file.name.split('/').pop(), url });
+          const baseName = file.name.split('/').pop().toLowerCase().replace(/\s+/g, '');
+          if (baseName.includes(lowerName) || lowerName.includes(baseName.replace(/\.(ttf|otf)$/, ''))) {
+            const url = await getFileDownloadUrl(bucket, file.name);
+            if (url) downloadLinks[item.name].push({ fileName: file.name.split('/').pop(), url });
+          }
         }
       }
     }
@@ -214,4 +240,16 @@ exports.getDownloadLinks = functions
     }
 
     return { downloadLinks, items: order.items };
+  });
+
+// ==============================
+// [DIAGNOSTIC] ลิสต์ไฟล์ใน Storage (ลบออกหลังใช้)
+// ==============================
+exports.listStorageFiles = functions
+  .region('asia-southeast1')
+  .https.onCall(async (data, context) => {
+    if (!context.auth) throw new functions.https.HttpsError('unauthenticated', 'ต้อง login');
+    const bucket = admin.storage().bucket(STORAGE_BUCKET);
+    const [files] = await bucket.getFiles({ prefix: 'TK studio/' });
+    return files.map(f => f.name).filter(n => !n.endsWith('/'));
   });

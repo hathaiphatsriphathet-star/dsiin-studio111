@@ -3,6 +3,15 @@
   const auth = firebase.auth();
   const googleProvider = new firebase.auth.GoogleAuthProvider();
 
+  function escapeHtml(str) {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
   // ---- Purchase History (Firestore) ----
   window.savePurchaseHistory = function (items) {
     const user = auth.currentUser;
@@ -143,15 +152,15 @@
         const el = document.createElement('li');
         el.className = 'nav-auth-item';
         el.innerHTML = `<a href="#" onclick="authShowProfile();return false;" style="display:flex;align-items:center;gap:8px;font-weight:600;">
-          <span style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#f9a8d4,#c4b5fd);display:flex;align-items:center;justify-content:center;font-size:0.8rem;font-weight:700;color:#1a1a2e;">${initial}</span>
-          <span style="font-size:0.85rem;">${name.split(' ')[0]}</span>
+          <span style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#f9a8d4,#c4b5fd);display:flex;align-items:center;justify-content:center;font-size:0.8rem;font-weight:700;color:#1a1a2e;">${escapeHtml(initial)}</span>
+          <span style="font-size:0.85rem;">${escapeHtml(name.split(' ')[0])}</span>
         </a>`;
         navLinks.appendChild(el);
       }
       if (mobileLinks) {
         const el = document.createElement('li');
         el.className = 'nav-auth-item';
-        el.innerHTML = `<a href="#" onclick="authShowProfile();return false;">👤 ${name}</a>`;
+        el.innerHTML = `<a href="#" onclick="authShowProfile();return false;">👤 ${escapeHtml(name)}</a>`;
         mobileLinks.appendChild(el);
       }
     } else {
@@ -274,10 +283,10 @@
     const name = user.displayName || user.email.split('@')[0];
     document.getElementById('profileContent').innerHTML = `
       <div style="display:flex;align-items:center;gap:14px;margin-bottom:24px;">
-        <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#f9a8d4,#c4b5fd);display:flex;align-items:center;justify-content:center;font-size:1.3rem;font-weight:800;color:#1a1a2e;flex-shrink:0;">${name[0].toUpperCase()}</div>
+        <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#f9a8d4,#c4b5fd);display:flex;align-items:center;justify-content:center;font-size:1.3rem;font-weight:800;color:#1a1a2e;flex-shrink:0;">${escapeHtml(name[0].toUpperCase())}</div>
         <div>
-          <div style="font-weight:700;font-size:1.05rem;">${name}</div>
-          <div style="font-size:0.82rem;color:#888;">${user.email}</div>
+          <div style="font-weight:700;font-size:1.05rem;">${escapeHtml(name)}</div>
+          <div style="font-size:0.82rem;color:#888;">${escapeHtml(user.email)}</div>
         </div>
       </div>
       <div style="border-top:1px solid #f0f0f0;padding-top:20px;margin-bottom:16px;">

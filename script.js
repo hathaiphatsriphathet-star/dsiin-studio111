@@ -233,7 +233,7 @@ document.querySelectorAll('.newsletter-form').forEach(form => {
     const input = form.querySelector('input[type="email"]');
     const btn = form.querySelector('button');
     if (!input || !input.value.trim()) return;
-    if (!input.value.includes('@') || !input.value.includes('.')) {
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value.trim())) {
       input.style.borderColor = '#e11d48';
       setTimeout(() => input.style.borderColor = '', 2000);
       return;

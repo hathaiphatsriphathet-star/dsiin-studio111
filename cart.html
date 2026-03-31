@@ -444,11 +444,13 @@ async function handlePromptPay() {
           const statusEl = document.getElementById('qrStatusText');
           if (statusEl) statusEl.textContent = 'ชำระเงินสำเร็จ! กำลังเตรียมไฟล์...';
 
-          await fnGetDownloadLinks({ paymentIntentId: currentPaymentIntentId });
+          const cartItems = [...cart];
+          const dlResult = await fnGetDownloadLinks({ paymentIntentId: currentPaymentIntentId });
           localStorage.removeItem('dsiin_cart');
           cartUpdateBadge();
-          if (typeof savePurchaseHistory === 'function') savePurchaseHistory(cart);
-          window.location.href = 'dashboard.html?paid=true';
+          if (typeof savePurchaseHistory === 'function') savePurchaseHistory(cartItems);
+          document.getElementById('paymentOverlay').style.display = 'none';
+          showDownloads(dlResult.data.downloadLinks, cartItems);
         }
       } catch (e) { /* ยังไม่ได้ชำระ รอต่อ */ }
     }, 4000);
@@ -457,7 +459,8 @@ async function handlePromptPay() {
     console.error(err);
     qrBtn.disabled = false;
     qrBtn.innerHTML = 'รับ QR Code <span id="qrBtnAmount">฿' + total.toLocaleString() + '</span>';
-    alert('เกิดข้อผิดพลาด: ' + (err.message || 'กรุณาลองใหม่'));
+    const errMsg = (err.code === 'functions/internal') ? 'เกิดข้อผิดพลาดในการชำระเงิน กรุณาลองใหม่' : (err.message || 'เกิดข้อผิดพลาด กรุณาลองใหม่');
+    alert(errMsg);
   }
 }
 
@@ -498,15 +501,17 @@ async function handlePayment() {
 
     if (paymentIntent.status === 'succeeded') {
       payBtn.innerHTML = '<span class="spinner"></span>กำลังเตรียมไฟล์...';
-      await fnGetDownloadLinks({ paymentIntentId: currentPaymentIntentId });
+      const dlResult = await fnGetDownloadLinks({ paymentIntentId: currentPaymentIntentId });
+      const cartItems = [...cart];
       localStorage.removeItem('dsiin_cart');
       cartUpdateBadge();
-      if (typeof savePurchaseHistory === 'function') savePurchaseHistory(cart);
-      window.location.href = 'dashboard.html?paid=true';
+      if (typeof savePurchaseHistory === 'function') savePurchaseHistory(cartItems);
+      document.getElementById('paymentOverlay').style.display = 'none';
+      showDownloads(dlResult.data.downloadLinks, cartItems);
     }
   } catch (err) {
     console.error(err);
-    errorEl.textContent = err.message || 'เกิดข้อผิดพลาด กรุณาลองใหม่';
+    errorEl.textContent = (err.code === 'functions/internal') ? 'เกิดข้อผิดพลาดในการชำระเงิน กรุณาลองใหม่' : (err.message || 'เกิดข้อผิดพลาด กรุณาลองใหม่');
     payBtn.disabled = false;
     payBtn.innerHTML = 'จ่ายเงิน ' + totalText;
   }
