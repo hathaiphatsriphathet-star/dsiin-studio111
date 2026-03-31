@@ -342,18 +342,40 @@
 </div>
 
 <!-- Navbar -->
-<nav class="navbar" id="navbar">
-  <div class="nav-inner">
-    <a href="index.html" class="nav-logo">สถานีฟอนต์</a>
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-icon"><img src="รูปโปร/LOGO.png" alt="Dsiin Studio Logo"></div>
+      <div>
+        <div>สถานีฟอนต์</div>
+        <div class="logo-text-en">Dsiin Studio</div>
+      </div>
+    </a>
     <ul class="nav-links">
+      <li><a href="index.html">หน้าแรก</a></li>
       <li><a href="shop.html">ฟอนต์ทั้งหมด</a></li>
-      <li><a href="shop.html#new">ฟอนต์ใหม่</a></li>
       <li><a href="contact.html">ติดต่อ</a></li>
       <li><a href="shop.html" class="nav-cta">เลือกซื้อฟอนต์</a></li>
-      <li><a href="cart.html" class="nav-cart">🛒</a></li>
+      <li><a href="cart.html" class="nav-cart">🛒 <span class="cart-count" style="display:none;">0</span></a></li>
     </ul>
+    <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
   </div>
 </nav>
+
+<div class="mobile-nav" id="mobileNav">
+  <div class="mobile-nav-panel">
+    <button class="mobile-nav-close" id="mobileNavClose">✕</button>
+    <a href="index.html" class="logo" style="margin-bottom:8px;">
+      <div class="logo-icon"><img src="รูปโปร/LOGO.png" alt="Dsiin Studio Logo"></div>
+      <div><div>สถานีฟอนต์</div><div class="logo-text-en">Dsiin Studio</div></div>
+    </a>
+    <ul class="mobile-nav-links">
+      <li><a href="index.html">🏠 หน้าแรก</a></li>
+      <li><a href="shop.html">🛍️ ฟอนต์ทั้งหมด</a></li>
+      <li><a href="contact.html">📩 ติดต่อ</a></li>
+    </ul>
+  </div>
+</div>
 
 <!-- Login Prompt (สำหรับคนที่ยังไม่ login) -->
 <div id="loginPrompt">
@@ -513,15 +535,20 @@
     return `<div class="font-img-placeholder">🔤</div>`;
   }
 
-  // normalize: ลบช่องว่างซ้ำ trim เพื่อ fuzzy match ชื่อฟอนต์
-  function normalizeName(n) {
-    return (n || '').replace(/\s+/g, ' ').trim();
+  // superNormalize: ลบช่องว่างทั้งหมด และลบคำว่า "ฟอนต์" ออก เพื่อการเทียบชื่อที่ยืดหยุ่น
+  function superNormalize(n) {
+    return (n || '')
+      .replace(/\s+/g, '')        // ลบช่องว่างทุกจุด
+      .replace(/^ฟอนต์/, '')      // ลบคำว่า "ฟอนต์" ที่อยู่ข้างหน้า
+      .replace(/^font/i, '')      // ลบคำว่า "font" (กรณีภาษาอังกฤษ)
+      .trim()
+      .toLowerCase();
   }
 
   function getFontData(name) {
     if (typeof FONTS_DATA !== 'undefined') {
-      const norm = normalizeName(name);
-      return FONTS_DATA.find(f => normalizeName(f.name) === norm) || { name };
+      const snTarget = superNormalize(name);
+      return FONTS_DATA.find(f => superNormalize(f.name) === snTarget) || { name };
     }
     return { name };
   }
@@ -529,9 +556,17 @@
   function getFontMapKey(name) {
     if (typeof FONT_STORAGE_MAP === 'undefined') return name;
     if (FONT_STORAGE_MAP[name]) return name;
-    // fuzzy: normalize whitespace
-    const norm = normalizeName(name);
-    return Object.keys(FONT_STORAGE_MAP).find(k => normalizeName(k) === norm) || name;
+    
+    const snTarget = superNormalize(name);
+    // ค้นหา key ที่เมื่อ normalize แล้วตรงกัน
+    const foundKey = Object.keys(FONT_STORAGE_MAP).find(k => superNormalize(k) === snTarget);
+    if (foundKey) return foundKey;
+
+    // Fallback: ค้นหาว่าชื่อที่ส่งมา มีส่วนประกอบของ key หรือไม่ (หรือกลับกัน)
+    return Object.keys(FONT_STORAGE_MAP).find(k => {
+      const snK = superNormalize(k);
+      return snTarget.length > 1 && snK.length > 1 && (snTarget.includes(snK) || snK.includes(snTarget));
+    }) || name;
   }
 
   function renderPurchasedFonts(fonts) {
@@ -574,7 +609,7 @@
       return;
     }
     container.innerHTML = `<div class="my-font-grid">${results.map((f, i) => {
-      const owned = _purchasedFontNames.has(f.name);
+      const owned = _purchasedFontNames.has(f.name) || Array.from(_purchasedFontNames).some(n => superNormalize(n) === superNormalize(f.name));
       const escapedName = f.name.replace(/'/g, "\\'");
       return `<div class="my-font-card">
         <span class="font-num">${i + 1}</span>
