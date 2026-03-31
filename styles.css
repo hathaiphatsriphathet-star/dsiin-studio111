@@ -2021,14 +2021,14 @@ section { padding: 80px 0; }
   gap: 6px;
   padding: 8px 16px;
   border-radius: 20px;
-  background: #3D7A56;
+  background: #27AE60;
   color: #fff;
-  font-weight: 600;
-  font-size: 0.9rem;
+  font-weight: 700;
+  font-size: 0.95rem;
   text-decoration: none;
   transition: background 0.2s;
 }
-.nav-cart:hover { background: #2E6344; }
+.nav-cart:hover { background: #1E8449; }
 .cart-count {
   background: var(--pink);
   color: white;
