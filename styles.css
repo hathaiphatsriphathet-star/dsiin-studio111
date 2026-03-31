@@ -212,7 +212,7 @@ section { padding: 80px 0; }
   display: block;
   width: 24px;
   height: 2px;
-  background: var(--text-dark);
+  background: #ffffff;
   border-radius: 2px;
   transition: var(--transition);
 }
@@ -537,7 +537,8 @@ section { padding: 80px 0; }
   overflow: hidden;
   border: 1px solid var(--border);
   transition: box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-              border-color 0.25s ease;
+              border-color 0.25s ease,
+              transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   cursor: pointer;
   position: relative;
   will-change: transform;
@@ -546,6 +547,7 @@ section { padding: 80px 0; }
 .font-card:hover {
   box-shadow: var(--shadow-hover);
   border-color: var(--pink-light);
+  transform: translateY(-6px);
 }
 
 .font-card-preview {
@@ -717,14 +719,16 @@ section { padding: 80px 0; }
   padding: 24px 16px;
   text-align: center;
   border: 1px solid var(--border);
+  border-top: 3px solid var(--border);
   cursor: pointer;
-  transition: var(--transition);
+  transition: var(--transition), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .category-card:hover {
   box-shadow: var(--shadow);
   border-color: var(--pink-light);
   background: var(--pink-light);
+  transform: translateY(-4px);
 }
 
 .category-icon {
@@ -2458,6 +2462,40 @@ a.hero-specimen-card:hover .hero-specimen-buy {
   opacity: 1;
   transform: translateY(0) scale(1);
 }
+
+/* ===== CARD STAGGER ANIMATION ===== */
+@keyframes cardFadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.font-card.card-animate {
+  animation: cardFadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* ===== PAGE TRANSITION ===== */
+.page-transition-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--pink-dark);
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.page-transition-overlay.fade-out {
+  opacity: 0.6;
+  pointer-events: all;
+}
+
+/* ===== CATEGORY CARD COLORS ===== */
+.category-card:nth-child(1) { border-top: 3px solid #E296B2; }
+.category-card:nth-child(2) { border-top: 3px solid #97C4B8; }
+.category-card:nth-child(3) { border-top: 3px solid #F4A261; }
+.category-card:nth-child(4) { border-top: 3px solid #A8DADC; }
+.category-card:nth-child(5) { border-top: 3px solid #FFB4C2; }
+.category-card:nth-child(6) { border-top: 3px solid #C8B6E2; }
 
 /* ===== FOCUS STYLES (accessibility) ===== */
 :focus-visible {

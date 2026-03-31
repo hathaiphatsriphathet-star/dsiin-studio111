@@ -674,3 +674,47 @@ if (loaderEl) {
     }
   });
 }
+
+// ===== PAGE TRANSITION =====
+(function() {
+  const overlay = document.createElement('div');
+  overlay.className = 'page-transition-overlay';
+  document.body.appendChild(overlay);
+
+  document.querySelectorAll('a[href]').forEach(link => {
+    const href = link.getAttribute('href');
+    if (!href || href.startsWith('#') || href.startsWith('http') || href.startsWith('mailto') || link.target === '_blank') return;
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      overlay.classList.add('fade-out');
+      setTimeout(() => { window.location.href = href; }, 240);
+    });
+  });
+})();
+
+// ===== FONT CARD STAGGER ENTRANCE =====
+(function() {
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReduced || !('IntersectionObserver' in window)) return;
+
+  const grids = document.querySelectorAll('.fonts-grid');
+  grids.forEach(grid => {
+    const cards = grid.querySelectorAll('.font-card:not(.font-card-load-more)');
+    const cardObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const card = entry.target;
+          const idx = card.dataset.cardIdx || 0;
+          card.style.animationDelay = (idx * 0.06) + 's';
+          card.classList.add('card-animate');
+          cardObserver.unobserve(card);
+        }
+      });
+    }, { threshold: 0.05, rootMargin: '0px 0px 60px 0px' });
+
+    cards.forEach((card, i) => {
+      card.dataset.cardIdx = i % 8;
+      cardObserver.observe(card);
+    });
+  });
+})();
