@@ -19,18 +19,17 @@ async function getFileDownloadUrl(bucket, filePath) {
 }
 
 // ==============================
-// สร้าง Payment Intent (Card & PromptPay)
+// สร้าง Charge (Card & PromptPay)
 // ==============================
 exports.createPaymentIntent = functions
   .region('asia-southeast1')
-  .runWith({ secrets: ['STRIPE_SECRET_KEY'] })
+  .runWith({ secrets: ['OMISE_SECRET_KEY'] })
   .https.onCall(async (data, context) => {
-    const Stripe = require('stripe');
-    const stripe = new Stripe((process.env.STRIPE_SECRET_KEY || '').trim(), {
-      httpClient: Stripe.createNodeHttpClient(),
+    const omise = require('omise')({
+      secretKey: (process.env.OMISE_SECRET_KEY || '').trim(),
     });
 
-    const { items, email, paymentMethod = 'card' } = data;
+    const { items, email, paymentMethod = 'card', token } = data;
 
     if (!items || items.length === 0) {
       throw new functions.https.HttpsError('invalid-argument', 'ไม่มีสินค้าในตะกร้า');
@@ -46,34 +45,40 @@ exports.createPaymentIntent = functions
     const hasDiscount = items.length >= 10;
     const discount = hasDiscount ? Math.round(subtotal * 0.10) : 0;
     const total = subtotal - discount;
-    const amount = total * 100;
+    const amount = total * 100; // Omise ใช้ สตางค์ เหมือน Stripe
 
     const itemsSummary = items.map(i => i.name).join(', ');
-    const metadata = {
-      items: itemsSummary.length <= 500 ? itemsSummary : itemsSummary.substring(0, 497) + '...',
-      item_count: String(items.length),
-      userId: context.auth ? context.auth.uid : 'guest',
-      email: (email || '').substring(0, 500),
-    };
+    const description = itemsSummary.length <= 500 ? itemsSummary : itemsSummary.substring(0, 497) + '...';
 
     try {
       if (paymentMethod === 'promptpay') {
-        const paymentIntent = await stripe.paymentIntents.create({
-          amount,
-          currency: 'thb',
-          payment_method_types: ['promptpay'],
-          metadata,
-        });
-
-        const confirmed = await stripe.paymentIntents.confirm(paymentIntent.id, {
-          payment_method_data: {
+        // สร้าง Source สำหรับ PromptPay
+        const source = await new Promise((resolve, reject) => {
+          omise.sources.create({
             type: 'promptpay',
-            billing_details: { email: email || 'noemail@example.com' },
-          },
+            amount,
+            currency: 'thb',
+          }, (err, result) => err ? reject(err) : resolve(result));
         });
 
-        await admin.firestore().collection('orders').doc(confirmed.id).set({
-          paymentIntentId: confirmed.id,
+        // สร้าง Charge จาก Source
+        const charge = await new Promise((resolve, reject) => {
+          omise.charges.create({
+            amount,
+            currency: 'thb',
+            source: source.id,
+            description,
+            metadata: {
+              items: description,
+              item_count: String(items.length),
+              userId: context.auth ? context.auth.uid : 'guest',
+              email: (email || '').substring(0, 500),
+            },
+          }, (err, result) => err ? reject(err) : resolve(result));
+        });
+
+        await admin.firestore().collection('orders').doc(charge.id).set({
+          chargeId: charge.id,
           userId: context.auth ? context.auth.uid : null,
           email: email || '',
           items,
@@ -86,35 +91,47 @@ exports.createPaymentIntent = functions
         });
 
         return {
-          paymentIntentId: confirmed.id,
-          qrCodeUrl: confirmed.next_action.promptpay_display_qr_code.image_url_png,
+          chargeId: charge.id,
+          qrCodeUrl: charge.source.scannable_code.image.download_uri,
         };
       }
 
-      // Card payment
-      const paymentIntent = await stripe.paymentIntents.create({
-        amount,
-        currency: 'thb',
-        payment_method_types: ['card'],
-        metadata,
+      // Card payment — ใช้ Omise token จาก frontend
+      if (!token) {
+        throw new functions.https.HttpsError('invalid-argument', 'ไม่พบ token บัตร');
+      }
+
+      const charge = await new Promise((resolve, reject) => {
+        omise.charges.create({
+          amount,
+          currency: 'thb',
+          card: token,
+          description,
+          metadata: {
+            items: description,
+            item_count: String(items.length),
+            userId: context.auth ? context.auth.uid : 'guest',
+            email: (email || '').substring(0, 500),
+          },
+        }, (err, result) => err ? reject(err) : resolve(result));
       });
 
-      await admin.firestore().collection('orders').doc(paymentIntent.id).set({
-        paymentIntentId: paymentIntent.id,
+      await admin.firestore().collection('orders').doc(charge.id).set({
+        chargeId: charge.id,
         userId: context.auth ? context.auth.uid : null,
         email: email || '',
         items,
         subtotal,
         discount,
         total,
-        status: 'pending',
+        status: charge.status === 'successful' ? 'paid' : 'pending',
         paymentMethod: 'card',
         createdAt: admin.firestore.FieldValue.serverTimestamp(),
       });
 
       return {
-        clientSecret: paymentIntent.client_secret,
-        paymentIntentId: paymentIntent.id,
+        chargeId: charge.id,
+        status: charge.status,
       };
 
     } catch (err) {
@@ -128,20 +145,24 @@ exports.createPaymentIntent = functions
 // ==============================
 exports.checkPaymentStatus = functions
   .region('asia-southeast1')
-  .runWith({ secrets: ['STRIPE_SECRET_KEY'] })
+  .runWith({ secrets: ['OMISE_SECRET_KEY'] })
   .https.onCall(async (data, context) => {
-    const Stripe = require('stripe');
-    const stripe = new Stripe((process.env.STRIPE_SECRET_KEY || '').trim(), {
-      httpClient: Stripe.createNodeHttpClient(),
+    const omise = require('omise')({
+      secretKey: (process.env.OMISE_SECRET_KEY || '').trim(),
     });
-    const { paymentIntentId } = data;
 
-    if (!paymentIntentId) {
-      throw new functions.https.HttpsError('invalid-argument', 'ไม่พบ paymentIntentId');
+    const { chargeId } = data;
+
+    if (!chargeId) {
+      throw new functions.https.HttpsError('invalid-argument', 'ไม่พบ chargeId');
     }
 
-    const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
-    return { status: paymentIntent.status };
+    const charge = await new Promise((resolve, reject) => {
+      omise.charges.retrieve(chargeId, (err, result) => err ? reject(err) : resolve(result));
+    });
+
+    // Omise status: pending, successful, failed, reversed, expired
+    return { status: charge.status };
   });
 
 // ==============================
@@ -149,24 +170,27 @@ exports.checkPaymentStatus = functions
 // ==============================
 exports.getDownloadLinks = functions
   .region('asia-southeast1')
-  .runWith({ secrets: ['STRIPE_SECRET_KEY'] })
+  .runWith({ secrets: ['OMISE_SECRET_KEY'] })
   .https.onCall(async (data, context) => {
-    const Stripe = require('stripe');
-    const stripe = new Stripe((process.env.STRIPE_SECRET_KEY || '').trim(), {
-      httpClient: Stripe.createNodeHttpClient(),
+    const omise = require('omise')({
+      secretKey: (process.env.OMISE_SECRET_KEY || '').trim(),
     });
-    const { paymentIntentId } = data;
 
-    if (!paymentIntentId) {
-      throw new functions.https.HttpsError('invalid-argument', 'ไม่พบ paymentIntentId');
+    const { chargeId } = data;
+
+    if (!chargeId) {
+      throw new functions.https.HttpsError('invalid-argument', 'ไม่พบ chargeId');
     }
 
-    const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
-    if (paymentIntent.status !== 'succeeded') {
+    const charge = await new Promise((resolve, reject) => {
+      omise.charges.retrieve(chargeId, (err, result) => err ? reject(err) : resolve(result));
+    });
+
+    if (charge.status !== 'successful') {
       throw new functions.https.HttpsError('failed-precondition', 'การชำระเงินยังไม่สำเร็จ');
     }
 
-    const orderDoc = await admin.firestore().collection('orders').doc(paymentIntentId).get();
+    const orderDoc = await admin.firestore().collection('orders').doc(chargeId).get();
     if (!orderDoc.exists) {
       throw new functions.https.HttpsError('not-found', 'ไม่พบคำสั่งซื้อ');
     }
@@ -180,7 +204,6 @@ exports.getDownloadLinks = functions
     const bucket = admin.storage().bucket(STORAGE_BUCKET);
     const downloadLinks = {};
 
-    // ตรวจสอบก่อนว่ามี item ใดที่ FONT_MAP ไม่มีไฟล์ เพื่อ scan bucket ครั้งเดียว
     const needsFallback = order.items.some(item => (FONT_MAP[item.name] || []).length === 0);
     let allBucketFiles = null;
     if (needsFallback) {
@@ -205,7 +228,6 @@ exports.getDownloadLinks = functions
         }
       }
 
-      // fallback: ค้นหาจากชื่อไฟล์ใน bucket (ใช้ผลที่ scan ไว้แล้ว)
       if (downloadLinks[item.name].length === 0 && allBucketFiles) {
         const lowerName = item.name.toLowerCase().replace(/\s+/g, '');
         for (const file of allBucketFiles) {
@@ -219,7 +241,7 @@ exports.getDownloadLinks = functions
       }
     }
 
-    await admin.firestore().collection('orders').doc(paymentIntentId).update({
+    await admin.firestore().collection('orders').doc(chargeId).update({
       status: 'paid',
       downloadLinks,
       paidAt: admin.firestore.FieldValue.serverTimestamp(),
@@ -228,9 +250,9 @@ exports.getDownloadLinks = functions
     if (context.auth) {
       await admin.firestore()
         .collection('users').doc(context.auth.uid)
-        .collection('orders').doc(paymentIntentId)
+        .collection('orders').doc(chargeId)
         .set({
-          paymentIntentId,
+          chargeId,
           items: order.items.map(i => ({ name: i.name, license: i.license, price: i.price })),
           total: order.total,
           status: 'paid',

@@ -12,7 +12,7 @@
   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Thai:wght@300;400;700;900&family=Sarabun:wght@300;400;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Thai:wght@300;400;700;900&family=Sarabun:wght@300;400;600;700;800&display=swap" rel="stylesheet"></noscript>
   <link rel="stylesheet" href="styles.css">
-  <script src="https://js.stripe.com/v3/"></script>
+  <script src="https://cdn.omise.co/omise.js"></script>
   <style>
     #card-element {
       background: #f9fafb;
@@ -21,8 +21,6 @@
       padding: 14px 16px;
       transition: border-color 0.2s;
     }
-    #card-element.StripeElement--focus { border-color: #ec4899; }
-    #card-element.StripeElement--invalid { border-color: #ef4444; }
     #card-errors { color: #ef4444; font-size: 0.82rem; margin-top: 6px; min-height: 18px; }
     .payment-tab {
       flex: 1; padding: 10px 8px; border: 1.5px solid #e5e7eb;
@@ -162,14 +160,31 @@
             style="width:100%;padding:12px 14px;border:1.5px solid #e5e7eb;border-radius:12px;font-size:0.9rem;outline:none;box-sizing:border-box;transition:border-color 0.2s;"
             onfocus="this.style.borderColor='#ec4899'" onblur="this.style.borderColor='#e5e7eb'">
         </div>
-        <!-- Stripe Card Element -->
+        <!-- Omise Card Form -->
         <div style="margin-bottom:4px;">
           <label style="font-size:0.85rem;font-weight:700;color:#1a1a2e;display:block;margin-bottom:8px;">ข้อมูลบัตรเครดิต / เดบิต</label>
-          <div id="card-element"></div>
+          <div id="card-element">
+            <input type="text" id="omise-card-number" placeholder="หมายเลขบัตร" maxlength="19"
+              style="width:100%;padding:12px 14px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:0.9rem;outline:none;box-sizing:border-box;margin-bottom:10px;"
+              onfocus="this.style.borderColor='#ec4899'" onblur="this.style.borderColor='#e5e7eb'"
+              oninput="formatCardNumber(this)">
+            <div style="display:flex;gap:10px;">
+              <input type="text" id="omise-card-expiry" placeholder="MM/YY" maxlength="5"
+                style="flex:1;padding:12px 14px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:0.9rem;outline:none;box-sizing:border-box;"
+                onfocus="this.style.borderColor='#ec4899'" onblur="this.style.borderColor='#e5e7eb'"
+                oninput="formatExpiry(this)">
+              <input type="text" id="omise-card-cvv" placeholder="CVV" maxlength="4"
+                style="flex:1;padding:12px 14px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:0.9rem;outline:none;box-sizing:border-box;"
+                onfocus="this.style.borderColor='#ec4899'" onblur="this.style.borderColor='#e5e7eb'">
+            </div>
+            <input type="text" id="omise-card-name" placeholder="ชื่อบนบัตร (ภาษาอังกฤษ)" maxlength="50"
+              style="width:100%;padding:12px 14px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:0.9rem;outline:none;box-sizing:border-box;margin-top:10px;"
+              onfocus="this.style.borderColor='#ec4899'" onblur="this.style.borderColor='#e5e7eb'">
+          </div>
           <div id="card-errors"></div>
         </div>
         <div style="font-size:0.75rem;color:#888;margin:10px 0 4px;display:flex;align-items:center;gap:6px;">
-          🔒 ชำระเงินปลอดภัยด้วย Stripe — ข้อมูลบัตรถูกเข้ารหัส SSL
+          🔒 ชำระเงินปลอดภัยด้วย Omise — ข้อมูลบัตรถูกเข้ารหัส SSL
         </div>
         <button class="pay-btn" id="payBtn" onclick="handlePayment()">
           จ่ายเงิน <span id="payBtnAmount"></span>
@@ -205,7 +220,7 @@
             </div>
           </div>
           <div style="font-size:0.75rem;color:#888;text-align:center;margin-top:8px;">
-            🔒 ชำระเงินปลอดภัยด้วย Stripe
+            🔒 ชำระเงินปลอดภัยด้วย Omise
           </div>
         </div>
       </div>
@@ -298,14 +313,7 @@ function removeItem(key) { cartRemove(key); renderCart(); }
 renderCart();
 
 // ===== PAYMENT SYSTEM =====
-let stripeClient = null;
 let fbFunctions = null, fnCreatePaymentIntent = null, fnGetDownloadLinks = null, fnCheckPaymentStatus = null;
-
-try {
-  stripeClient = Stripe('pk_test_51TDKKk2LK109DEDRaXrX1sEyjS7mXkdiduTG2q83MONNxWoOLAi7t9T7f4qWBKSWyBWC0unbsuvRtzLEC54WcAB100dJAK10f6');
-} catch(e) {
-  console.error('Stripe init error:', e);
-}
 
 try {
   fbFunctions = firebase.app().functions('asia-southeast1');
@@ -316,31 +324,19 @@ try {
   console.error('Firebase Functions init error:', e);
 }
 
-let cardElement = null;
-let currentClientSecret = null;
-let currentPaymentIntentId = null;
+let currentChargeId = null;
 let pollInterval = null;
 let qrTimerInterval = null;
 
-function initStripeElement() {
-  if (cardElement) return;
-  const elements = stripeClient.elements();
-  cardElement = elements.create('card', {
-    style: {
-      base: {
-        fontFamily: 'Sarabun, sans-serif',
-        fontSize: '15px',
-        color: '#1a1a2e',
-        '::placeholder': { color: '#9ca3af' },
-      },
-      invalid: { color: '#ef4444' },
-    },
-    hidePostalCode: true,
-  });
-  cardElement.mount('#card-element');
-  cardElement.on('change', e => {
-    document.getElementById('card-errors').textContent = e.error ? e.error.message : '';
-  });
+function formatCardNumber(input) {
+  let v = input.value.replace(/\D/g, '').substring(0, 16);
+  input.value = v.replace(/(.{4})/g, '$1 ').trim();
+}
+
+function formatExpiry(input) {
+  let v = input.value.replace(/\D/g, '').substring(0, 4);
+  if (v.length >= 3) v = v.substring(0,2) + '/' + v.substring(2);
+  input.value = v;
 }
 
 function checkout() {
@@ -373,7 +369,6 @@ function checkout() {
   }
 
   document.getElementById('paymentOverlay').style.display = 'flex';
-  setTimeout(initStripeElement, 100);
 }
 
 function switchTab(tab) {
@@ -381,14 +376,12 @@ function switchTab(tab) {
   document.getElementById('promptpaySection').style.display = tab === 'promptpay' ? 'block' : 'none';
   document.getElementById('tabCard').classList.toggle('active', tab === 'card');
   document.getElementById('tabPromptpay').classList.toggle('active', tab === 'promptpay');
-  if (tab === 'card') setTimeout(initStripeElement, 100);
 }
 
 function closePayment() {
   document.getElementById('paymentOverlay').style.display = 'none';
   if (pollInterval) { clearInterval(pollInterval); pollInterval = null; }
   if (qrTimerInterval) { clearInterval(qrTimerInterval); qrTimerInterval = null; }
-  // reset promptpay section
   document.getElementById('qrPending').style.display = 'block';
   document.getElementById('qrDisplay').style.display = 'none';
   const qrBtn = document.getElementById('qrBtn');
@@ -411,10 +404,9 @@ async function handlePromptPay() {
 
   try {
     const result = await fnCreatePaymentIntent({ items: cart, email, paymentMethod: 'promptpay' });
-    currentPaymentIntentId = result.data.paymentIntentId;
+    currentChargeId = result.data.chargeId;
     const qrCodeUrl = result.data.qrCodeUrl;
 
-    // Show QR
     document.getElementById('qrPending').style.display = 'none';
     document.getElementById('qrImage').src = qrCodeUrl;
     document.getElementById('qrAmount').textContent = '฿' + total.toLocaleString();
@@ -439,15 +431,15 @@ async function handlePromptPay() {
     // Poll payment status every 4 seconds
     pollInterval = setInterval(async () => {
       try {
-        const statusResult = await fnCheckPaymentStatus({ paymentIntentId: currentPaymentIntentId });
-        if (statusResult.data.status === 'succeeded') {
+        const statusResult = await fnCheckPaymentStatus({ chargeId: currentChargeId });
+        if (statusResult.data.status === 'successful') {
           clearInterval(pollInterval); pollInterval = null;
           clearInterval(qrTimerInterval); qrTimerInterval = null;
           const statusEl = document.getElementById('qrStatusText');
           if (statusEl) statusEl.textContent = 'ชำระเงินสำเร็จ! กำลังเตรียมไฟล์...';
 
           const cartItems = [...cart];
-          const dlResult = await fnGetDownloadLinks({ paymentIntentId: currentPaymentIntentId });
+          const dlResult = await fnGetDownloadLinks({ chargeId: currentChargeId });
           localStorage.removeItem('dsiin_cart');
           cartUpdateBadge();
           if (typeof savePurchaseHistory === 'function') savePurchaseHistory(cartItems);
@@ -471,7 +463,6 @@ async function handlePayment() {
   const errorEl = document.getElementById('card-errors');
   const totalText = document.getElementById('paymentTotal').textContent;
   const email = document.getElementById('paymentEmail').value.trim();
-  if (!cardElement) return;
 
   payBtn.disabled = true;
   payBtn.innerHTML = '<span class="spinner"></span>กำลังดำเนินการ...';
@@ -481,35 +472,48 @@ async function handlePayment() {
     const cart = cartGet();
     if (!cart.length) throw new Error('ตะกร้าว่างเปล่า');
 
-    // 1. สร้าง Payment Intent
-    const result = await fnCreatePaymentIntent({ items: cart, email });
-    currentClientSecret = result.data.clientSecret;
-    currentPaymentIntentId = result.data.paymentIntentId;
+    // 1. สร้าง Omise token จากข้อมูลบัตร
+    const cardNumber = document.getElementById('omise-card-number').value.replace(/\s/g, '');
+    const expiry = document.getElementById('omise-card-expiry').value.split('/');
+    const cvv = document.getElementById('omise-card-cvv').value;
+    const name = document.getElementById('omise-card-name').value.trim();
 
-    // 2. ยืนยันบัตรกับ Stripe
-    const { error, paymentIntent } = await stripeClient.confirmCardPayment(currentClientSecret, {
-      payment_method: {
-        card: cardElement,
-        billing_details: { email: email || undefined },
-      },
-    });
-
-    if (error) {
-      errorEl.textContent = error.message;
-      payBtn.disabled = false;
-      payBtn.innerHTML = 'จ่ายเงิน ' + totalText;
-      return;
+    if (!cardNumber || !expiry[0] || !expiry[1] || !cvv || !name) {
+      throw new Error('กรุณากรอกข้อมูลบัตรให้ครบถ้วน');
     }
 
-    if (paymentIntent.status === 'succeeded') {
+    const omiseToken = await new Promise((resolve, reject) => {
+      Omise.setPublicKey('pkey_test_YOUR_OMISE_PUBLIC_KEY');
+      Omise.createToken('card', {
+        name,
+        number: cardNumber,
+        expiration_month: expiry[0],
+        expiration_year: '20' + expiry[1],
+        security_code: cvv,
+      }, (statusCode, response) => {
+        if (response.object === 'error') {
+          reject(new Error(response.message));
+        } else {
+          resolve(response.id);
+        }
+      });
+    });
+
+    // 2. ส่ง token ไปสร้าง Charge ที่ backend
+    const result = await fnCreatePaymentIntent({ items: cart, email, token: omiseToken });
+    currentChargeId = result.data.chargeId;
+
+    if (result.data.status === 'successful') {
       payBtn.innerHTML = '<span class="spinner"></span>กำลังเตรียมไฟล์...';
-      const dlResult = await fnGetDownloadLinks({ paymentIntentId: currentPaymentIntentId });
+      const dlResult = await fnGetDownloadLinks({ chargeId: currentChargeId });
       const cartItems = [...cart];
       localStorage.removeItem('dsiin_cart');
       cartUpdateBadge();
       if (typeof savePurchaseHistory === 'function') savePurchaseHistory(cartItems);
       document.getElementById('paymentOverlay').style.display = 'none';
       showDownloads(dlResult.data.downloadLinks, cartItems);
+    } else {
+      throw new Error('การชำระเงินไม่สำเร็จ กรุณาตรวจสอบข้อมูลบัตร');
     }
   } catch (err) {
     console.error(err);
