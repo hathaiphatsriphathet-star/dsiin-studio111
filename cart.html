@@ -483,7 +483,7 @@ async function handlePayment() {
     }
 
     const omiseToken = await new Promise((resolve, reject) => {
-      Omise.setPublicKey('pkey_test_YOUR_OMISE_PUBLIC_KEY');
+      Omise.setPublicKey('pkey_test_678g8c5qblinpo6rztv');
       Omise.createToken('card', {
         name,
         number: cardNumber,
