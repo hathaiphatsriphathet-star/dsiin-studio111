@@ -15,348 +15,408 @@
   <noscript><link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Thai:wght@300;400;700;900&family=Sarabun:wght@300;400;600;700;800&display=swap" rel="stylesheet"></noscript>
   <link rel="stylesheet" href="styles.css">
   <style>
+    /* ── Variables ── */
+    :root {
+      --red: #97181A;
+      --red-dark: #6B0F11;
+      --red-light: #fdf2f2;
+      --red-mid: rgba(151,24,26,0.08);
+      --surface: #ffffff;
+      --surface-2: #f8f7f5;
+      --border: #ebe8e4;
+      --text-primary: #1a1a1a;
+      --text-secondary: #666;
+      --text-muted: #aaa;
+      --radius-card: 16px;
+      --shadow-sm: 0 1px 4px rgba(0,0,0,0.06);
+      --shadow-md: 0 4px 20px rgba(0,0,0,0.09);
+      --shadow-lg: 0 8px 32px rgba(0,0,0,0.12);
+    }
+
+    /* ── Layout ── */
     .dashboard-wrapper {
       min-height: 100vh;
-      background: var(--bg);
-      padding: 40px 0 80px;
+      background: #f4f2ef;
+      padding: 28px 0 80px;
     }
+
+    /* ── Profile Header ── */
     .dashboard-header {
-      background: white;
+      background: var(--surface);
       border-bottom: 1px solid var(--border);
-      padding: 32px 0;
-      margin-bottom: 40px;
+      padding: 24px 0;
+      margin-bottom: 28px;
+      box-shadow: var(--shadow-sm);
     }
     .dashboard-header-inner {
-      max-width: 900px;
+      max-width: 980px;
       margin: 0 auto;
-      padding: 0 24px;
+      padding: 0 28px;
       display: flex;
       align-items: center;
-      gap: 20px;
+      gap: 18px;
+    }
+    .avatar-wrap {
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
     }
     .dashboard-avatar {
       width: 72px;
       height: 72px;
       border-radius: 50%;
-      background: linear-gradient(135deg, #f9a8d4, #c4b5fd);
+      background: linear-gradient(135deg, #fbbf24, #f87171);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.6rem;
+      font-size: 1.7rem;
       font-weight: 800;
-      color: #1a1a2e;
+      color: white;
       flex-shrink: 0;
       position: relative;
       cursor: pointer;
       overflow: hidden;
+      box-shadow: 0 0 0 3px #fff, 0 0 0 5px var(--border);
+      transition: box-shadow 0.2s;
+    }
+    .dashboard-avatar:hover {
+      box-shadow: 0 0 0 3px #fff, 0 0 0 5px var(--red);
     }
     .dashboard-avatar img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-radius: 50%;
-      display: none;
+      width: 100%; height: 100%;
+      object-fit: cover; border-radius: 50%; display: none;
     }
     .avatar-overlay {
-      position: absolute;
-      inset: 0;
+      position: absolute; inset: 0;
       background: rgba(0,0,0,0.45);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.3rem;
-      opacity: 0;
-      transition: opacity 0.2s;
-      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; transition: opacity 0.2s; border-radius: 50%;
     }
+    .avatar-overlay svg { width: 20px; height: 20px; color: white; }
     .dashboard-avatar:hover .avatar-overlay { opacity: 1; }
-    .avatar-upload-hint {
-      font-size: 0.75rem;
-      color: #aaa;
-      margin-top: 4px;
-    }
+    .avatar-upload-hint { font-size: 0.68rem; color: var(--text-muted); letter-spacing: 0.01em; }
+
+    .header-info { flex: 1; }
     .dashboard-name {
-      font-size: 1.3rem;
-      font-weight: 700;
-      color: var(--text-dark);
+      font-size: 1.3rem; font-weight: 700;
+      color: var(--text-primary); margin-bottom: 2px;
     }
-    .dashboard-email {
-      font-size: 0.85rem;
-      color: #888;
-      margin-top: 2px;
+    .dashboard-email { font-size: 0.82rem; color: var(--text-muted); }
+    .header-edit-btn {
+      margin-top: 8px;
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 0.78rem; color: var(--red);
+      background: var(--red-light);
+      border: 1px solid rgba(151,24,26,0.12); border-radius: 20px;
+      padding: 5px 14px; cursor: pointer; font-family: inherit;
+      transition: all 0.15s; font-weight: 600;
     }
+    .header-edit-btn:hover { background: #fce4e4; border-color: var(--red); }
+    .header-badges { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+    .header-badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 0.72rem; font-weight: 600;
+      padding: 3px 10px; border-radius: 20px;
+      background: var(--surface-2); color: var(--text-secondary);
+      border: 1px solid var(--border);
+    }
+
+    /* ── Content Grid ── */
     .dashboard-content {
-      max-width: 900px;
+      max-width: 980px;
       margin: 0 auto;
-      padding: 0 24px;
+      padding: 0 28px;
       display: grid;
-      grid-template-columns: 260px 1fr;
-      gap: 28px;
+      grid-template-columns: 228px 1fr;
+      gap: 20px;
+      align-items: start;
     }
+
+    /* ── Sidebar ── */
     .dashboard-sidebar {
+      background: var(--surface);
+      border-radius: var(--radius-card);
+      border: 1px solid var(--border);
+      padding: 8px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 2px;
+      box-shadow: var(--shadow-sm);
+      position: sticky;
+      top: 80px;
+    }
+    .sidebar-section-label {
+      font-size: 0.67rem; font-weight: 700;
+      color: var(--text-muted); letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 10px 14px 4px;
     }
     .dash-nav-btn {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 13px 18px;
-      border-radius: 12px;
-      border: none;
-      background: transparent;
-      font-size: 0.92rem;
-      font-weight: 500;
-      color: #555;
-      cursor: pointer;
-      text-align: left;
-      font-family: inherit;
-      transition: all 0.2s;
-    }
-    .dash-nav-btn:hover { background: #f5f5f5; color: #1a1a2e; }
-    .dash-nav-btn.active { background: linear-gradient(135deg, rgba(249,168,212,0.2), rgba(196,181,253,0.2)); color: #1a1a2e; font-weight: 700; }
-    .dash-nav-btn .icon { font-size: 1.1rem; }
-    .dashboard-main {
-      background: white;
-      border-radius: 16px;
-      padding: 28px;
-      border: 1px solid var(--border);
-      min-height: 400px;
-    }
-    .dash-section { display: none; }
-    .dash-section.active { display: block; }
-    .dash-section-title {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--text-dark);
-      margin-bottom: 20px;
-      padding-bottom: 14px;
-      border-bottom: 1px solid #f0f0f0;
-    }
-    .order-card {
-      border: 1px solid #f0f0f0;
-      border-radius: 12px;
-      padding: 18px;
-      margin-bottom: 14px;
-    }
-    .order-card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
-    }
-    .order-date { font-size: 0.8rem; color: #888; }
-    .order-total { font-weight: 700; color: #ec4899; font-size: 1rem; }
-    .order-item {
-      font-size: 0.88rem;
-      color: #444;
-      padding: 4px 0;
-      border-top: 1px solid #f8f8f8;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .profile-form-group {
-      margin-bottom: 18px;
-    }
-    .profile-form-group label {
-      font-size: 0.82rem;
-      color: #666;
-      display: block;
-      margin-bottom: 6px;
-      font-weight: 500;
-    }
-    .profile-form-group input {
-      width: 100%;
+      display: flex; align-items: center; gap: 10px;
       padding: 11px 14px;
-      border: 1.5px solid #e5e7eb;
-      border-radius: 10px;
-      font-size: 0.9rem;
-      font-family: inherit;
-      box-sizing: border-box;
-      outline: none;
+      border-radius: 10px; border: none;
+      background: transparent;
+      font-size: 0.88rem; font-weight: 500; color: var(--text-secondary);
+      cursor: pointer; text-align: left; font-family: inherit;
+      transition: all 0.15s; width: 100%;
     }
-    .profile-form-group input:focus { border-color: #f9a8d4; }
-    .btn-save {
-      padding: 12px 28px;
-      background: linear-gradient(135deg, #f9a8d4, #c4b5fd);
-      border: none;
-      border-radius: 10px;
-      font-size: 0.92rem;
-      font-weight: 700;
-      color: #1a1a2e;
-      cursor: pointer;
-      font-family: inherit;
+    .dash-nav-btn .nav-icon {
+      width: 34px; height: 34px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--surface-2); flex-shrink: 0;
+      transition: all 0.15s;
     }
-    .btn-logout {
-      padding: 11px 24px;
-      background: #f5f5f5;
-      border: none;
-      border-radius: 10px;
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: #e11d48;
-      cursor: pointer;
-      font-family: inherit;
-      margin-top: 12px;
+    .dash-nav-btn .nav-icon svg { width: 16px; height: 16px; stroke: var(--text-secondary); transition: stroke 0.15s; }
+    .dash-nav-btn:hover { background: var(--surface-2); color: var(--text-primary); }
+    .dash-nav-btn:hover .nav-icon { background: #ede9e3; }
+    .dash-nav-btn.active {
+      background: var(--red-light);
+      color: var(--red); font-weight: 700;
     }
-    .msg-box {
-      font-size: 0.82rem;
-      padding: 10px 14px;
-      border-radius: 8px;
-      margin-bottom: 14px;
-      display: none;
+    .dash-nav-btn.active .nav-icon {
+      background: rgba(151,24,26,0.12);
     }
-    .msg-box.success { background: #f0fdf4; color: #16a34a; display: block; }
-    .msg-box.error { background: #fff1f2; color: #e11d48; display: block; }
+    .dash-nav-btn.active .nav-icon svg { stroke: var(--red); }
+    .dash-nav-separator {
+      height: 1px; background: var(--border);
+      margin: 6px 8px;
+    }
+    .dash-nav-btn.danger { color: #dc2626; }
+    .dash-nav-btn.danger .nav-icon { background: #fff1f2; }
+    .dash-nav-btn.danger .nav-icon svg { stroke: #dc2626; }
+    .dash-nav-btn.danger:hover { background: #fff1f2; }
+
+    /* ── Main Panel ── */
+    .dashboard-main {
+      background: var(--surface);
+      border-radius: var(--radius-card);
+      padding: 28px 30px;
+      border: 1px solid var(--border);
+      min-height: 440px;
+      box-shadow: var(--shadow-sm);
+    }
+    .dash-section { display: none; animation: fadeIn 0.2s ease; }
+    .dash-section.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+    .dash-section-title {
+      font-size: 1rem; font-weight: 700; color: var(--text-primary);
+      margin-bottom: 20px; padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .dash-section-title .title-icon {
+      width: 36px; height: 36px; border-radius: 9px;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--red-light); flex-shrink: 0;
+    }
+    .dash-section-title .title-icon svg { width: 18px; height: 18px; stroke: var(--red); }
+
+    /* ── Font Search ── */
     .font-search-bar {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 18px;
+      display: flex; gap: 8px; margin-bottom: 20px;
     }
     .font-search-bar input {
-      flex: 1;
-      padding: 10px 14px;
-      border: 1.5px solid #e5e7eb;
-      border-radius: 10px;
-      font-size: 0.9rem;
-      font-family: inherit;
-      outline: none;
-      transition: border-color 0.2s;
+      flex: 1; padding: 10px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px; font-size: 0.88rem;
+      font-family: inherit; outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s; background: var(--surface-2);
     }
-    .font-search-bar input:focus { border-color: #f9a8d4; }
+    .font-search-bar input:focus {
+      border-color: var(--red); background: white;
+      box-shadow: 0 0 0 3px rgba(151,24,26,0.08);
+    }
     .font-search-bar button {
       padding: 10px 18px;
-      background: linear-gradient(135deg, #f9a8d4, #c4b5fd);
-      border: none;
-      border-radius: 10px;
-      font-size: 0.88rem;
-      font-weight: 700;
-      color: #1a1a2e;
-      cursor: pointer;
-      font-family: inherit;
-      white-space: nowrap;
+      background: var(--red); color: white;
+      border: none; border-radius: 10px;
+      font-size: 0.85rem; font-weight: 600;
+      cursor: pointer; font-family: inherit;
+      display: flex; align-items: center; gap: 6px;
+      transition: background 0.15s, transform 0.1s;
     }
+    .font-search-bar button:hover { background: var(--red-dark); transform: translateY(-1px); }
+    .font-search-bar button:active { transform: translateY(0); }
+
+    /* ── Font Grid ── */
     .my-font-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
       gap: 14px;
     }
     .my-font-card {
-      border: 1px solid #f0f0f0;
-      border-radius: 14px;
-      overflow: hidden;
-      text-align: center;
-      position: relative;
-      background: white;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-      transition: box-shadow 0.2s;
+      border: 1px solid var(--border);
+      border-radius: 14px; overflow: hidden;
+      text-align: center; position: relative;
+      background: var(--surface);
+      transition: box-shadow 0.2s, transform 0.2s;
     }
-    .my-font-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.10); }
+    .my-font-card:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-3px);
+    }
     .my-font-card .font-img {
-      width: 100%;
-      aspect-ratio: 4/3;
-      object-fit: cover;
-      display: block;
-      background: #f9f0f9;
+      width: 100%; aspect-ratio: 4/3;
+      object-fit: cover; display: block;
     }
     .my-font-card .font-img-placeholder {
-      width: 100%;
-      aspect-ratio: 4/3;
-      background: linear-gradient(135deg, rgba(249,168,212,0.15), rgba(196,181,253,0.15));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2rem;
+      width: 100%; aspect-ratio: 4/3;
+      background: linear-gradient(135deg, #f7f5f3, #ede9e3);
+      display: flex; align-items: center; justify-content: center;
     }
-    .my-font-card .font-card-body {
-      padding: 10px 12px 12px;
-    }
+    .my-font-card .font-img-placeholder svg { width: 32px; height: 32px; stroke: #ccc; }
+    .my-font-card .font-card-body { padding: 10px 12px 12px; }
     .my-font-card .font-num {
-      position: absolute;
-      top: 8px;
-      left: 10px;
-      font-size: 0.7rem;
-      font-weight: 700;
-      color: white;
-      background: rgba(0,0,0,0.35);
-      border-radius: 20px;
-      padding: 2px 7px;
-      line-height: 1.6;
+      position: absolute; top: 8px; left: 8px;
+      font-size: 0.66rem; font-weight: 700; color: white;
+      background: rgba(0,0,0,0.35); border-radius: 20px;
+      padding: 2px 8px; backdrop-filter: blur(4px);
     }
     .my-font-card .font-name {
-      font-size: 0.82rem;
-      font-weight: 700;
-      color: #1a1a2e;
-      margin-bottom: 8px;
-      line-height: 1.4;
+      font-size: 0.8rem; font-weight: 700;
+      color: var(--text-primary); margin-bottom: 8px; line-height: 1.4;
     }
     .badge-owned {
-      display: inline-block;
-      background: #f0fdf4;
-      color: #16a34a;
-      border: 1px solid #bbf7d0;
-      border-radius: 20px;
-      font-size: 0.72rem;
-      font-weight: 700;
-      padding: 3px 10px;
-      margin-bottom: 10px;
+      display: inline-flex; align-items: center; gap: 4px;
+      background: #f0fdf4; color: #16a34a;
+      border: 1px solid #bbf7d0; border-radius: 20px;
+      font-size: 0.67rem; font-weight: 700;
+      padding: 2px 8px; margin-bottom: 8px;
     }
     .badge-not-owned {
-      display: inline-block;
-      background: #fff7ed;
-      color: #ea580c;
-      border: 1px solid #fed7aa;
-      border-radius: 20px;
-      font-size: 0.72rem;
-      font-weight: 700;
-      padding: 3px 10px;
-      margin-bottom: 10px;
+      display: inline-flex; align-items: center; gap: 4px;
+      background: #fff7ed; color: #ea580c;
+      border: 1px solid #fed7aa; border-radius: 20px;
+      font-size: 0.67rem; font-weight: 700;
+      padding: 2px 8px; margin-bottom: 8px;
     }
     .btn-download {
-      width: 100%;
-      padding: 9px;
-      background: linear-gradient(135deg, #f9a8d4, #c4b5fd);
-      border: none;
-      border-radius: 8px;
-      font-size: 0.82rem;
-      font-weight: 600;
-      color: #1a1a2e;
-      cursor: pointer;
-      font-family: inherit;
+      width: 100%; padding: 8px;
+      background: var(--red); color: white;
+      border: none; border-radius: 8px;
+      font-size: 0.8rem; font-weight: 600;
+      cursor: pointer; font-family: inherit;
+      transition: background 0.15s;
+      display: flex; align-items: center; justify-content: center; gap: 5px;
     }
-    .btn-download:disabled {
-      background: #f0f0f0;
-      color: #aaa;
-      cursor: not-allowed;
-    }
+    .btn-download:hover { background: var(--red-dark); }
+    .btn-download:disabled { background: var(--border); color: var(--text-muted); cursor: not-allowed; }
     .btn-buy-font {
-      width: 100%;
-      padding: 9px;
-      background: #f5f5f5;
-      border: none;
-      border-radius: 8px;
-      font-size: 0.82rem;
-      font-weight: 600;
-      color: #555;
-      cursor: pointer;
-      font-family: inherit;
-      text-decoration: none;
-      display: block;
+      width: 100%; padding: 8px;
+      background: var(--surface-2); border: none; border-radius: 8px;
+      font-size: 0.8rem; font-weight: 600; color: var(--text-secondary);
+      cursor: pointer; font-family: inherit;
+      text-decoration: none; display: block;
+      transition: background 0.15s;
     }
+    .btn-buy-font:hover { background: var(--border); }
+
+    /* ── Orders ── */
+    .order-card {
+      border: 1px solid var(--border); border-radius: 12px;
+      padding: 18px; margin-bottom: 10px;
+      transition: box-shadow 0.15s, transform 0.15s;
+    }
+    .order-card:hover { box-shadow: var(--shadow-sm); transform: translateY(-1px); }
+    .order-card-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 10px;
+    }
+    .order-date {
+      font-size: 0.78rem; color: var(--text-muted);
+      display: flex; align-items: center; gap: 5px;
+    }
+    .order-total { font-weight: 700; color: var(--red); font-size: 0.95rem; }
+    .order-item {
+      font-size: 0.84rem; color: var(--text-secondary);
+      padding: 6px 0; border-top: 1px solid var(--surface-2);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .order-item svg { width: 14px; height: 14px; stroke: var(--text-muted); flex-shrink: 0; }
+
+    /* ── Profile Form ── */
+    .profile-form-group { margin-bottom: 18px; }
+    .profile-form-group label {
+      font-size: 0.78rem; color: var(--text-muted);
+      display: block; margin-bottom: 6px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.05em;
+    }
+    .profile-form-group input {
+      width: 100%; padding: 11px 14px;
+      border: 1.5px solid var(--border); border-radius: 10px;
+      font-size: 0.9rem; font-family: inherit;
+      box-sizing: border-box; outline: none;
+      background: var(--surface-2); transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+    }
+    .profile-form-group input:focus {
+      border-color: var(--red); background: white;
+      box-shadow: 0 0 0 3px rgba(151,24,26,0.08);
+    }
+    .profile-form-group input:disabled { background: #f5f3f0; color: var(--text-muted); cursor: not-allowed; }
+    .btn-save {
+      padding: 11px 28px;
+      background: var(--red); color: white;
+      border: none; border-radius: 10px;
+      font-size: 0.9rem; font-weight: 700;
+      cursor: pointer; font-family: inherit;
+      transition: background 0.15s, transform 0.1s;
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+    .btn-save:hover { background: var(--red-dark); transform: translateY(-1px); }
+    .btn-save:active { transform: translateY(0); }
+
+    /* ── Msg Box ── */
+    .msg-box {
+      font-size: 0.82rem; padding: 10px 14px;
+      border-radius: 8px; margin-bottom: 14px; display: none;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .msg-box.success { background: #f0fdf4; color: #16a34a; display: flex; border: 1px solid #bbf7d0; }
+    .msg-box.error { background: #fff1f2; color: #dc2626; display: flex; border: 1px solid #fecaca; }
+
+    /* ── Login Prompt ── */
     #loginPrompt {
-      display: none;
-      text-align: center;
-      padding: 80px 20px;
+      display: none; text-align: center; padding: 100px 20px;
     }
-    #loginPrompt h2 { font-size: 1.3rem; color: var(--text-dark); margin-bottom: 10px; }
-    #loginPrompt p { color: #888; font-size: 0.9rem; margin-bottom: 24px; }
-    @media (max-width: 700px) {
+    #loginPrompt h2 { font-size: 1.3rem; color: var(--text-primary); margin-bottom: 8px; }
+    #loginPrompt p { color: var(--text-muted); font-size: 0.88rem; margin-bottom: 24px; }
+
+    /* ── Avatar Upload in Profile ── */
+    .profile-avatar-row {
+      display: flex; align-items: center; gap: 20px;
+      padding: 20px; background: var(--surface-2);
+      border: 1px solid var(--border); border-radius: 14px;
+      margin-bottom: 24px;
+    }
+    #profileAvatarPreview {
+      width: 68px; height: 68px; border-radius: 50%;
+      background: linear-gradient(135deg, #fbbf24, #f87171);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem; font-weight: 800; color: white;
+      cursor: pointer; overflow: hidden; flex-shrink: 0;
+      box-shadow: var(--shadow-sm);
+    }
+    #profileAvatarPreview img { width: 100%; height: 100%; object-fit: cover; display: none; }
+
+    /* ── Responsive ── */
+    @media (max-width: 720px) {
       .dashboard-content { grid-template-columns: 1fr; }
-      .dashboard-sidebar { flex-direction: row; flex-wrap: wrap; }
-      .dash-nav-btn { flex: 1; justify-content: center; font-size: 0.82rem; padding: 10px 8px; }
-      .dash-nav-btn .icon { display: none; }
+      .dashboard-sidebar {
+        flex-direction: row; flex-wrap: nowrap;
+        overflow-x: auto; border-radius: 12px; padding: 6px;
+        gap: 2px; position: static;
+      }
+      .sidebar-section-label { display: none; }
+      .dash-nav-separator { display: none; }
+      .dash-nav-btn {
+        flex: 1; justify-content: center; flex-direction: column;
+        gap: 4px; font-size: 0.72rem; padding: 8px 6px; min-width: 64px;
+      }
+      .dash-nav-btn .nav-icon { width: 28px; height: 28px; border-radius: 6px; }
+      .dash-nav-btn .nav-icon svg { width: 14px; height: 14px; }
+      .dashboard-main { padding: 20px 18px; }
     }
   </style>
 </head>
@@ -423,7 +483,7 @@
         <div class="dashboard-avatar" id="dashAvatar" onclick="document.getElementById('avatarInput').click()" title="คลิกเพื่อเปลี่ยนรูปโปรไฟล์">
           <img id="dashAvatarImg" alt="profile">
           <span id="dashAvatarInitial">?</span>
-          <div class="avatar-overlay">📷</div>
+          <div class="avatar-overlay"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="white"><path stroke-linecap="round" stroke-linejoin="round" d="M6.827 6.175A2.31 2.31 0 0 1 5.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 0 0-1.134-.175 2.31 2.31 0 0 1-1.64-1.055l-.822-1.316a2.192 2.192 0 0 0-1.736-1.039 48.774 48.774 0 0 0-5.232 0 2.192 2.192 0 0 0-1.736 1.039l-.821 1.316Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 12.75a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0ZM18.75 10.5h.008v.008h-.008V10.5Z" /></svg></div>
         </div>
         <div class="avatar-upload-hint">คลิกเปลี่ยนรูป</div>
         <input type="file" id="avatarInput" accept="image/*" style="display:none;" onchange="uploadAvatar(this)">
@@ -431,7 +491,10 @@
       <div>
         <div class="dashboard-name" id="dashName">—</div>
         <div class="dashboard-email" id="dashEmail">—</div>
-        <button onclick="showSection('profile', document.querySelector('.dash-nav-btn[onclick*=profile]'))" style="margin-top:6px;font-size:0.78rem;color:#ec4899;background:none;border:none;cursor:pointer;padding:0;font-family:inherit;">✏️ แก้ไขข้อมูล</button>
+        <button class="header-edit-btn" onclick="showSection('profile', document.querySelector('.dash-nav-btn[onclick*=profile])'))">
+          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125" /></svg>
+          แก้ไขข้อมูล
+        </button>
       </div>
     </div>
   </div>
@@ -439,20 +502,29 @@
   <div class="dashboard-content">
     <!-- Sidebar -->
     <div class="dashboard-sidebar">
+      <div class="sidebar-section-label">เมนู</div>
       <button class="dash-nav-btn active" onclick="showSection('fonts', this)">
-        <span class="icon">🔤</span> ฟอนต์ของฉัน
+        <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 8.25l4.5-4.5 4.5 4.5M9 3.75v12M3 17.25h18M6.75 21h10.5"/></svg></span>
+        <span class="btn-label">ฟอนต์ของฉัน</span>
       </button>
       <button class="dash-nav-btn" onclick="showSection('orders', this)">
-        <span class="icon">📦</span> ประวัติการซื้อ
+        <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25Z" /></svg></span>
+        <span class="btn-label">ประวัติการซื้อ</span>
       </button>
+      <div class="dash-nav-separator"></div>
+      <div class="sidebar-section-label">บัญชี</div>
       <button class="dash-nav-btn" onclick="showSection('profile', this)">
-        <span class="icon">👤</span> ข้อมูลส่วนตัว
+        <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" /></svg></span>
+        <span class="btn-label">ข้อมูลส่วนตัว</span>
       </button>
       <button class="dash-nav-btn" onclick="showSection('password', this)">
-        <span class="icon">🔒</span> เปลี่ยนรหัสผ่าน
+        <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" /></svg></span>
+        <span class="btn-label">เปลี่ยนรหัสผ่าน</span>
       </button>
-      <button class="dash-nav-btn" onclick="authLogout()" style="color:#e11d48;margin-top:auto;">
-        <span class="icon">🚪</span> ออกจากระบบ
+      <div class="dash-nav-separator"></div>
+      <button class="dash-nav-btn danger" onclick="authLogout()">
+        <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15" /></svg></span>
+        <span class="btn-label">ออกจากระบบ</span>
       </button>
     </div>
 
@@ -461,35 +533,50 @@
 
       <!-- ฟอนต์ของฉัน -->
       <div class="dash-section active" id="section-fonts">
-        <div class="dash-section-title">🔤 ฟอนต์ของฉัน</div>
+        <div class="dash-section-title">
+          <span class="title-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 8.25l4.5-4.5 4.5 4.5M9 3.75v12M3 17.25h18M6.75 21h10.5"/></svg></span>
+          ฟอนต์ของฉัน
+        </div>
         <div class="font-search-bar">
           <input type="text" id="fontSearchInput" placeholder="ค้นหาฟอนต์..." oninput="searchFonts(this.value)">
-          <button onclick="searchFonts(document.getElementById('fontSearchInput').value)">🔍 ค้นหา</button>
+          <button onclick="searchFonts(document.getElementById('fontSearchInput').value)">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" /></svg>
+            ค้นหา
+          </button>
         </div>
         <div id="myFontsList"><p style="color:#aaa;text-align:center;padding:40px 0;">กำลังโหลด...</p></div>
       </div>
 
       <!-- ประวัติการซื้อ -->
       <div class="dash-section" id="section-orders">
-        <div class="dash-section-title">📦 ประวัติการซื้อ</div>
+        <div class="dash-section-title">
+          <span class="title-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25Z" /></svg></span>
+          ประวัติการซื้อ
+        </div>
         <div id="ordersList"><p style="color:#aaa;text-align:center;padding:40px 0;">กำลังโหลด...</p></div>
       </div>
 
       <!-- ข้อมูลส่วนตัว -->
       <div class="dash-section" id="section-profile">
-        <div class="dash-section-title">👤 ข้อมูลส่วนตัว</div>
+        <div class="dash-section-title">
+          <span class="title-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" /></svg></span>
+          ข้อมูลส่วนตัว
+        </div>
         <div id="profileMsg" class="msg-box"></div>
 
         <!-- รูปโปรไฟล์ -->
-        <div class="profile-form-group" style="display:flex;align-items:center;gap:20px;padding:16px;background:#faf5ff;border-radius:14px;margin-bottom:20px;">
-          <div id="profileAvatarPreview" onclick="document.getElementById('avatarInput').click()" style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#f9a8d4,#c4b5fd);display:flex;align-items:center;justify-content:center;font-size:1.6rem;font-weight:800;color:#1a1a2e;cursor:pointer;overflow:hidden;flex-shrink:0;position:relative;">
+        <div style="display:flex;align-items:center;gap:20px;padding:18px;background:var(--surface-2);border:1px solid var(--border);border-radius:14px;margin-bottom:20px;">
+          <div id="profileAvatarPreview" onclick="document.getElementById('avatarInput').click()" style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#fbbf24,#f87171);display:flex;align-items:center;justify-content:center;font-size:1.6rem;font-weight:800;color:white;cursor:pointer;overflow:hidden;flex-shrink:0;box-shadow:0 0 0 3px #fff,0 0 0 5px var(--border);transition:box-shadow 0.2s;">
             <img id="profileAvatarImg" alt="profile" style="width:100%;height:100%;object-fit:cover;display:none;">
             <span id="profileAvatarInitial">?</span>
           </div>
           <div>
-            <div style="font-size:0.85rem;font-weight:600;color:#1a1a2e;margin-bottom:4px;">รูปโปรไฟล์</div>
-            <button onclick="document.getElementById('avatarInput').click()" style="padding:8px 16px;background:linear-gradient(135deg,#f9a8d4,#c4b5fd);border:none;border-radius:8px;font-size:0.82rem;font-weight:600;color:#1a1a2e;cursor:pointer;font-family:inherit;">📷 เปลี่ยนรูปภาพ</button>
-            <div id="avatarUploadStatus" style="font-size:0.75rem;color:#888;margin-top:4px;"></div>
+            <div style="font-size:0.88rem;font-weight:700;color:var(--text-primary);margin-bottom:6px;">รูปโปรไฟล์</div>
+            <button onclick="document.getElementById('avatarInput').click()" style="padding:8px 16px;background:var(--red);border:none;border-radius:8px;font-size:0.82rem;font-weight:600;color:white;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:6px;transition:background 0.15s;" onmouseover="this.style.background='var(--red-dark)'" onmouseout="this.style.background='var(--red)'">
+              <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6.827 6.175A2.31 2.31 0 0 1 5.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 0 0-1.134-.175 2.31 2.31 0 0 1-1.64-1.055l-.822-1.316a2.192 2.192 0 0 0-1.736-1.039 48.774 48.774 0 0 0-5.232 0 2.192 2.192 0 0 0-1.736 1.039l-.821 1.316Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 12.75a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0ZM18.75 10.5h.008v.008h-.008V10.5Z" /></svg>
+              เปลี่ยนรูปภาพ
+            </button>
+            <div id="avatarUploadStatus" style="font-size:0.75rem;color:#888;margin-top:6px;"></div>
           </div>
         </div>
 
@@ -501,12 +588,18 @@
           <label>อีเมล</label>
           <input type="email" id="profileEmail" disabled style="background:#f9f9f9;color:#999;">
         </div>
-        <button class="btn-save" onclick="saveProfile()">💾 บันทึกการเปลี่ยนแปลง</button>
+        <button class="btn-save" onclick="saveProfile()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
+          บันทึกการเปลี่ยนแปลง
+        </button>
       </div>
 
       <!-- เปลี่ยนรหัสผ่าน -->
       <div class="dash-section" id="section-password">
-        <div class="dash-section-title">🔒 เปลี่ยนรหัสผ่าน</div>
+        <div class="dash-section-title">
+          <span class="title-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" /></svg></span>
+          เปลี่ยนรหัสผ่าน
+        </div>
         <div id="passwordMsg" class="msg-box"></div>
         <div class="profile-form-group">
           <label>รหัสผ่านใหม่ (อย่างน้อย 6 ตัว)</label>
@@ -516,7 +609,10 @@
           <label>ยืนยันรหัสผ่านใหม่</label>
           <input type="password" id="confirmPassword" placeholder="ยืนยันรหัสผ่าน">
         </div>
-        <button class="btn-save" onclick="savePassword()">เปลี่ยนรหัสผ่าน</button>
+        <button class="btn-save" onclick="savePassword()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" /></svg>
+          เปลี่ยนรหัสผ่าน
+        </button>
         <br>
         <small style="color:#aaa;font-size:0.78rem;">* หากสมัครผ่าน Google ไม่สามารถเปลี่ยนรหัสผ่านที่นี่ได้</small>
       </div>
