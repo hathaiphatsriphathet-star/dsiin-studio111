@@ -1050,12 +1050,117 @@ document.getElementById('buyNowBtn')?.addEventListener('click', function() {
 });
 
 document.getElementById('addToCartBtn')?.addEventListener('click', function() {
+  if (this.disabled) return;
   const { name, price, license } = getProductInfo();
   cartAdd(name, price, license);
-  this.textContent = '✓ เพิ่มในตะกร้าแล้ว';
-  this.style.background = '#4caf50';
-  setTimeout(() => { this.textContent = '+ เพิ่มในตะกร้า'; this.style.background = ''; }, 2000);
+  updateCartPurchaseStatus();
 });
+
+// ===== CART & PURCHASE STATUS =====
+const _purchasedLicenses = new Set();
+
+function updateCartPurchaseStatus() {
+  const fontName = new URLSearchParams(window.location.search).get('name') ||
+    document.querySelector('.product-title')?.textContent.trim() || '';
+  const cart = typeof cartGet === 'function' ? cartGet() : [];
+  const addBtn = document.getElementById('addToCartBtn');
+  const buyBtn = document.getElementById('buyNowBtn');
+  const selectedLicense = document.querySelector('.license-card.selected .license-name')?.textContent.trim() || '';
+  const cartKey = fontName + '|' + selectedLicense;
+  const inCart = cart.some(i => i.key === cartKey);
+  const isPurchased = _purchasedLicenses.has(selectedLicense);
+
+  if (addBtn) {
+    if (isPurchased) {
+      addBtn.disabled = true;
+      addBtn.textContent = '✓ ซื้อแล้ว';
+      addBtn.style.cssText = 'background:#dcfce7;color:#16a34a;cursor:default;opacity:1;';
+    } else if (inCart) {
+      addBtn.disabled = false;
+      addBtn.textContent = '✓ อยู่ในตะกร้าแล้ว';
+      addBtn.style.cssText = 'background:#f0fdf4;color:#16a34a;cursor:default;';
+    } else {
+      addBtn.disabled = false;
+      addBtn.textContent = '+ เพิ่มในตะกร้า';
+      addBtn.style.cssText = '';
+    }
+  }
+  if (buyBtn) {
+    if (isPurchased) {
+      buyBtn.disabled = true;
+      buyBtn.textContent = '✓ ซื้อแล้ว — ดาวน์โหลดจากแดชบอร์ด';
+      buyBtn.style.cssText = 'opacity:0.6;cursor:default;';
+    } else {
+      buyBtn.disabled = false;
+      buyBtn.textContent = '🛒 ซื้อเลย — ดาวน์โหลดทันที';
+      buyBtn.style.cssText = '';
+    }
+  }
+}
+
+// Re-check status when license card changes
+document.querySelectorAll('.license-card').forEach(card => {
+  card.addEventListener('click', () => setTimeout(updateCartPurchaseStatus, 10));
+});
+
+// Initial cart status
+updateCartPurchaseStatus();
+
+// Firebase: check purchased licenses
+(function() {
+  const fontName = new URLSearchParams(window.location.search).get('name') ||
+    document.querySelector('.product-title')?.textContent.trim() || '';
+  if (!fontName || typeof firebase === 'undefined' || !firebase.auth) return;
+
+  firebase.auth().onAuthStateChanged(function(user) {
+    if (!user) return;
+    firebase.firestore().collection('orders')
+      .where('userId', '==', user.uid)
+      .where('status', '==', 'paid')
+      .get()
+      .then(snapshot => {
+        snapshot.forEach(doc => {
+          const order = doc.data();
+          if (!order.items) return;
+          order.items.forEach(item => {
+            if (item.name && item.name.replace(/\s+/g,'') === fontName.replace(/\s+/g,'')) {
+              _purchasedLicenses.add(item.license || 'Personal & Commercial Use');
+            }
+          });
+        });
+
+        // Mark purchased license cards
+        document.querySelectorAll('.license-card').forEach(card => {
+          const licName = card.querySelector('.license-name')?.textContent.trim();
+          if (!licName || !_purchasedLicenses.has(licName)) return;
+          card.style.pointerEvents = 'none';
+          card.style.cursor = 'not-allowed';
+          card.style.position = 'relative';
+          if (!card.querySelector('.purchased-badge')) {
+            const badge = document.createElement('div');
+            badge.className = 'purchased-badge';
+            badge.style.cssText = 'position:absolute;top:6px;right:8px;background:#16a34a;color:white;font-size:0.62rem;font-weight:700;padding:2px 8px;border-radius:20px;';
+            badge.textContent = '✓ ซื้อแล้ว';
+            card.appendChild(badge);
+          }
+          // Auto-move selection off purchased card
+          if (card.classList.contains('selected')) {
+            const nextCard = Array.from(document.querySelectorAll('.license-card'))
+              .find(c => !_purchasedLicenses.has(c.querySelector('.license-name')?.textContent.trim()));
+            if (nextCard) {
+              document.querySelectorAll('.license-card').forEach(c => c.classList.remove('selected'));
+              nextCard.classList.add('selected');
+              const price = nextCard.querySelector('.license-price')?.textContent;
+              const mainPrice = document.getElementById('mainPrice');
+              if (mainPrice && price) mainPrice.textContent = price;
+            }
+          }
+        });
+        updateCartPurchaseStatus();
+      })
+      .catch(() => {});
+  });
+})();
 </script>
 <script>
 // ===== REVIEW SYSTEM =====
