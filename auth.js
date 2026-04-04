@@ -154,7 +154,7 @@
       if (navLinks) {
         const el = document.createElement('li');
         el.className = 'nav-auth-item';
-        el.innerHTML = `<a href="#" onclick="authShowProfile();return false;" style="display:flex;align-items:center;gap:8px;font-weight:600;">
+        el.innerHTML = `<a href="dashboard.html?section=profile" style="display:flex;align-items:center;gap:8px;font-weight:600;">
           ${avatarHTML}
           <span style="font-size:0.85rem;color:#fff;">${escapeHtml(name.split(' ')[0])}</span>
         </a>`;
@@ -163,7 +163,7 @@
       if (mobileLinks) {
         const el = document.createElement('li');
         el.className = 'nav-auth-item';
-        el.innerHTML = `<a href="#" onclick="authShowProfile();return false;">👤 ${escapeHtml(name)}</a>`;
+        el.innerHTML = `<a href="dashboard.html?section=profile">👤 ${escapeHtml(name)}</a>`;
         mobileLinks.appendChild(el);
       }
     } else {
