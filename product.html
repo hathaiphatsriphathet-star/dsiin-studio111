@@ -1156,16 +1156,14 @@ renderUserReviews();
   if (countEl) countEl.textContent = count > 0 ? `จาก ${count} รีวิว` : 'ยังไม่มีรีวิว';
 })();
 
-// ===== REVIEW GATE: ต้องซื้อก่อนถึงจะรีวิวได้ =====
+// ===== REVIEW GATE: ต้องซื้อก่อนถึงจะรีวิวได้ (Firebase auth) =====
 (function() {
   const wrap = document.getElementById('reviewFormWrap');
   if (!wrap) return;
 
   const fontName = new URLSearchParams(window.location.search).get('name') || '';
-  const session = JSON.parse(localStorage.getItem('ds_session') || 'null');
 
-  // ถ้าไม่ได้ login
-  if (!session) {
+  function showLoginPrompt() {
     wrap.innerHTML = `
       <div style="text-align:center;padding:24px 0;">
         <div style="font-size:2rem;margin-bottom:10px;">🔒</div>
@@ -1173,18 +1171,9 @@ renderUserReviews();
         <div style="font-size:0.88rem;color:#888;margin-bottom:18px;">ต้องเข้าสู่ระบบและซื้อฟอนต์นี้ก่อนจึงจะเขียนรีวิวได้</div>
         <button onclick="authOpen('login')" style="padding:10px 24px;background:linear-gradient(135deg,#f9a8d4,#c4b5fd);border:none;border-radius:10px;font-weight:700;cursor:pointer;font-family:inherit;">เข้าสู่ระบบ</button>
       </div>`;
-    return;
   }
 
-  // ตรวจสอบประวัติซื้อ
-  const orders = JSON.parse(localStorage.getItem('ds_orders_' + session.email) || '[]');
-  const hasPurchased = orders.some(order =>
-    order.items && order.items.some(item =>
-      item.name && fontName && item.name.replace(/\s+/g,'').includes(fontName.replace(/\s+/g,''))
-    )
-  );
-
-  if (!hasPurchased) {
+  function showBuyPrompt() {
     wrap.innerHTML = `
       <div style="text-align:center;padding:24px 0;">
         <div style="font-size:2rem;margin-bottom:10px;">🛒</div>
@@ -1192,6 +1181,38 @@ renderUserReviews();
         <div style="font-size:0.88rem;color:#888;margin-bottom:18px;">เฉพาะผู้ที่ซื้อฟอนต์นี้แล้วเท่านั้นที่สามารถเขียนรีวิวได้</div>
         <a href="cart.html" style="padding:10px 24px;background:linear-gradient(135deg,#f9a8d4,#c4b5fd);border-radius:10px;font-weight:700;text-decoration:none;color:#1a1a2e;">ไปที่ตะกร้าสินค้า</a>
       </div>`;
+  }
+
+  function checkReviewAccess(user) {
+    if (!user) { showLoginPrompt(); return; }
+
+    // Check Firestore orders
+    const db = firebase.firestore();
+    db.collection('orders').where('userId', '==', user.uid).get()
+      .then(snapshot => {
+        let hasPurchased = false;
+        snapshot.forEach(doc => {
+          const order = doc.data();
+          if (order.status === 'paid' && order.items) {
+            hasPurchased = hasPurchased || order.items.some(item =>
+              item.name && fontName &&
+              item.name.replace(/\s+/g,'').includes(fontName.replace(/\s+/g,''))
+            );
+          }
+        });
+        if (!hasPurchased) showBuyPrompt();
+        // if hasPurchased → keep the original form visible (do nothing)
+      })
+      .catch(() => {
+        // On error, allow review (fail open)
+      });
+  }
+
+  // Wait for Firebase auth to initialise before checking
+  if (typeof firebase !== 'undefined' && firebase.auth) {
+    firebase.auth().onAuthStateChanged(checkReviewAccess);
+  } else {
+    showLoginPrompt();
   }
 })();
 </script>
