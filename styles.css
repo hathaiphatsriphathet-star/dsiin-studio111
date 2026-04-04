@@ -2087,9 +2087,15 @@ section { padding: 80px 0; }
   border: none;
   font-family: inherit;
   transition: background 0.2s ease;
+  background: #556B2F !important;
+  color: #fff !important;
+}
+.btn-add-cart:hover {
+  background: #3E5420 !important;
+  color: #fff !important;
 }
 .btn-add-cart.added {
-  background: var(--pink-dark) !important;
+  background: #3E5420 !important;
   color: white !important;
 }
 
