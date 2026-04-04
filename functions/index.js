@@ -5,9 +5,9 @@ const FONT_MAP = require('./font-map');
 const STORAGE_FOLDER = 'TK studio';
 const STORAGE_BUCKET = 'dsiinstodio.firebasestorage.app';
 
-// Lazy initialization เพื่อป้องกัน hang ตอน Firebase CLI วิเคราะห์ code
+admin.initializeApp();
+
 function getAdmin() {
-  if (!admin.apps.length) admin.initializeApp();
   return admin;
 }
 
