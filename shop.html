@@ -2744,7 +2744,7 @@ document.querySelectorAll('.alpha-btn').forEach(btn => {
   });
 });
 
-// ===== ADD TO CART (shop.html) =====
+// ===== ADD TO CART (shop.html) — navigate to product page for license selection =====
 document.querySelectorAll('.btn-add-cart').forEach(btn => {
   btn.addEventListener('click', function(e) {
     e.preventDefault();
@@ -2752,12 +2752,7 @@ document.querySelectorAll('.btn-add-cart').forEach(btn => {
     const card = btn.closest('.font-card');
     if (!card) return;
     const name = card.querySelector('.font-card-name')?.textContent.trim() || '';
-    const priceText = card.querySelector('.font-price')?.textContent || '149';
-    const price = parseInt(priceText.replace(/[^0-9]/g, '')) || 149;
-    cartAdd(name, price, 'Personal Use');
-    btn.textContent = '✓ เพิ่มแล้ว';
-    btn.classList.add('added');
-    setTimeout(() => { btn.textContent = '+ ตะกร้า'; btn.classList.remove('added'); }, 1800);
+    window.location.href = 'product.html?name=' + encodeURIComponent(name);
   });
 });
 
