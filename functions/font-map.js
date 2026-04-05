@@ -102,7 +102,7 @@ module.exports = {
   'ฟอนต์แผ่นฟิล์ม':   ['DSpanfilm 3.ttf'],
   'ฟอนต์นิวเคลียร์':  ['DSNewclear.ttf','DSNewclearBold.ttf','DSNewclearThin.ttf'],
   'ฟอนต์เบิร์ดเดย์':  ['DSBirthday.ttf','DSBirthdayBold.ttf','DSBirthdayThin.ttf'],
-  'ฟอนต์ฮอว์กินส์':   ['DSHawkins.ttf'],
+  'ฟอนต์ฮอว์กินส์':   ['DSHawkins.ttf','DSHawkinsBold.ttf','DSHawkinsThin.ttf'],
   'ฟอนต์สังขยา':      ['TKSangkhaya.ttf'],
   'ฟอนต์คัลเจอร์':    ['TKCulture.ttf'],
   'SET:อิโมจิ':       ['DSEmoji01.ttf','DSEmojiEp.2.ttf','EmojiEp3.ttf','DSEmojiEp4.ttf','DSEmojiEp5 2.ttf','DSEmojiEp6.ttf','TKEmojiEp7.ttf','TKEmojiEp8.ttf','DSEmojiEp9.ttf'],
