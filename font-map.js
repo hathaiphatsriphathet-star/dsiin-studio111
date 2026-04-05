@@ -38,7 +38,7 @@ const FONT_STORAGE_MAP = {
   'ฟอนต์กะเพรา':      ['DSKaphrao.ttf','DSKaphraoBold.ttf','DSKaphraoThin.ttf'],
   'ฟอนต์บางแสน':      ['DSBangsaen.ttf','DSBangsaenBold.ttf','DSBangsaenThin.ttf'],
   'ฟอนต์มอลทีส':      ['DSMaltese.ttf','DSMalteseBold.ttf'],
-  'ฟอนต์มันเนย':      ['DSMascot 2.ttf','DSMascotBold.ttf'],
+  'ฟอนต์มันเนย':      ['DSmannoei.ttf'],
   'ฟอนต์มาสคอส':      ['DSMascot 2.ttf','DSMascotBold.ttf'],
   'ฟอนต์ราสต้า':      ['TKRasta.ttf','TKRastaBold.ttf'],
   'ฟอนต์ห่อหมก':      ['DSHomok.ttf','DSHomokBold.ttf','DSHomokThin.ttf'],
