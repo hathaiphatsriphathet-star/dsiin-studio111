@@ -2503,7 +2503,7 @@
       let count = 0;
       pills.forEach(pill => {
         const label = pill.dataset.label.toLowerCase();
-        const show = !q || label.includes(q);
+        const show = !q || normalizeSearch(label).includes(normalizeSearch(q)) || label.includes(q);
         pill.style.display = show ? '' : 'none';
         if (show) count++;
       });
@@ -2608,7 +2608,7 @@
     const badge = card.querySelector('.card-badge')?.textContent || '';
     let show = true;
     if (cat) show = show && (tags.includes(cat) || (cat === 'อิโมจิ' && badge.includes('อิโมจิ')));
-    if (q)   show = show && name.includes(q.toLowerCase());
+    if (q)   show = show && (normalizeSearch(name).includes(normalizeSearch(q)) || name.includes(q.toLowerCase()));
     card.style.display = show ? '' : 'none';
   });
 

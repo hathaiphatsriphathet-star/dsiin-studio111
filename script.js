@@ -251,6 +251,14 @@ document.querySelectorAll('.newsletter-form').forEach(form => {
   });
 });
 
+// ===== SEARCH NORMALIZATION =====
+function normalizeSearch(str) {
+  return str
+    .toLowerCase()
+    .replace(/ว์/g, '์')       // ฮอว์กินส์ → ฮอ์กินส์
+    .replace(/[่้๊๋็]/g, '');  // ตัดวรรณยุกต์และพินทุ
+}
+
 // ===== HOME FONTS SEARCH & FILTER =====
 (function() {
   const grid = document.getElementById('homeFontsGrid');
@@ -348,7 +356,9 @@ document.querySelectorAll('.newsletter-form').forEach(form => {
       const tags = Array.from(card.querySelectorAll('.font-card-tag')).map(t => t.textContent.toLowerCase());
       const badge = (card.querySelector('.card-badge')?.textContent || '').toLowerCase();
 
-      const matchSearch = !currentQuery || name.includes(currentQuery) || tags.some(t => t.includes(currentQuery));
+      const normQuery = normalizeSearch(currentQuery);
+      const normName = normalizeSearch(name);
+      const matchSearch = !currentQuery || normName.includes(normQuery) || name.includes(currentQuery) || tags.some(t => normalizeSearch(t).includes(normQuery));
       const matchFilter = currentFilter === 'all' || tags.includes(currentFilter) || badge.includes(currentFilter);
       const matches = matchSearch && matchFilter;
 
