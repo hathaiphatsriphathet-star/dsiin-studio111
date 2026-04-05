@@ -159,10 +159,10 @@
       <h1 class="product-title" style="font-family:'Noto Serif Thai',serif;">Dsiin Serif Pro</h1>
 
       <div class="product-meta">
-        <div class="rating">
+        <div class="rating" id="productRatingMeta" style="display:none;">
           <span class="rating-stars" aria-label="5 ดาวจาก 5 ดาว" role="img">⭐⭐⭐⭐⭐</span>
-          <strong>4.9</strong>
-          <span>(312 รีวิว)</span>
+          <span id="productRatingScore"></span>
+          <span id="productRatingCount"></span>
         </div>
       </div>
 
@@ -256,56 +256,6 @@
         <h2 class="section-title">รีวิวจากผู้ซื้อ</h2>
         <p class="section-sub" id="reviewSummaryText" style="margin-bottom:0;"></p>
       </div>
-    </div>
-
-    <div style="display:grid;grid-template-columns:200px 1fr;gap:48px;margin-bottom:40px;align-items:start;">
-      <div style="background:white;border:1px solid var(--border);border-radius:var(--radius);padding:28px;text-align:center;">
-        <div style="font-size:3.5rem;font-weight:900;color:var(--text-dark);font-family:'Noto Serif Thai',serif;">4.9</div>
-        <div style="font-size:1.4rem;margin:8px 0;" aria-label="5 ดาวจาก 5 ดาว" role="img">⭐⭐⭐⭐⭐</div>
-        <div id="reviewCountText" style="font-size:0.82rem;color:var(--text-light);"></div>
-        <div style="margin-top:16px;">
-          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:0.8rem;color:var(--text-mid);">
-            <span>5★</span>
-            <div style="flex:1;height:6px;background:var(--border);border-radius:99px;overflow:hidden;">
-              <div style="width:88%;height:100%;background:var(--pink);border-radius:99px;"></div>
-            </div>
-            <span>88%</span>
-          </div>
-          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:0.8rem;color:var(--text-mid);">
-            <span>4★</span>
-            <div style="flex:1;height:6px;background:var(--border);border-radius:99px;overflow:hidden;">
-              <div style="width:10%;height:100%;background:var(--pink);border-radius:99px;"></div>
-            </div>
-            <span>10%</span>
-          </div>
-          <div style="display:flex;align-items:center;gap:8px;font-size:0.8rem;color:var(--text-mid);">
-            <span>3★</span>
-            <div style="flex:1;height:6px;background:var(--border);border-radius:99px;overflow:hidden;">
-              <div style="width:2%;height:100%;background:var(--pink);border-radius:99px;"></div>
-            </div>
-            <span>2%</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="testimonials-grid" style="grid-template-columns:1fr 1fr;">
-        <div class="testimonial-card">
-          <div class="stars" aria-label="5 ดาวจาก 5 ดาว" role="img">⭐⭐⭐⭐⭐</div>
-          <p class="testimonial-text">"ฟอนต์สวยมากค่ะ ใช้ทำโลโก้แบรนด์ได้เลย ลูกค้าติดใจมากเลยค่ะ"</p>
-          <div class="testimonial-author">
-            <div class="author-avatar" style="background:linear-gradient(135deg,var(--pink),var(--lavender));">ก</div>
-            <div><div class="author-name">กัลยา ศิริวัฒน์</div><div class="author-role">Brand Designer · มีนาคม 2567</div></div>
-          </div>
-        </div>
-        <div class="testimonial-card">
-          <div class="stars" aria-label="5 ดาวจาก 5 ดาว" role="img">⭐⭐⭐⭐⭐</div>
-          <p class="testimonial-text">"ซื้อมาใช้ในหนังสือ ตัวอักษรสวยงาม อ่านง่าย ไม่เมื่อยตา แนะนำมากครับ"</p>
-          <div class="testimonial-author">
-            <div class="author-avatar" style="background:linear-gradient(135deg,var(--blue),var(--mint));">น</div>
-            <div><div class="author-name">นพดล ชาญวิทย์</div><div class="author-role">นักเขียน · กุมภาพันธ์ 2567</div></div>
-          </div>
-        </div>
-        </div>
     </div>
 
     <!-- User Reviews -->
@@ -1260,9 +1210,9 @@ renderUserReviews();
   const reviews = JSON.parse(localStorage.getItem('ds_reviews_' + fontName) || '[]');
   const count = reviews.length;
   const summaryEl = document.getElementById('reviewSummaryText');
-  const countEl = document.getElementById('reviewCountText');
   if (summaryEl) summaryEl.textContent = count > 0 ? `${count} รีวิว` : 'ยังไม่มีรีวิว';
-  if (countEl) countEl.textContent = count > 0 ? `จาก ${count} รีวิว` : 'ยังไม่มีรีวิว';
+  const ratingMeta = document.getElementById('productRatingMeta');
+  if (ratingMeta) ratingMeta.style.display = count > 0 ? '' : 'none';
 })();
 
 // ===== REVIEW GATE: ต้องซื้อก่อนถึงจะรีวิวได้ (Firebase auth) =====
