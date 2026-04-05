@@ -187,7 +187,11 @@ const searchBtn = document.getElementById('searchBtn');
 if (searchBtn && searchInput) {
   searchBtn.addEventListener('click', () => {
     const q = searchInput.value.trim();
-    if (q) {
+    if (!q) return;
+    if (window.location.pathname.endsWith('shop.html')) {
+      // อยู่บน shop.html แล้ว — live search จัดการแล้ว ไม่ต้อง redirect
+      searchInput.dispatchEvent(new Event('input'));
+    } else {
       window.location.href = `shop.html?q=${encodeURIComponent(q)}`;
     }
   });

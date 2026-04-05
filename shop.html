@@ -2805,6 +2805,47 @@ document.getElementById('sortSelect')?.addEventListener('change', function() {
 
   cards.forEach(c => grid.appendChild(c));
 });
+
+// ===== LIVE SEARCH (shop main grid) =====
+(function() {
+  const shopInput = document.getElementById('searchInput');
+  const fontsGrid = document.getElementById('fontsGrid');
+  if (!shopInput || !fontsGrid) return;
+
+  let activeCategory = 'all';
+
+  // sync category state when sidebar filter clicked
+  document.querySelectorAll('.filter-item[data-category]').forEach(btn => {
+    btn.addEventListener('click', () => { activeCategory = btn.dataset.category; });
+  });
+
+  shopInput.addEventListener('input', function() {
+    const q = this.value.trim().toLowerCase();
+    const normQ = normalizeSearch(q);
+    let visible = 0;
+
+    document.querySelectorAll('#fontsGrid .font-card').forEach(card => {
+      const name = (card.querySelector('.font-card-name')?.textContent || '').toLowerCase();
+      const tags = Array.from(card.querySelectorAll('.font-card-tag')).map(t => t.textContent.trim());
+      const badge = card.querySelector('.card-badge')?.textContent || '';
+
+      const matchSearch = !q || normalizeSearch(name).includes(normQ) || name.includes(q);
+      const matchCat = activeCategory === 'all'
+        || tags.includes(activeCategory)
+        || (activeCategory === 'ใหม่' && isNewFont(card))
+        || (activeCategory === 'อิโมจิ' && badge.includes('อิโมจิ'));
+
+      const show = matchSearch && matchCat;
+      card.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+
+    const resultEl = document.querySelector('.result-count strong');
+    if (resultEl) resultEl.textContent = visible;
+    const noResult = document.getElementById('noResult');
+    if (noResult) noResult.style.display = visible === 0 ? '' : 'none';
+  });
+})();
 </script>
 </body>
 </html>
