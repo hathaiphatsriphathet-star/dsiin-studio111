@@ -361,7 +361,7 @@
     .msg-box {
       font-size: 0.82rem; padding: 10px 14px;
       border-radius: 8px; margin-bottom: 14px; display: none;
-      display: flex; align-items: center; gap: 8px;
+      align-items: center; gap: 8px;
     }
     .msg-box.success { background: #f0fdf4; color: #16a34a; display: flex; border: 1px solid #bbf7d0; }
     .msg-box.error { background: #fff1f2; color: #dc2626; display: flex; border: 1px solid #fecaca; }
@@ -487,7 +487,7 @@
       <div>
         <div class="dashboard-name" id="dashName">—</div>
         <div class="dashboard-email" id="dashEmail">—</div>
-        <button class="header-edit-btn" onclick="showSection('profile', document.querySelector('.dash-nav-btn[onclick*=profile])'))">
+        <button class="header-edit-btn" onclick="showSection('profile', document.querySelector('.dash-nav-btn[onclick*=&quot;profile&quot;]'))">
           <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125" /></svg>
           แก้ไขข้อมูล
         </button>
@@ -841,8 +841,8 @@
       .then(snapshot => {
         const list = document.getElementById('ordersList');
         const docs = snapshot.docs.map(d => d.data()).sort((a, b) => {
-          const ta = a.timestamp ? a.timestamp.seconds : 0;
-          const tb = b.timestamp ? b.timestamp.seconds : 0;
+          const ta = a.timestamp ? a.timestamp.seconds : (a.createdAt ? a.createdAt.seconds : 0);
+          const tb = b.timestamp ? b.timestamp.seconds : (b.createdAt ? b.createdAt.seconds : 0);
           return tb - ta;
         });
         if (docs.length === 0) {

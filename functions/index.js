@@ -277,15 +277,3 @@ exports.getDownloadLinks = functions
 
     return { downloadLinks, items: order.items };
   });
-
-// ==============================
-// [DIAGNOSTIC] ลิสต์ไฟล์ใน Storage (ลบออกหลังใช้)
-// ==============================
-exports.listStorageFiles = functions
-  .region('asia-southeast1')
-  .https.onCall(async (data, context) => {
-    if (!context.auth) throw new functions.https.HttpsError('unauthenticated', 'ต้อง login');
-    const bucket = getAdmin().storage().bucket(STORAGE_BUCKET);
-    const [files] = await bucket.getFiles({ prefix: 'TK studio/' });
-    return files.map(f => f.name).filter(n => !n.endsWith('/'));
-  });
