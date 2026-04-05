@@ -2448,6 +2448,28 @@
 </section>
 
 <script>
+  // ฟังก์ชัน normalize สำหรับค้นหา (อยู่ที่นี่เพื่อไม่ depend on script.js)
+  function shopNorm(str) {
+    if (!str) return '';
+    return str.toLowerCase().replace(/ว์/g, '์').replace(/[่้๊๋็]/g, '');
+  }
+
+  // ฟังก์ชันหลักค้นหา font cards ใน main grid
+  function filterFontsGrid(q) {
+    const normQ = shopNorm(q);
+    let count = 0;
+    document.querySelectorAll('#fontsGrid .font-card').forEach(function(card) {
+      const nameEl = card.querySelector('.font-card-name');
+      const name = nameEl ? nameEl.textContent.toLowerCase() : '';
+      const show = !q || name.includes(q) || shopNorm(name).includes(normQ);
+      card.style.display = show ? '' : 'none';
+      if (show) count++;
+    });
+    const resultEl = document.querySelector('.result-count strong');
+    if (resultEl) resultEl.textContent = count;
+    return count;
+  }
+
   (function() {
     const previewText = document.getElementById('shopPreviewText');
     const input = document.getElementById('shopPreviewInput');
@@ -2502,28 +2524,21 @@
     // Font search — filters pills + main grid
     fontSearch.addEventListener('input', () => {
       const q = fontSearch.value.trim().toLowerCase();
-      const normQ = normalizeSearch(q);
-      const pills = document.querySelectorAll('.shop-font-pill');
+      const normQ = shopNorm(q);
+
+      // filter pills
       let pillCount = 0;
-      pills.forEach(pill => {
+      document.querySelectorAll('.shop-font-pill').forEach(function(pill) {
         const label = pill.dataset.label.toLowerCase();
-        const show = !q || normalizeSearch(label).includes(normQ) || label.includes(q);
+        const show = !q || label.includes(q) || shopNorm(label).includes(normQ);
         pill.style.display = show ? '' : 'none';
         if (show) pillCount++;
       });
 
-      // Also filter main font grid
-      let gridCount = 0;
-      document.querySelectorAll('#fontsGrid .font-card').forEach(card => {
-        const name = (card.querySelector('.font-card-name')?.textContent || '').toLowerCase();
-        const show = !q || normalizeSearch(name).includes(normQ) || name.includes(q);
-        card.style.display = show ? '' : 'none';
-        if (show) gridCount++;
-      });
+      // filter main grid
+      const gridCount = filterFontsGrid(q);
 
-      const resultEl = document.querySelector('.result-count strong');
-      if (resultEl) resultEl.textContent = q ? gridCount : document.querySelectorAll('#fontsGrid .font-card').length;
-      document.getElementById('shopFontSearchResult').textContent = q ? `พบ ${pillCount} ฟอนต์` : '';
+      document.getElementById('shopFontSearchResult').textContent = q ? 'พบ ' + pillCount + ' ฟอนต์' : '';
     });
 
     // Size slider
@@ -2624,7 +2639,7 @@
     const badge = card.querySelector('.card-badge')?.textContent || '';
     let show = true;
     if (cat) show = show && (tags.includes(cat) || (cat === 'อิโมจิ' && badge.includes('อิโมจิ')));
-    if (q)   show = show && (normalizeSearch(name).includes(normalizeSearch(q)) || name.includes(q.toLowerCase()));
+    if (q)   show = show && (name.includes(q.toLowerCase()) || shopNorm(name).includes(shopNorm(q)));
     card.style.display = show ? '' : 'none';
   });
 
@@ -2822,44 +2837,12 @@ document.getElementById('sortSelect')?.addEventListener('change', function() {
   cards.forEach(c => grid.appendChild(c));
 });
 
-// ===== LIVE SEARCH (shop main grid) =====
+// ===== LIVE SEARCH (shop main grid via #searchInput) =====
 (function() {
   const shopInput = document.getElementById('searchInput');
-  const fontsGrid = document.getElementById('fontsGrid');
-  if (!shopInput || !fontsGrid) return;
-
-  let activeCategory = 'all';
-
-  // sync category state when sidebar filter clicked
-  document.querySelectorAll('.filter-item[data-category]').forEach(btn => {
-    btn.addEventListener('click', () => { activeCategory = btn.dataset.category; });
-  });
-
+  if (!shopInput || !document.getElementById('fontsGrid')) return;
   shopInput.addEventListener('input', function() {
-    const q = this.value.trim().toLowerCase();
-    const normQ = normalizeSearch(q);
-    let visible = 0;
-
-    document.querySelectorAll('#fontsGrid .font-card').forEach(card => {
-      const name = (card.querySelector('.font-card-name')?.textContent || '').toLowerCase();
-      const tags = Array.from(card.querySelectorAll('.font-card-tag')).map(t => t.textContent.trim());
-      const badge = card.querySelector('.card-badge')?.textContent || '';
-
-      const matchSearch = !q || normalizeSearch(name).includes(normQ) || name.includes(q);
-      const matchCat = activeCategory === 'all'
-        || tags.includes(activeCategory)
-        || (activeCategory === 'ใหม่' && isNewFont(card))
-        || (activeCategory === 'อิโมจิ' && badge.includes('อิโมจิ'));
-
-      const show = matchSearch && matchCat;
-      card.style.display = show ? '' : 'none';
-      if (show) visible++;
-    });
-
-    const resultEl = document.querySelector('.result-count strong');
-    if (resultEl) resultEl.textContent = visible;
-    const noResult = document.getElementById('noResult');
-    if (noResult) noResult.style.display = visible === 0 ? '' : 'none';
+    filterFontsGrid(this.value.trim().toLowerCase());
   });
 })();
 </script>
