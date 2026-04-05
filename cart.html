@@ -253,6 +253,9 @@
     </div>
     <div id="downloadList"></div>
     <div style="text-align:center;margin-top:20px;display:flex;flex-direction:column;gap:10px;align-items:center;">
+      <button onclick="generateReceipt()" style="display:inline-block;padding:12px 28px;background:linear-gradient(135deg,#34d399,#059669);border-radius:12px;font-weight:700;color:white;border:none;cursor:pointer;font-size:0.95rem;font-family:inherit;">
+        🧾 ดาวน์โหลดใบเสร็จ PDF
+      </button>
       <a href="shop.html" style="display:inline-block;padding:12px 28px;background:linear-gradient(135deg,#f9a8d4,#c4b5fd);border-radius:12px;font-weight:700;color:#1a1a2e;text-decoration:none;">
         เลือกซื้อฟอนต์เพิ่ม
       </a>
@@ -331,6 +334,7 @@ renderCart();
 
 // ===== PAYMENT SYSTEM =====
 let fbFunctions = null, fnCreatePaymentIntent = null, fnGetDownloadLinks = null, fnCheckPaymentStatus = null;
+let _receiptData = null;
 
 try {
   fbFunctions = firebase.app().functions('asia-southeast1');
@@ -460,6 +464,9 @@ async function handlePromptPay() {
           localStorage.removeItem('dsiin_cart');
           cartUpdateBadge();
           if (typeof savePurchaseHistory === 'function') savePurchaseHistory(cartItems);
+          const _ppSubtotal = cartItems.reduce((s, i) => s + i.price, 0);
+          const _ppDiscount = cartItems.length >= 10 ? Math.round(_ppSubtotal * 0.10) : 0;
+          _receiptData = { items: cartItems, email, chargeId: currentChargeId, subtotal: _ppSubtotal, discount: _ppDiscount, total: _ppSubtotal - _ppDiscount };
           document.getElementById('paymentOverlay').style.display = 'none';
           showDownloads(dlResult.data.downloadLinks, cartItems);
         }
@@ -527,6 +534,9 @@ async function handlePayment() {
       localStorage.removeItem('dsiin_cart');
       cartUpdateBadge();
       if (typeof savePurchaseHistory === 'function') savePurchaseHistory(cartItems);
+      const _cSubtotal = cartItems.reduce((s, i) => s + i.price, 0);
+      const _cDiscount = cartItems.length >= 10 ? Math.round(_cSubtotal * 0.10) : 0;
+      _receiptData = { items: cartItems, email, chargeId: currentChargeId, subtotal: _cSubtotal, discount: _cDiscount, total: _cSubtotal - _cDiscount };
       document.getElementById('paymentOverlay').style.display = 'none';
       showDownloads(dlResult.data.downloadLinks, cartItems);
     } else {
@@ -538,6 +548,106 @@ async function handlePayment() {
     payBtn.disabled = false;
     payBtn.innerHTML = 'จ่ายเงิน ' + totalText;
   }
+}
+
+function generateReceipt() {
+  const d = _receiptData;
+  if (!d) return;
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric' });
+  const timeStr = now.toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' });
+  const receiptNo = 'DS-' + d.chargeId.slice(-8).toUpperCase();
+
+  const rows = d.items.map(i => `
+    <tr>
+      <td style="padding:8px 0;border-bottom:1px solid #f0f0f0;">${i.name}</td>
+      <td style="padding:8px 0;border-bottom:1px solid #f0f0f0;color:#666;">${i.license}</td>
+      <td style="padding:8px 0;border-bottom:1px solid #f0f0f0;text-align:right;">฿${i.price.toLocaleString()}</td>
+    </tr>`).join('');
+
+  const discountRow = d.discount > 0 ? `
+    <tr>
+      <td colspan="2" style="padding:6px 0;color:#16a34a;font-weight:600;">ส่วนลด 10% (ซื้อครบ 10 ฟอนต์)</td>
+      <td style="padding:6px 0;text-align:right;color:#16a34a;font-weight:600;">-฿${d.discount.toLocaleString()}</td>
+    </tr>` : '';
+
+  const html = `<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>ใบเสร็จ ${receiptNo}</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700&display=swap');
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Sarabun',sans-serif; color:#1a1a2e; background:#fff; padding:40px; max-width:600px; margin:0 auto; }
+  .logo { font-size:1.5rem; font-weight:800; color:#ec4899; margin-bottom:4px; }
+  .header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:32px; padding-bottom:20px; border-bottom:2px solid #ec4899; }
+  .receipt-title { font-size:1.1rem; font-weight:700; color:#1a1a2e; }
+  .receipt-no { font-size:0.85rem; color:#888; margin-top:4px; }
+  .info-row { display:flex; justify-content:space-between; margin-bottom:6px; font-size:0.88rem; }
+  .info-label { color:#888; }
+  table { width:100%; border-collapse:collapse; margin:20px 0; font-size:0.9rem; }
+  th { text-align:left; padding:8px 0; border-bottom:2px solid #1a1a2e; font-size:0.82rem; color:#888; font-weight:600; }
+  th:last-child { text-align:right; }
+  .total-row td { padding:10px 0; font-weight:800; font-size:1.05rem; border-top:2px solid #1a1a2e; }
+  .total-row td:last-child { text-align:right; color:#ec4899; }
+  .footer { margin-top:40px; padding-top:16px; border-top:1px solid #eee; font-size:0.78rem; color:#aaa; text-align:center; }
+  @media print { body { padding:20px; } button { display:none; } }
+</style>
+</head>
+<body>
+<div class="header">
+  <div>
+    <div class="logo">Dsiin Studio</div>
+    <div style="font-size:0.78rem;color:#888;">สถานีฟอนต์ · ฟอนต์ลายมือไทยคุณภาพสูง</div>
+  </div>
+  <div style="text-align:right;">
+    <div class="receipt-title">ใบเสร็จรับเงิน</div>
+    <div class="receipt-no">${receiptNo}</div>
+  </div>
+</div>
+
+<div class="info-row"><span class="info-label">วันที่</span><span>${dateStr} เวลา ${timeStr}</span></div>
+<div class="info-row"><span class="info-label">อีเมล</span><span>${d.email || '-'}</span></div>
+<div class="info-row"><span class="info-label">หมายเลขคำสั่งซื้อ</span><span>${receiptNo}</span></div>
+
+<table>
+  <thead>
+    <tr>
+      <th>รายการ</th>
+      <th>ลิขสิทธิ์</th>
+      <th style="text-align:right;">ราคา</th>
+    </tr>
+  </thead>
+  <tbody>
+    ${rows}
+    ${discountRow}
+  </tbody>
+  <tfoot>
+    <tr class="total-row">
+      <td colspan="2">ยอดที่ชำระ</td>
+      <td>฿${d.total.toLocaleString()}</td>
+    </tr>
+  </tfoot>
+</table>
+
+<div style="text-align:center;margin:24px 0;">
+  <button onclick="window.print()" style="padding:10px 28px;background:#ec4899;color:white;border:none;border-radius:10px;font-size:0.95rem;font-weight:700;cursor:pointer;font-family:'Sarabun',sans-serif;">
+    🖨️ พิมพ์ / บันทึก PDF
+  </button>
+</div>
+
+<div class="footer">
+  ขอบคุณที่ไว้วางใจ Dsiin Studio · Line: @667mrcol<br>
+  ลิขสิทธิ์ฟอนต์เป็นไปตามเงื่อนไขใบอนุญาตที่เลือก
+</div>
+</body>
+</html>`;
+
+  const w = window.open('', '_blank');
+  w.document.write(html);
+  w.document.close();
+  setTimeout(() => w.print(), 600);
 }
 
 function showDownloads(downloadLinks, items) {
