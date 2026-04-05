@@ -387,7 +387,11 @@ function normalizeSearch(str) {
 
     const displayed = showLoadMore ? INITIAL_LIMIT : visible;
     if (resultCount) resultCount.textContent = 'แสดง ' + displayed + ' จาก ' + visible + ' ฟอนต์';
-    if (noResult) noResult.style.display = visible === 0 ? '' : 'none';
+    if (noResult) {
+      noResult.style.display = visible === 0 && currentQuery ? '' : 'none';
+      const shopLink = document.getElementById('homeNoResultShopLink');
+      if (shopLink && currentQuery) shopLink.href = 'shop.html?q=' + encodeURIComponent(currentQuery);
+    }
   }
 
   if (searchInput) {
@@ -395,6 +399,11 @@ function normalizeSearch(str) {
       currentQuery = searchInput.value.trim().toLowerCase();
       isLimited = true;
       updateDisplay();
+    });
+    searchInput.addEventListener('keydown', e => {
+      if (e.key === 'Enter' && currentQuery) {
+        window.location.href = 'shop.html?q=' + encodeURIComponent(currentQuery);
+      }
     });
   }
 
