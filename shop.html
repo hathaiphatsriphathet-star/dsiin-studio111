@@ -2253,6 +2253,7 @@
             <button class="shop-font-pill" data-font="'TKKhaopad',sans-serif" data-label="ฟอนต์ ข้าวผัด" style="font-family:'TKKhaopad',sans-serif;">ข้าวผัด</button>
             <button class="shop-font-pill" data-font="'DSKhaiwan',sans-serif" data-label="ฟอนต์ ไข่หวาน" style="font-family:'DSKhaiwan',sans-serif;">ไข่หวาน</button>
             <!-- ค -->
+            <button class="shop-font-pill" data-font="'TKCulture',sans-serif" data-label="ฟอนต์คัลเจอร์" style="font-family:'TKCulture',sans-serif;">คัลเจอร์</button>
             <button class="shop-font-pill" data-font="'DSKamin',sans-serif" data-label="ฟอนต์ คามิน" style="font-family:'DSKamin',sans-serif;">คามิน</button>
             <button class="shop-font-pill" data-font="'TKConnor',sans-serif" data-label="ฟอนต์ คอนเนอร์" style="font-family:'TKConnor',sans-serif;">คอนเนอร์</button>
             <button class="shop-font-pill" data-font="'TKCanele',sans-serif" data-label="ฟอนต์ คาเนเล่" style="font-family:'TKCanele',sans-serif;">คาเนเล่</button>
@@ -2358,6 +2359,7 @@
             <button class="shop-font-pill" data-font="'DSWednesday',sans-serif" data-label="ฟอนต์ เวนส์เดย์" style="font-family:'DSWednesday',sans-serif;">เวนส์เดย์</button>
             <button class="shop-font-pill" data-font="'DSWelcome',sans-serif" data-label="ฟอนต์ เวลคัม" style="font-family:'DSWelcome',sans-serif;">เวลคัม</button>
             <!-- ส -->
+            <button class="shop-font-pill" data-font="'TKSangkhaya',sans-serif" data-label="ฟอนต์สังขยา" style="font-family:'TKSangkhaya',sans-serif;">สังขยา</button>
             <button class="shop-font-pill" data-font="'DSSomwhan',sans-serif" data-label="ฟอนต์ส้มหวาน" style="font-family:'DSSomwhan',sans-serif;">ส้มหวาน</button>
             <button class="shop-font-pill" data-font="'DSstevia',sans-serif" data-label="ฟอนต์สตีเวีย" style="font-family:'DSstevia',sans-serif;">สตีเวีย</button>
             <button class="shop-font-pill" data-font="'DSOilpastel',sans-serif" data-label="ฟอนต์ สีชอล์ค" style="font-family:'DSOilpastel',sans-serif;">สีชอล์ค</button>
@@ -2385,6 +2387,7 @@
             <!-- ฮ -->
             <button class="shop-font-pill" data-font="'DShippie',sans-serif" data-label="ฟอนต์ ฮิปปี้" style="font-family:'DShippie',sans-serif;">ฮิปปี้</button>
             <button class="shop-font-pill" data-font="'RGHongkong',sans-serif" data-label="ฟอนต์ ฮ่องกง" style="font-family:'RGHongkong',sans-serif;">ฮ่องกง</button>
+            <button class="shop-font-pill" data-font="'DSHawkins',sans-serif" data-label="ฟอนต์ฮอว์กินส์" style="font-family:'DSHawkins',sans-serif;">ฮอว์กินส์</button>
 
           </div>
         </div>
@@ -2496,18 +2499,31 @@
       document.getElementById('shopPreviewCanvas').scrollIntoView({ behavior: 'smooth', block: 'center' });
     });
 
-    // Font search
+    // Font search — filters pills + main grid
     fontSearch.addEventListener('input', () => {
       const q = fontSearch.value.trim().toLowerCase();
+      const normQ = normalizeSearch(q);
       const pills = document.querySelectorAll('.shop-font-pill');
-      let count = 0;
+      let pillCount = 0;
       pills.forEach(pill => {
         const label = pill.dataset.label.toLowerCase();
-        const show = !q || normalizeSearch(label).includes(normalizeSearch(q)) || label.includes(q);
+        const show = !q || normalizeSearch(label).includes(normQ) || label.includes(q);
         pill.style.display = show ? '' : 'none';
-        if (show) count++;
+        if (show) pillCount++;
       });
-      document.getElementById('shopFontSearchResult').textContent = q ? `พบ ${count} ฟอนต์` : '';
+
+      // Also filter main font grid
+      let gridCount = 0;
+      document.querySelectorAll('#fontsGrid .font-card').forEach(card => {
+        const name = (card.querySelector('.font-card-name')?.textContent || '').toLowerCase();
+        const show = !q || normalizeSearch(name).includes(normQ) || name.includes(q);
+        card.style.display = show ? '' : 'none';
+        if (show) gridCount++;
+      });
+
+      const resultEl = document.querySelector('.result-count strong');
+      if (resultEl) resultEl.textContent = q ? gridCount : document.querySelectorAll('#fontsGrid .font-card').length;
+      document.getElementById('shopFontSearchResult').textContent = q ? `พบ ${pillCount} ฟอนต์` : '';
     });
 
     // Size slider
