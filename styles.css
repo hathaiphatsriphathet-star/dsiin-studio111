@@ -6,34 +6,34 @@
 }
 
 :root {
-  /* ── PRIMARY: Candy (Deep Red) ── */
-  --pink: #97181A;
-  --pink-light: #F5D0D8;
-  --pink-dark: #6B0F11;
+  /* ── PRIMARY: Coral ── */
+  --pink: #FF6B6B;
+  --pink-light: #ffb3b3;
+  --pink-dark: #e05555;
 
-  /* ── Supporting: Cherry Pink ── */
-  --blue: #E296B2;
-  --blue-light: #F5C8D8;
-  --blue-dark: #C06080;
-  --mint: #E296B2;
-  --mint-light: #F5D8E8;
-  --lavender: #E296B2;
-  --lavender-light: #FAE0EC;
-  --yellow: #F5D0D8;
-  --yellow-light: #FDF0F4;
+  /* ── Supporting: Orange Accent ── */
+  --blue: #ff8e53;
+  --blue-light: #ffcba4;
+  --blue-dark: #e07340;
+  --mint: #ff8e53;
+  --mint-light: #fff0e6;
+  --lavender: #ff8e53;
+  --lavender-light: #fff3e8;
+  --yellow: #ffeaa7;
+  --yellow-light: #fff8e6;
 
   /* ── Text ── */
-  --text-dark: #282828;
-  --text-mid: #4A2828;
-  --text-light: #8A6868;
+  --text-dark: #2D2D2D;
+  --text-mid: #444444;
+  --text-light: #888888;
 
-  /* ── Base: Oil ── */
-  --bg-soft: #F8E0D0;
-  --bg: #FEECDE;
+  /* ── Base: Warm White ── */
+  --bg-soft: #f0e8e0;
+  --bg: #fff8f0;
   --bg-card: #FFFFFF;
-  --border: #F0D0C8;
-  --shadow: 0 2px 16px rgba(151, 24, 26, 0.07);
-  --shadow-hover: 0 8px 32px rgba(151, 24, 26, 0.14);
+  --border: #e8e0d8;
+  --shadow: 0 2px 16px rgba(255, 107, 107, 0.10);
+  --shadow-hover: 0 8px 32px rgba(255, 107, 107, 0.20);
   --radius: 12px;
   --radius-sm: 8px;
   --radius-lg: 16px;
@@ -95,7 +95,7 @@ section { padding: 80px 0; }
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(151, 24, 26, 0.96);
+  background: rgba(255, 107, 107, 0.96);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid rgba(255,255,255,0.1);
@@ -647,7 +647,7 @@ section { padding: 80px 0; }
 /* ===== MARQUEE ===== */
 .marquee-section {
   padding: 20px 0;
-  background: #97181A;
+  background: #FF6B6B;
   overflow: hidden;
   position: relative;
 }
@@ -664,12 +664,12 @@ section { padding: 80px 0; }
 
 .marquee-section::before {
   left: 0;
-  background: linear-gradient(to right, #97181A 20%, transparent);
+  background: linear-gradient(to right, #FF6B6B 20%, transparent);
 }
 
 .marquee-section::after {
   right: 0;
-  background: linear-gradient(to left, #97181A 20%, transparent);
+  background: linear-gradient(to left, #FF6B6B 20%, transparent);
 }
 
 .marquee-track {
@@ -1870,14 +1870,14 @@ section { padding: 80px 0; }
 .mobile-nav-links a:hover .mob-icon { background: #ede9e4; }
 .mobile-nav-links a.active {
   background: #fdf2f2;
-  color: #97181A;
+  color: #FF6B6B;
   font-weight: 700;
 }
-.mobile-nav-links a.active .mob-icon { background: rgba(151,24,26,0.10); }
-.mobile-nav-links a.active .mob-icon svg { stroke: #97181A; }
+.mobile-nav-links a.active .mob-icon { background: rgba(255,107,107,0.10); }
+.mobile-nav-links a.active .mob-icon svg { stroke: #FF6B6B; }
 .mobile-nav-links .mob-cart-count {
   margin-left: auto;
-  background: #97181A; color: white;
+  background: #FF6B6B; color: white;
   font-size: 0.7rem; font-weight: 700;
   min-width: 20px; height: 20px;
   border-radius: 10px; padding: 0 5px;
