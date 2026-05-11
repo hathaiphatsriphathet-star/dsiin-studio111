@@ -467,7 +467,7 @@
 <div id="loginPrompt">
   <h2>กรุณาเข้าสู่ระบบ</h2>
   <p>เพื่อเข้าใช้งาน Dashboard</p>
-  <button onclick="authOpen('login')" style="padding:12px 32px;background:linear-gradient(135deg,#f9a8d4,#c4b5fd);border:none;border-radius:12px;font-size:0.95rem;font-weight:700;color:#1a1a2e;cursor:pointer;font-family:inherit;">เข้าสู่ระบบ</button>
+  <button onclick="authOpen('login')" style="padding:12px 32px;background:linear-gradient(135deg,#E8D5C0,#D4B896);border:none;border-radius:12px;font-size:0.95rem;font-weight:700;color:#1a1a2e;cursor:pointer;font-family:inherit;">เข้าสู่ระบบ</button>
 </div>
 
 <!-- Dashboard (สำหรับคนที่ login แล้ว) -->
@@ -729,7 +729,7 @@
       container.innerHTML = `<div style="text-align:center;padding:40px 0;color:#aaa;">
         <div style="font-size:2rem;margin-bottom:10px;">🔤</div>
         <p>ยังไม่มีฟอนต์ที่ซื้อ</p>
-        <a href="shop.html" style="color:#ec4899;font-weight:600;text-decoration:none;">เลือกซื้อฟอนต์ →</a>
+        <a href="shop.html" style="color:#C4956A;font-weight:600;text-decoration:none;">เลือกซื้อฟอนต์ →</a>
       </div>`;
       return;
     }
@@ -803,7 +803,7 @@
       label.style.cssText = 'font-size:0.75rem;color:#666;word-break:break-all;';
       label.textContent = fileName;
       const dlBtn = document.createElement('a');
-      dlBtn.style.cssText = 'flex-shrink:0;padding:5px 10px;background:#ec4899;color:white;border-radius:8px;font-size:0.75rem;font-weight:600;text-decoration:none;cursor:pointer;';
+      dlBtn.style.cssText = 'flex-shrink:0;padding:5px 10px;background:#C4956A;color:white;border-radius:8px;font-size:0.75rem;font-weight:600;text-decoration:none;cursor:pointer;';
       dlBtn.textContent = '⬇';
       dlBtn.title = 'ดาวน์โหลด ' + fileName;
       dlBtn.addEventListener('click', () => {
@@ -849,7 +849,7 @@
           list.innerHTML = `<div style="text-align:center;padding:40px 0;color:#aaa;">
             <div style="font-size:2rem;margin-bottom:10px;">🛍️</div>
             <p>ยังไม่มีประวัติการซื้อ</p>
-            <a href="shop.html" style="color:#ec4899;font-weight:600;text-decoration:none;">เลือกซื้อฟอนต์ →</a>
+            <a href="shop.html" style="color:#C4956A;font-weight:600;text-decoration:none;">เลือกซื้อฟอนต์ →</a>
           </div>`;
           return;
         }

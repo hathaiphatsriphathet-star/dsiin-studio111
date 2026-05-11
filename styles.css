@@ -6,34 +6,34 @@
 }
 
 :root {
-  /* ── PRIMARY: Coral ── */
-  --pink: #FF6B6B;
-  --pink-light: #ffb3b3;
-  --pink-dark: #e05555;
+  /* ── PRIMARY: Caramel Brown ── */
+  --pink: #C4956A;
+  --pink-light: #E8D5C0;
+  --pink-dark: #8B6343;
 
-  /* ── Supporting: Orange Accent ── */
-  --blue: #ff8e53;
-  --blue-light: #ffcba4;
-  --blue-dark: #e07340;
-  --mint: #ff8e53;
-  --mint-light: #fff0e6;
-  --lavender: #ff8e53;
-  --lavender-light: #fff3e8;
-  --yellow: #ffeaa7;
-  --yellow-light: #fff8e6;
+  /* ── Supporting: Warm Brown ── */
+  --blue: #B08060;
+  --blue-light: #E0C9B0;
+  --blue-dark: #7A5A38;
+  --mint: #B08060;
+  --mint-light: #F5EDE0;
+  --lavender: #B08060;
+  --lavender-light: #F5EDE0;
+  --yellow: #f0dfc0;
+  --yellow-light: #faf3e8;
 
   /* ── Text ── */
-  --text-dark: #2D2D2D;
-  --text-mid: #444444;
-  --text-light: #888888;
+  --text-dark: #2D2015;
+  --text-mid: #4A3828;
+  --text-light: #8A7060;
 
-  /* ── Base: Warm White ── */
-  --bg-soft: #f0e8e0;
-  --bg: #fff8f0;
+  /* ── Base: Warm Cream ── */
+  --bg-soft: #EDE0D0;
+  --bg: #FAF6EE;
   --bg-card: #FFFFFF;
-  --border: #e8e0d8;
-  --shadow: 0 2px 16px rgba(255, 107, 107, 0.10);
-  --shadow-hover: 0 8px 32px rgba(255, 107, 107, 0.20);
+  --border: #DDD0BC;
+  --shadow: 0 2px 16px rgba(139, 99, 67, 0.10);
+  --shadow-hover: 0 8px 32px rgba(139, 99, 67, 0.20);
   --radius: 12px;
   --radius-sm: 8px;
   --radius-lg: 16px;
@@ -95,7 +95,7 @@ section { padding: 80px 0; }
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(255, 107, 107, 0.96);
+  background: rgba(139, 99, 67, 0.97);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid rgba(255,255,255,0.1);
@@ -647,7 +647,7 @@ section { padding: 80px 0; }
 /* ===== MARQUEE ===== */
 .marquee-section {
   padding: 20px 0;
-  background: #FF6B6B;
+  background: #C4956A;
   overflow: hidden;
   position: relative;
 }
@@ -664,12 +664,12 @@ section { padding: 80px 0; }
 
 .marquee-section::before {
   left: 0;
-  background: linear-gradient(to right, #FF6B6B 20%, transparent);
+  background: linear-gradient(to right, #C4956A 20%, transparent);
 }
 
 .marquee-section::after {
   right: 0;
-  background: linear-gradient(to left, #FF6B6B 20%, transparent);
+  background: linear-gradient(to left, #C4956A 20%, transparent);
 }
 
 .marquee-track {
@@ -1870,14 +1870,14 @@ section { padding: 80px 0; }
 .mobile-nav-links a:hover .mob-icon { background: #ede9e4; }
 .mobile-nav-links a.active {
   background: #fdf2f2;
-  color: #FF6B6B;
+  color: #C4956A;
   font-weight: 700;
 }
 .mobile-nav-links a.active .mob-icon { background: rgba(255,107,107,0.10); }
-.mobile-nav-links a.active .mob-icon svg { stroke: #FF6B6B; }
+.mobile-nav-links a.active .mob-icon svg { stroke: #C4956A; }
 .mobile-nav-links .mob-cart-count {
   margin-left: auto;
-  background: #FF6B6B; color: white;
+  background: #C4956A; color: white;
   font-size: 0.7rem; font-weight: 700;
   min-width: 20px; height: 20px;
   border-radius: 10px; padding: 0 5px;

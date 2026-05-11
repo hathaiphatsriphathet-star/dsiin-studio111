@@ -29,7 +29,7 @@
       transition: all 0.2s; font-family: 'Sarabun', sans-serif;
     }
     .payment-tab.active {
-      background: linear-gradient(135deg, #ec4899, #8b5cf6);
+      background: linear-gradient(135deg, #C4956A, #8B6343);
       color: white; border-color: transparent;
     }
     .qr-box {
@@ -43,12 +43,12 @@
       font-size: 0.82rem; color: #888; margin-bottom: 6px;
     }
     .qr-status {
-      font-size: 0.9rem; font-weight: 600; color: #8b5cf6;
+      font-size: 0.9rem; font-weight: 600; color: #8B6343;
       display: flex; align-items: center; justify-content: center; gap: 8px;
     }
     .pay-btn {
       width: 100%; padding: 14px;
-      background: linear-gradient(135deg, #ec4899, #8b5cf6);
+      background: linear-gradient(135deg, #C4956A, #8B6343);
       border: none; border-radius: 14px;
       font-size: 1rem; font-weight: 700; color: white;
       cursor: pointer; transition: opacity 0.2s; margin-top: 16px;
@@ -155,7 +155,7 @@
         <div id="paymentItems"></div>
         <div style="border-top:1px solid #e5e7eb;margin-top:10px;padding-top:10px;display:flex;justify-content:space-between;font-weight:800;font-size:1.05rem;">
           <span>ยอดที่ต้องชำระ</span>
-          <span id="paymentTotal" style="color:#ec4899;"></span>
+          <span id="paymentTotal" style="color:#C4956A;"></span>
         </div>
       </div>
 
@@ -172,7 +172,7 @@
           <label style="font-size:0.85rem;font-weight:700;color:#1a1a2e;display:block;margin-bottom:6px;">อีเมล (สำหรับรับใบเสร็จ)</label>
           <input type="email" id="paymentEmail" placeholder="your@email.com"
             style="width:100%;padding:12px 14px;border:1.5px solid #e5e7eb;border-radius:12px;font-size:0.9rem;outline:none;box-sizing:border-box;transition:border-color 0.2s;"
-            onfocus="this.style.borderColor='#ec4899'" onblur="this.style.borderColor='#e5e7eb'">
+            onfocus="this.style.borderColor='#C4956A'" onblur="this.style.borderColor='#e5e7eb'">
         </div>
         <!-- Omise Card Form -->
         <div style="margin-bottom:4px;">
@@ -180,20 +180,20 @@
           <div id="card-element">
             <input type="text" id="omise-card-number" placeholder="หมายเลขบัตร" maxlength="19"
               style="width:100%;padding:12px 14px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:0.9rem;outline:none;box-sizing:border-box;margin-bottom:10px;"
-              onfocus="this.style.borderColor='#ec4899'" onblur="this.style.borderColor='#e5e7eb'"
+              onfocus="this.style.borderColor='#C4956A'" onblur="this.style.borderColor='#e5e7eb'"
               oninput="formatCardNumber(this)">
             <div style="display:flex;gap:10px;">
               <input type="text" id="omise-card-expiry" placeholder="MM/YY" maxlength="5"
                 style="flex:1;padding:12px 14px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:0.9rem;outline:none;box-sizing:border-box;"
-                onfocus="this.style.borderColor='#ec4899'" onblur="this.style.borderColor='#e5e7eb'"
+                onfocus="this.style.borderColor='#C4956A'" onblur="this.style.borderColor='#e5e7eb'"
                 oninput="formatExpiry(this)">
               <input type="text" id="omise-card-cvv" placeholder="CVV" maxlength="4"
                 style="flex:1;padding:12px 14px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:0.9rem;outline:none;box-sizing:border-box;"
-                onfocus="this.style.borderColor='#ec4899'" onblur="this.style.borderColor='#e5e7eb'">
+                onfocus="this.style.borderColor='#C4956A'" onblur="this.style.borderColor='#e5e7eb'">
             </div>
             <input type="text" id="omise-card-name" placeholder="ชื่อบนบัตร (ภาษาอังกฤษ)" maxlength="50"
               style="width:100%;padding:12px 14px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:0.9rem;outline:none;box-sizing:border-box;margin-top:10px;"
-              onfocus="this.style.borderColor='#ec4899'" onblur="this.style.borderColor='#e5e7eb'">
+              onfocus="this.style.borderColor='#C4956A'" onblur="this.style.borderColor='#e5e7eb'">
           </div>
           <div id="card-errors"></div>
         </div>
@@ -217,7 +217,7 @@
             <label style="font-size:0.85rem;font-weight:700;color:#1a1a2e;display:block;margin-bottom:6px;">อีเมล (สำหรับรับใบเสร็จ)</label>
             <input type="email" id="promptpayEmail" placeholder="your@email.com"
               style="width:100%;padding:12px 14px;border:1.5px solid #e5e7eb;border-radius:12px;font-size:0.9rem;outline:none;box-sizing:border-box;transition:border-color 0.2s;"
-              onfocus="this.style.borderColor='#ec4899'" onblur="this.style.borderColor='#e5e7eb'">
+              onfocus="this.style.borderColor='#C4956A'" onblur="this.style.borderColor='#e5e7eb'">
           </div>
           <button class="pay-btn" id="qrBtn" onclick="handlePromptPay()">
             รับ QR Code <span id="qrBtnAmount"></span>
@@ -226,7 +226,7 @@
         <div id="qrDisplay" style="display:none;">
           <div class="qr-box">
             <img id="qrImage" src="" alt="PromptPay QR Code">
-            <div style="font-size:1rem;font-weight:800;color:#1a1a2e;margin-bottom:4px;">ยอดชำระ: <span id="qrAmount" style="color:#ec4899;"></span></div>
+            <div style="font-size:1rem;font-weight:800;color:#1a1a2e;margin-bottom:4px;">ยอดชำระ: <span id="qrAmount" style="color:#C4956A;"></span></div>
             <div class="qr-timer" id="qrTimer"></div>
             <div class="qr-status">
               <span class="spinner"></span>
@@ -580,8 +580,8 @@ function generateReceipt() {
   @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700&display=swap');
   * { margin:0; padding:0; box-sizing:border-box; }
   body { font-family:'Sarabun',sans-serif; color:#1a1a2e; background:#fff; padding:40px; max-width:600px; margin:0 auto; }
-  .logo { font-size:1.5rem; font-weight:800; color:#ec4899; margin-bottom:4px; }
-  .header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:32px; padding-bottom:20px; border-bottom:2px solid #ec4899; }
+  .logo { font-size:1.5rem; font-weight:800; color:#C4956A; margin-bottom:4px; }
+  .header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:32px; padding-bottom:20px; border-bottom:2px solid #C4956A; }
   .receipt-title { font-size:1.1rem; font-weight:700; color:#1a1a2e; }
   .receipt-no { font-size:0.85rem; color:#888; margin-top:4px; }
   .info-row { display:flex; justify-content:space-between; margin-bottom:6px; font-size:0.88rem; }
@@ -590,7 +590,7 @@ function generateReceipt() {
   th { text-align:left; padding:8px 0; border-bottom:2px solid #1a1a2e; font-size:0.82rem; color:#888; font-weight:600; }
   th:last-child { text-align:right; }
   .total-row td { padding:10px 0; font-weight:800; font-size:1.05rem; border-top:2px solid #1a1a2e; }
-  .total-row td:last-child { text-align:right; color:#ec4899; }
+  .total-row td:last-child { text-align:right; color:#C4956A; }
   .footer { margin-top:40px; padding-top:16px; border-top:1px solid #eee; font-size:0.78rem; color:#aaa; text-align:center; }
   @media print { body { padding:20px; } button { display:none; } }
 </style>
@@ -632,7 +632,7 @@ function generateReceipt() {
 </table>
 
 <div style="text-align:center;margin:24px 0;">
-  <button onclick="window.print()" style="padding:10px 28px;background:#ec4899;color:white;border:none;border-radius:10px;font-size:0.95rem;font-weight:700;cursor:pointer;font-family:'Sarabun',sans-serif;">
+  <button onclick="window.print()" style="padding:10px 28px;background:#C4956A;color:white;border:none;border-radius:10px;font-size:0.95rem;font-weight:700;cursor:pointer;font-family:'Sarabun',sans-serif;">
     🖨️ พิมพ์ / บันทึก PDF
   </button>
 </div>

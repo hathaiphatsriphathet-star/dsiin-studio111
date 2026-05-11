@@ -66,7 +66,7 @@
     <div style="text-align:center;margin-bottom:24px;">
       <div style="font-size:1.5rem;font-weight:800;color:#1a1a2e;">สถานีฟอนต์</div>
       <div style="font-size:0.8rem;color:#888;">Dsiin Studio</div>
-      <div id="authRequiredNote" style="font-size:0.78rem;color:#ec4899;margin-top:6px;display:none;">กรุณาเข้าสู่ระบบเพื่อใช้งาน</div>
+      <div id="authRequiredNote" style="font-size:0.78rem;color:#C4956A;margin-top:6px;display:none;">กรุณาเข้าสู่ระบบเพื่อใช้งาน</div>
     </div>
 
     <div style="display:flex;border-radius:12px;background:#f5f5f5;padding:4px;margin-bottom:20px;">
@@ -90,17 +90,17 @@
     <div id="formLogin">
       <div style="margin-bottom:14px;">
         <label style="font-size:0.82rem;color:#666;display:block;margin-bottom:6px;">อีเมล</label>
-        <input id="loginEmail" type="email" placeholder="your@email.com" style="width:100%;padding:11px 14px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:0.9rem;font-family:inherit;box-sizing:border-box;outline:none;" onfocus="this.style.borderColor='#f9a8d4'" onblur="this.style.borderColor='#e5e7eb'">
+        <input id="loginEmail" type="email" placeholder="your@email.com" style="width:100%;padding:11px 14px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:0.9rem;font-family:inherit;box-sizing:border-box;outline:none;" onfocus="this.style.borderColor='#E8D5C0'" onblur="this.style.borderColor='#e5e7eb'">
       </div>
       <div style="margin-bottom:20px;">
         <label style="font-size:0.82rem;color:#666;display:block;margin-bottom:6px;">รหัสผ่าน</label>
-        <input id="loginPassword" type="password" placeholder="รหัสผ่าน" style="width:100%;padding:11px 14px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:0.9rem;font-family:inherit;box-sizing:border-box;outline:none;" onfocus="this.style.borderColor='#f9a8d4'" onblur="this.style.borderColor='#e5e7eb'" onkeydown="if(event.key==='Enter')doLogin()">
+        <input id="loginPassword" type="password" placeholder="รหัสผ่าน" style="width:100%;padding:11px 14px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:0.9rem;font-family:inherit;box-sizing:border-box;outline:none;" onfocus="this.style.borderColor='#E8D5C0'" onblur="this.style.borderColor='#e5e7eb'" onkeydown="if(event.key==='Enter')doLogin()">
       </div>
       <div id="loginMsg" style="font-size:0.82rem;text-align:center;margin-bottom:12px;min-height:18px;"></div>
-      <button onclick="doLogin()" style="width:100%;padding:13px;background:linear-gradient(135deg,#f9a8d4,#c4b5fd);border:none;border-radius:12px;font-size:0.95rem;font-weight:700;color:#1a1a2e;cursor:pointer;">เข้าสู่ระบบ</button>
+      <button onclick="doLogin()" style="width:100%;padding:13px;background:linear-gradient(135deg,#E8D5C0,#D4B896);border:none;border-radius:12px;font-size:0.95rem;font-weight:700;color:#1a1a2e;cursor:pointer;">เข้าสู่ระบบ</button>
       <p style="text-align:center;font-size:0.82rem;color:#888;margin-top:10px;">
-        <a href="#" onclick="authTab('forgot');return false;" style="color:#ec4899;font-weight:600;text-decoration:none;">ลืมรหัสผ่าน?</a>
-        &nbsp;·&nbsp; ยังไม่มีบัญชี? <a href="#" onclick="authTab('register');return false;" style="color:#ec4899;font-weight:600;text-decoration:none;">สมัครสมาชิก</a>
+        <a href="#" onclick="authTab('forgot');return false;" style="color:#C4956A;font-weight:600;text-decoration:none;">ลืมรหัสผ่าน?</a>
+        &nbsp;·&nbsp; ยังไม่มีบัญชี? <a href="#" onclick="authTab('register');return false;" style="color:#C4956A;font-weight:600;text-decoration:none;">สมัครสมาชิก</a>
       </p>
     </div>
 
@@ -109,30 +109,30 @@
       <div style="text-align:center;margin-bottom:16px;font-size:0.88rem;color:#555;">ใส่อีเมลของคุณ เราจะส่งลิงก์รีเซ็ตรหัสผ่านให้</div>
       <div style="margin-bottom:20px;">
         <label style="font-size:0.82rem;color:#666;display:block;margin-bottom:6px;">อีเมล</label>
-        <input id="forgotEmail" type="email" placeholder="your@email.com" style="width:100%;padding:11px 14px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:0.9rem;font-family:inherit;box-sizing:border-box;outline:none;" onfocus="this.style.borderColor='#f9a8d4'" onblur="this.style.borderColor='#e5e7eb'">
+        <input id="forgotEmail" type="email" placeholder="your@email.com" style="width:100%;padding:11px 14px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:0.9rem;font-family:inherit;box-sizing:border-box;outline:none;" onfocus="this.style.borderColor='#E8D5C0'" onblur="this.style.borderColor='#e5e7eb'">
       </div>
       <div id="forgotMsg" style="font-size:0.82rem;text-align:center;margin-bottom:12px;min-height:18px;"></div>
-      <button onclick="doForgot()" style="width:100%;padding:13px;background:linear-gradient(135deg,#f9a8d4,#c4b5fd);border:none;border-radius:12px;font-size:0.95rem;font-weight:700;color:#1a1a2e;cursor:pointer;">ส่งลิงก์รีเซ็ต</button>
-      <p style="text-align:center;font-size:0.82rem;color:#888;margin-top:14px;"><a href="#" onclick="authTab('login');return false;" style="color:#ec4899;font-weight:600;text-decoration:none;">← กลับเข้าสู่ระบบ</a></p>
+      <button onclick="doForgot()" style="width:100%;padding:13px;background:linear-gradient(135deg,#E8D5C0,#D4B896);border:none;border-radius:12px;font-size:0.95rem;font-weight:700;color:#1a1a2e;cursor:pointer;">ส่งลิงก์รีเซ็ต</button>
+      <p style="text-align:center;font-size:0.82rem;color:#888;margin-top:14px;"><a href="#" onclick="authTab('login');return false;" style="color:#C4956A;font-weight:600;text-decoration:none;">← กลับเข้าสู่ระบบ</a></p>
     </div>
 
     <!-- Register Form -->
     <div id="formRegister" style="display:none;">
       <div style="margin-bottom:14px;">
         <label style="font-size:0.82rem;color:#666;display:block;margin-bottom:6px;">ชื่อ-นามสกุล</label>
-        <input id="regName" type="text" placeholder="ชื่อของคุณ" style="width:100%;padding:11px 14px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:0.9rem;font-family:inherit;box-sizing:border-box;outline:none;" onfocus="this.style.borderColor='#f9a8d4'" onblur="this.style.borderColor='#e5e7eb'">
+        <input id="regName" type="text" placeholder="ชื่อของคุณ" style="width:100%;padding:11px 14px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:0.9rem;font-family:inherit;box-sizing:border-box;outline:none;" onfocus="this.style.borderColor='#E8D5C0'" onblur="this.style.borderColor='#e5e7eb'">
       </div>
       <div style="margin-bottom:14px;">
         <label style="font-size:0.82rem;color:#666;display:block;margin-bottom:6px;">อีเมล</label>
-        <input id="regEmail" type="email" placeholder="your@email.com" style="width:100%;padding:11px 14px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:0.9rem;font-family:inherit;box-sizing:border-box;outline:none;" onfocus="this.style.borderColor='#f9a8d4'" onblur="this.style.borderColor='#e5e7eb'">
+        <input id="regEmail" type="email" placeholder="your@email.com" style="width:100%;padding:11px 14px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:0.9rem;font-family:inherit;box-sizing:border-box;outline:none;" onfocus="this.style.borderColor='#E8D5C0'" onblur="this.style.borderColor='#e5e7eb'">
       </div>
       <div style="margin-bottom:20px;">
         <label style="font-size:0.82rem;color:#666;display:block;margin-bottom:6px;">รหัสผ่าน (อย่างน้อย 6 ตัว)</label>
-        <input id="regPassword" type="password" placeholder="รหัสผ่าน" style="width:100%;padding:11px 14px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:0.9rem;font-family:inherit;box-sizing:border-box;outline:none;" onfocus="this.style.borderColor='#f9a8d4'" onblur="this.style.borderColor='#e5e7eb'" onkeydown="if(event.key==='Enter')doRegister()">
+        <input id="regPassword" type="password" placeholder="รหัสผ่าน" style="width:100%;padding:11px 14px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:0.9rem;font-family:inherit;box-sizing:border-box;outline:none;" onfocus="this.style.borderColor='#E8D5C0'" onblur="this.style.borderColor='#e5e7eb'" onkeydown="if(event.key==='Enter')doRegister()">
       </div>
       <div id="registerMsg" style="font-size:0.82rem;text-align:center;margin-bottom:12px;min-height:18px;"></div>
-      <button onclick="doRegister()" style="width:100%;padding:13px;background:linear-gradient(135deg,#f9a8d4,#c4b5fd);border:none;border-radius:12px;font-size:0.95rem;font-weight:700;color:#1a1a2e;cursor:pointer;">สมัครสมาชิก</button>
-      <p style="text-align:center;font-size:0.82rem;color:#888;margin-top:14px;">มีบัญชีอยู่แล้ว? <a href="#" onclick="authTab('login');return false;" style="color:#ec4899;font-weight:600;text-decoration:none;">เข้าสู่ระบบ</a></p>
+      <button onclick="doRegister()" style="width:100%;padding:13px;background:linear-gradient(135deg,#E8D5C0,#D4B896);border:none;border-radius:12px;font-size:0.95rem;font-weight:700;color:#1a1a2e;cursor:pointer;">สมัครสมาชิก</button>
+      <p style="text-align:center;font-size:0.82rem;color:#888;margin-top:14px;">มีบัญชีอยู่แล้ว? <a href="#" onclick="authTab('login');return false;" style="color:#C4956A;font-weight:600;text-decoration:none;">เข้าสู่ระบบ</a></p>
     </div>
   </div>
 </div>`;
@@ -149,8 +149,8 @@
       const name = user.displayName || user.email.split('@')[0];
       const initial = name[0].toUpperCase();
       const avatarHTML = user.photoURL
-        ? `<img src="${escapeHtml(user.photoURL)}" style="width:34px;height:34px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,0.5);" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span style="display:none;width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#f9a8d4,#c4b5fd);align-items:center;justify-content:center;font-size:0.85rem;font-weight:700;color:#1a1a2e;">${escapeHtml(initial)}</span>`
-        : `<span style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#f9a8d4,#c4b5fd);display:flex;align-items:center;justify-content:center;font-size:0.85rem;font-weight:700;color:#1a1a2e;">${escapeHtml(initial)}</span>`;
+        ? `<img src="${escapeHtml(user.photoURL)}" style="width:34px;height:34px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,0.5);" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span style="display:none;width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#E8D5C0,#D4B896);align-items:center;justify-content:center;font-size:0.85rem;font-weight:700;color:#1a1a2e;">${escapeHtml(initial)}</span>`
+        : `<span style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#E8D5C0,#D4B896);display:flex;align-items:center;justify-content:center;font-size:0.85rem;font-weight:700;color:#1a1a2e;">${escapeHtml(initial)}</span>`;
       if (navLinks) {
         const el = document.createElement('li');
         el.className = 'nav-auth-item';
@@ -234,6 +234,8 @@
     const msg = document.getElementById('registerMsg');
     msg.textContent = '';
     if (!name) { msg.style.color = '#e11d48'; msg.textContent = 'กรุณาใส่ชื่อ'; return; }
+    if (password.length < 8) { msg.style.color = '#e11d48'; msg.textContent = 'รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร'; return; }
+    if (!/[0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) { msg.style.color = '#e11d48'; msg.textContent = 'รหัสผ่านต้องมีตัวเลขหรืออักขระพิเศษอย่างน้อย 1 ตัว'; return; }
     auth.createUserWithEmailAndPassword(email, password)
       .then(result => result.user.updateProfile({ displayName: name }))
       .then(() => {
@@ -286,7 +288,7 @@
     const name = user.displayName || user.email.split('@')[0];
     document.getElementById('profileContent').innerHTML = `
       <div style="display:flex;align-items:center;gap:14px;margin-bottom:24px;">
-        <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#f9a8d4,#c4b5fd);display:flex;align-items:center;justify-content:center;font-size:1.3rem;font-weight:800;color:#1a1a2e;flex-shrink:0;">${escapeHtml(name[0].toUpperCase())}</div>
+        <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#E8D5C0,#D4B896);display:flex;align-items:center;justify-content:center;font-size:1.3rem;font-weight:800;color:#1a1a2e;flex-shrink:0;">${escapeHtml(name[0].toUpperCase())}</div>
         <div>
           <div style="font-weight:700;font-size:1.05rem;">${escapeHtml(name)}</div>
           <div style="font-size:0.82rem;color:#888;">${escapeHtml(user.email)}</div>
@@ -296,7 +298,7 @@
         <div style="font-weight:700;font-size:0.95rem;margin-bottom:12px;">📦 ประวัติการซื้อ</div>
         <div id="ordersContainer"><p style="color:#aaa;font-size:0.85rem;text-align:center;padding:16px 0;">กำลังโหลด...</p></div>
       </div>
-      <a href="dashboard.html" style="display:block;text-align:center;padding:11px;background:linear-gradient(135deg,#f9a8d4,#c4b5fd);border-radius:10px;font-size:0.9rem;font-weight:600;color:#1a1a2e;text-decoration:none;margin-bottom:10px;">ไปหน้า Dashboard</a>
+      <a href="dashboard.html" style="display:block;text-align:center;padding:11px;background:linear-gradient(135deg,#E8D5C0,#D4B896);border-radius:10px;font-size:0.9rem;font-weight:600;color:#1a1a2e;text-decoration:none;margin-bottom:10px;">ไปหน้า Dashboard</a>
       <button onclick="authLogout()" style="width:100%;padding:11px;background:#f5f5f5;border:none;border-radius:10px;font-size:0.9rem;font-weight:600;color:#e11d48;cursor:pointer;">ออกจากระบบ</button>`;
     document.getElementById('profileOverlay').style.display = 'flex';
 
@@ -310,9 +312,9 @@
           <div style="border:1px solid #f0f0f0;border-radius:12px;padding:14px;margin-bottom:10px;">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
               <span style="font-size:0.78rem;color:#888;">${o.date}</span>
-              <span style="font-weight:700;color:#ec4899;">฿${o.total.toLocaleString()}</span>
+              <span style="font-weight:700;color:#C4956A;">฿${o.total.toLocaleString()}</span>
             </div>
-            ${o.items.map(i => `<div style="font-size:0.85rem;color:#333;padding:2px 0;">• ${i.name}</div>`).join('')}
+            ${o.items.map(i => `<div style="font-size:0.85rem;color:#333;padding:2px 0;">• ${escapeHtml(i.name)}</div>`).join('')}
           </div>`).join('');
       }
     });

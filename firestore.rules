@@ -1,0 +1,26 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Orders collection: อ่านได้เฉพาะเจ้าของ, สร้างได้เฉพาะ Cloud Functions (admin SDK)
+    match /orders/{orderId} {
+      allow read: if request.auth != null && resource.data.userId == request.auth.uid;
+      allow write: if false; // Cloud Functions ใช้ admin SDK เท่านั้น
+    }
+
+    // Users collection: อ่าน/เขียนได้เฉพาะเจ้าของ
+    match /users/{userId}/{document=**} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // Rate limit records: Cloud Functions จัดการผ่าน admin SDK เท่านั้น
+    match /_ratelimits/{docId} {
+      allow read, write: if false;
+    }
+
+    // ห้ามทุกอย่างที่ไม่ได้ระบุ
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

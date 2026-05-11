@@ -242,12 +242,6 @@ document.querySelectorAll('.newsletter-form').forEach(form => {
       setTimeout(() => input.style.borderColor = '', 2000);
       return;
     }
-    // Save email to localStorage
-    const emails = JSON.parse(localStorage.getItem('ds_newsletter') || '[]');
-    if (!emails.includes(input.value.trim())) {
-      emails.push(input.value.trim());
-      localStorage.setItem('ds_newsletter', JSON.stringify(emails));
-    }
     input.value = '';
     input.placeholder = 'สมัครรับข่าวสารสำเร็จแล้ว ✓';
     input.disabled = true;

@@ -1118,12 +1118,21 @@ updateCartPurchaseStatus();
 </script>
 <script>
 // ===== REVIEW SYSTEM =====
+function escapeHtml(str) {
+  return String(str || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 let selectedStar = 0;
 const starEls = document.querySelectorAll('#starPicker span');
 const avatarColors = [
-  'linear-gradient(135deg,#f9a8d4,#c4b5fd)',
+  'linear-gradient(135deg,#E8D5C0,#D4B896)',
   'linear-gradient(135deg,#6ee7b7,#93c5fd)',
-  'linear-gradient(135deg,#fcd34d,#f9a8d4)',
+  'linear-gradient(135deg,#fcd34d,#E8D5C0)',
   'linear-gradient(135deg,#a5b4fc,#6ee7b7)',
   'linear-gradient(135deg,#fca5a5,#fcd34d)',
 ];
@@ -1161,15 +1170,16 @@ function renderUserReviews() {
   if (reviews.length === 0) { container.style.display = 'none'; return; }
   container.style.display = 'grid';
   container.innerHTML = reviews.map(r => {
-    const initial = r.name ? r.name[0] : '?';
-    const colorIdx = initial.charCodeAt(0) % avatarColors.length;
-    const stars = '⭐'.repeat(r.star) + '☆'.repeat(5 - r.star);
+    const initial = r.name ? escapeHtml(r.name[0]) : '?';
+    const colorIdx = (r.name ? r.name.charCodeAt(0) : 0) % avatarColors.length;
+    const starCount = Math.max(0, Math.min(5, parseInt(r.star) || 0));
+    const stars = '⭐'.repeat(starCount) + '☆'.repeat(5 - starCount);
     return `<div class="testimonial-card">
       <div class="stars">${stars}</div>
-      <p class="testimonial-text">"${r.text}"</p>
+      <p class="testimonial-text">"${escapeHtml(r.text)}"</p>
       <div class="testimonial-author">
         <div class="author-avatar" style="background:${avatarColors[colorIdx]}">${initial}</div>
-        <div><div class="author-name">${r.name}</div><div class="author-role">${r.role} · ${r.date}</div></div>
+        <div><div class="author-name">${escapeHtml(r.name)}</div><div class="author-role">${escapeHtml(r.role)} · ${escapeHtml(r.date)}</div></div>
       </div>
     </div>`;
   }).join('');
@@ -1184,6 +1194,9 @@ function submitReview() {
   if (!selectedStar) { msg.style.color = '#e11d48'; msg.textContent = 'กรุณาเลือกคะแนน'; return; }
   if (!name) { msg.style.color = '#e11d48'; msg.textContent = 'กรุณาใส่ชื่อ'; return; }
   if (!text) { msg.style.color = '#e11d48'; msg.textContent = 'กรุณาเขียนรีวิว'; return; }
+  if (name.length > 100) { msg.style.color = '#e11d48'; msg.textContent = 'ชื่อยาวเกินไป (ไม่เกิน 100 ตัวอักษร)'; return; }
+  if (role.length > 100) { msg.style.color = '#e11d48'; msg.textContent = 'อาชีพยาวเกินไป (ไม่เกิน 100 ตัวอักษร)'; return; }
+  if (text.length > 1000) { msg.style.color = '#e11d48'; msg.textContent = 'รีวิวยาวเกินไป (ไม่เกิน 1,000 ตัวอักษร)'; return; }
 
   const now = new Date();
   const months = ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
@@ -1228,7 +1241,7 @@ renderUserReviews();
         <div style="font-size:2rem;margin-bottom:10px;">🔒</div>
         <div style="font-weight:700;font-size:1rem;color:#1a1a2e;margin-bottom:6px;">กรุณาเข้าสู่ระบบ</div>
         <div style="font-size:0.88rem;color:#888;margin-bottom:18px;">ต้องเข้าสู่ระบบและซื้อฟอนต์นี้ก่อนจึงจะเขียนรีวิวได้</div>
-        <button onclick="authOpen('login')" style="padding:10px 24px;background:linear-gradient(135deg,#f9a8d4,#c4b5fd);border:none;border-radius:10px;font-weight:700;cursor:pointer;font-family:inherit;">เข้าสู่ระบบ</button>
+        <button onclick="authOpen('login')" style="padding:10px 24px;background:linear-gradient(135deg,#E8D5C0,#D4B896);border:none;border-radius:10px;font-weight:700;cursor:pointer;font-family:inherit;">เข้าสู่ระบบ</button>
       </div>`;
   }
 
@@ -1238,7 +1251,7 @@ renderUserReviews();
         <div style="font-size:2rem;margin-bottom:10px;">🛒</div>
         <div style="font-weight:700;font-size:1rem;color:#1a1a2e;margin-bottom:6px;">ต้องซื้อฟอนต์นี้ก่อน</div>
         <div style="font-size:0.88rem;color:#888;margin-bottom:18px;">เฉพาะผู้ที่ซื้อฟอนต์นี้แล้วเท่านั้นที่สามารถเขียนรีวิวได้</div>
-        <a href="cart.html" style="padding:10px 24px;background:linear-gradient(135deg,#f9a8d4,#c4b5fd);border-radius:10px;font-weight:700;text-decoration:none;color:#1a1a2e;">ไปที่ตะกร้าสินค้า</a>
+        <a href="cart.html" style="padding:10px 24px;background:linear-gradient(135deg,#E8D5C0,#D4B896);border-radius:10px;font-weight:700;text-decoration:none;color:#1a1a2e;">ไปที่ตะกร้าสินค้า</a>
       </div>`;
   }
 
