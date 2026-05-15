@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — อัปโหลดสินค้า | Dsiin Studio</title>
+  <link rel="icon" type="image/png" href="รูปโปร/LOGO.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700;800&display=swap" rel="stylesheet"></noscript>
+  <link rel="stylesheet" href="styles.css?v=6">
+  <style>
+    :root {
+      --red: #FF6B6B;
+      --red-dark: #e05555;
+      --red-light: #fff0f0;
+      --surface: #ffffff;
+      --surface-2: #f8f7f5;
+      --border: #ebe8e4;
+      --text-primary: #1a1a1a;
+      --text-secondary: #666;
+      --text-muted: #aaa;
+      --radius-card: 16px;
+      --shadow-sm: 0 1px 4px rgba(0,0,0,0.06);
+      --shadow-md: 0 4px 20px rgba(0,0,0,0.09);
+    }
+
+    body { background: #f4f2ef; }
+
+    /* ── Gate (loading / access denied) ── */
+    #gate {
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 16px; text-align: center; padding: 24px;
+    }
+    #gate .gate-icon { font-size: 3rem; }
+    #gate .gate-title { font-size: 1.3rem; font-weight: 700; color: var(--text-primary); }
+    #gate .gate-sub { font-size: 0.9rem; color: var(--text-secondary); }
+    #gate .gate-btn {
+      margin-top: 8px; padding: 12px 28px;
+      background: var(--red); color: white; border: none;
+      border-radius: 12px; font-size: 0.95rem; font-weight: 600;
+      cursor: pointer; font-family: inherit;
+    }
+
+    /* ── Main Layout ── */
+    #adminApp { display: none; }
+    .admin-wrapper { max-width: 860px; margin: 0 auto; padding: 32px 20px 80px; }
+
+    .admin-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 28px; flex-wrap: wrap; gap: 12px;
+    }
+    .admin-header h1 { font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin: 0; }
+    .admin-header p { font-size: 0.85rem; color: var(--text-secondary); margin: 4px 0 0; }
+    .logout-btn {
+      padding: 9px 18px; background: var(--surface); border: 1.5px solid var(--border);
+      border-radius: 10px; font-size: 0.85rem; font-weight: 600;
+      color: var(--text-secondary); cursor: pointer; font-family: inherit;
+      transition: all 0.15s;
+    }
+    .logout-btn:hover { border-color: var(--red); color: var(--red); }
+
+    /* ── Card ── */
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius-card); padding: 28px;
+      box-shadow: var(--shadow-sm); margin-bottom: 20px;
+    }
+    .card-title {
+      font-size: 1.05rem; font-weight: 700; color: var(--text-primary);
+      margin: 0 0 20px; padding-bottom: 14px; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 8px;
+    }
+
+    /* ── Form ── */
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
+
+    .form-group { margin-bottom: 16px; }
+    .form-group label {
+      display: block; font-size: 0.82rem; font-weight: 600;
+      color: var(--text-secondary); margin-bottom: 6px;
+    }
+    .form-group input[type="text"],
+    .form-group input[type="number"],
+    .form-group select {
+      width: 100%; padding: 10px 14px;
+      border: 1.5px solid var(--border); border-radius: 10px;
+      font-size: 0.9rem; font-family: inherit;
+      background: var(--surface); color: var(--text-primary);
+      outline: none; box-sizing: border-box; transition: border-color 0.15s;
+    }
+    .form-group input:focus, .form-group select:focus { border-color: var(--red); }
+
+    /* Tags checkboxes */
+    .tags-group { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+    .tag-checkbox { display: none; }
+    .tag-label {
+      padding: 6px 14px; border-radius: 20px;
+      border: 1.5px solid var(--border);
+      font-size: 0.82rem; cursor: pointer; user-select: none;
+      transition: all 0.15s; background: var(--surface);
+      color: var(--text-secondary); font-weight: 500;
+    }
+    .tag-checkbox:checked + .tag-label {
+      background: var(--red); border-color: var(--red);
+      color: white; font-weight: 600;
+    }
+
+    /* ── Drop Zone ── */
+    .drop-zone {
+      border: 2px dashed var(--border); border-radius: 12px;
+      padding: 28px 20px; text-align: center; cursor: pointer;
+      transition: all 0.2s; background: var(--surface-2);
+      position: relative;
+    }
+    .drop-zone:hover, .drop-zone.drag-over {
+      border-color: var(--red); background: var(--red-light);
+    }
+    .drop-zone input[type="file"] {
+      position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
+    }
+    .drop-zone .dz-icon { font-size: 2rem; margin-bottom: 8px; }
+    .drop-zone .dz-text { font-size: 0.88rem; color: var(--text-secondary); }
+    .drop-zone .dz-sub { font-size: 0.78rem; color: var(--text-muted); margin-top: 4px; }
+
+    /* ── Image Preview ── */
+    .img-preview {
+      width: 100%; max-height: 200px; object-fit: contain;
+      border-radius: 10px; margin-top: 12px; display: none;
+      border: 1px solid var(--border);
+    }
+    .img-preview.visible { display: block; }
+
+    /* ── File List ── */
+    .file-list { margin-top: 10px; display: flex; flex-direction: column; gap: 6px; }
+    .file-item {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 8px 12px; background: var(--surface-2);
+      border-radius: 8px; border: 1px solid var(--border);
+      font-size: 0.82rem; color: var(--text-primary);
+    }
+    .file-item .file-remove {
+      background: none; border: none; color: var(--text-muted);
+      cursor: pointer; font-size: 1rem; padding: 0 4px; line-height: 1;
+    }
+    .file-item .file-remove:hover { color: var(--red); }
+
+    /* ── Progress ── */
+    .progress-wrap {
+      display: none; margin-top: 16px;
+      background: var(--surface-2); border-radius: 8px;
+      border: 1px solid var(--border); overflow: hidden;
+    }
+    .progress-wrap.visible { display: block; }
+    .progress-label {
+      font-size: 0.8rem; color: var(--text-secondary);
+      padding: 8px 12px 4px; font-weight: 600;
+    }
+    .progress-bar-bg {
+      height: 6px; background: var(--border); margin: 0 12px 10px;
+      border-radius: 4px; overflow: hidden;
+    }
+    .progress-bar { height: 100%; background: var(--red); border-radius: 4px; transition: width 0.3s; width: 0%; }
+
+    /* ── Gate Login Form ── */
+    .gate-login-form {
+      width: 100%; max-width: 340px;
+      background: white; border-radius: 16px;
+      padding: 28px 24px; box-shadow: 0 4px 24px rgba(0,0,0,0.1);
+      margin-top: 8px;
+    }
+    .gate-login-form input {
+      width: 100%; padding: 11px 14px; margin-bottom: 12px;
+      border: 1.5px solid #ebe8e4; border-radius: 10px;
+      font-size: 0.9rem; font-family: inherit; box-sizing: border-box; outline: none;
+    }
+    .gate-login-form input:focus { border-color: #FF6B6B; }
+    .gate-login-form button {
+      width: 100%; padding: 12px;
+      background: #FF6B6B; color: white; border: none;
+      border-radius: 10px; font-size: 0.95rem; font-weight: 700;
+      cursor: pointer; font-family: inherit;
+    }
+    .gate-login-form button:hover { background: #e05555; }
+    .gate-login-msg { font-size: 0.82rem; text-align: center; margin-bottom: 10px; min-height: 18px; color: #e11d48; }
+
+    /* ── Submit Button ── */
+    .submit-btn {
+      width: 100%; padding: 14px;
+      background: var(--red); color: white; border: none;
+      border-radius: 12px; font-size: 1rem; font-weight: 700;
+      cursor: pointer; font-family: inherit; transition: background 0.15s;
+      margin-top: 8px;
+    }
+    .submit-btn:hover { background: var(--red-dark); }
+    .submit-btn:disabled { background: var(--border); color: var(--text-muted); cursor: not-allowed; }
+
+    /* ── Alert ── */
+    .alert {
+      padding: 12px 16px; border-radius: 10px;
+      font-size: 0.88rem; font-weight: 600; margin-top: 14px;
+      display: none;
+    }
+    .alert.visible { display: block; }
+    .alert.success { background: #ecfdf5; color: #065f46; border: 1px solid #6ee7b7; }
+    .alert.error { background: #fef2f2; color: #991b1b; border: 1px solid #fca5a5; }
+
+    /* ── Product List ── */
+    .product-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 14px;
+    }
+    .product-card {
+      border: 1px solid var(--border); border-radius: 12px;
+      overflow: hidden; background: var(--surface); position: relative;
+    }
+    .product-card img {
+      width: 100%; height: 120px; object-fit: cover; display: block;
+      background: var(--surface-2);
+    }
+    .product-card-body { padding: 10px 12px; }
+    .product-card-name { font-size: 0.85rem; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; }
+    .product-card-price { font-size: 0.8rem; color: var(--red); font-weight: 600; }
+    .product-card-files { font-size: 0.72rem; color: var(--text-muted); margin-top: 4px; }
+    .product-card-del {
+      position: absolute; top: 6px; right: 6px;
+      background: rgba(0,0,0,0.55); color: white; border: none;
+      border-radius: 6px; width: 26px; height: 26px;
+      font-size: 0.85rem; cursor: pointer; display: flex;
+      align-items: center; justify-content: center;
+    }
+    .product-card-del:hover { background: var(--red); }
+    .product-card-edit {
+      position: absolute; top: 6px; left: 6px;
+      background: rgba(0,0,0,0.55); color: white; border: none;
+      border-radius: 6px; padding: 0 8px; height: 26px;
+      font-size: 0.75rem; font-weight: 600; cursor: pointer;
+      font-family: inherit;
+    }
+    .product-card-edit:hover { background: #2563eb; }
+    .empty-state { text-align: center; padding: 32px; color: var(--text-muted); font-size: 0.9rem; }
+
+    /* Edit mode indicator */
+    .editing-banner {
+      display: none; background: #eff6ff; border: 1.5px solid #93c5fd;
+      border-radius: 10px; padding: 10px 16px; margin-bottom: 16px;
+      font-size: 0.85rem; color: #1e40af; font-weight: 600;
+      align-items: center; justify-content: space-between;
+    }
+    .editing-banner.visible { display: flex; }
+    .editing-banner button {
+      background: none; border: 1px solid #93c5fd; border-radius: 6px;
+      padding: 4px 10px; font-size: 0.78rem; color: #1e40af;
+      cursor: pointer; font-family: inherit; font-weight: 600;
+    }
+    .existing-files { margin-top: 8px; }
+    .existing-file-item {
+      display: flex; align-items: center; gap: 8px;
+      padding: 6px 10px; background: #eff6ff;
+      border: 1px solid #bfdbfe; border-radius: 6px;
+      font-size: 0.8rem; color: #1e40af; margin-bottom: 4px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Gate Screen -->
+<div id="gate">
+  <div class="gate-icon">⏳</div>
+  <div class="gate-title">กำลังตรวจสอบสิทธิ์...</div>
+  <div class="gate-sub"></div>
+  <div id="gateLoginSection" style="display:none;width:100%;display:flex;flex-direction:column;align-items:center;">
+    <div class="gate-login-form">
+      <div style="font-size:1rem;font-weight:700;text-align:center;margin-bottom:4px;color:#1a1a1a;">เข้าสู่ระบบแอดมิน</div>
+      <div id="lockoutBanner" style="display:none;background:#fef2f2;border:1px solid #fca5a5;border-radius:8px;padding:10px 12px;margin-bottom:12px;font-size:0.82rem;color:#991b1b;text-align:center;"></div>
+      <!-- Google Sign-In -->
+      <button id="googleLoginBtn" onclick="doGoogleLogin()" style="width:100%;padding:11px;background:white;border:1.5px solid #e5e7eb;border-radius:10px;font-size:0.88rem;font-weight:600;color:#333;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin:12px 0;">
+        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" style="width:18px;height:18px;">
+        เข้าสู่ระบบด้วย Google
+      </button>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+        <div style="flex:1;height:1px;background:#ebe8e4;"></div>
+        <span style="font-size:0.75rem;color:#aaa;">หรือ</span>
+        <div style="flex:1;height:1px;background:#ebe8e4;"></div>
+      </div>
+      <input type="email" id="gateEmail" placeholder="อีเมล" autocomplete="email" onkeydown="if(event.key==='Enter')doGateLogin()">
+      <input type="password" id="gatePassword" placeholder="รหัสผ่าน" autocomplete="current-password" onkeydown="if(event.key==='Enter')doGateLogin()">
+      <div class="gate-login-msg" id="gateLoginMsg"></div>
+      <button id="loginBtn" onclick="doGateLogin()">เข้าสู่ระบบ</button>
+      <div id="attemptsWarning" style="font-size:0.75rem;color:#e11d48;text-align:center;margin-top:8px;min-height:16px;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Admin App -->
+<div id="adminApp">
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <a href="index.html" class="logo">
+        <div class="logo-icon"><img src="รูปโปร/LOGO.png" alt="Dsiin Studio Logo"></div>
+        <div><div>สถานีฟอนต์</div><div class="logo-text-en">Dsiin Studio</div></div>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">หน้าแรก</a></li>
+        <li><a href="shop.html">ฟอนต์ทั้งหมด</a></li>
+        <li><span style="color:rgba(255,255,255,0.5);font-size:0.8rem;font-weight:600;">🔒 Admin Panel</span></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="admin-wrapper">
+    <div class="admin-header">
+      <div>
+        <h1>Admin — อัปโหลดสินค้า</h1>
+        <p id="adminEmailDisplay"></p>
+      </div>
+      <button class="logout-btn" onclick="firebase.auth().signOut().then(()=>location.href='index.html')">ออกจากระบบ</button>
+    </div>
+
+    <!-- Upload Form -->
+    <div class="card">
+      <div class="card-title">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+        <span id="formTitle">เพิ่มสินค้าใหม่</span>
+      </div>
+      <div class="editing-banner" id="editingBanner">
+        <span id="editingBannerText">📝 กำลังแก้ไข: </span>
+        <button onclick="cancelEdit()">✕ ยกเลิกแก้ไข</button>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>ชื่อฟอนต์ (ภาษาไทย) *</label>
+          <input type="text" id="fontName" placeholder="เช่น ฟอนต์บัวลอย">
+        </div>
+        <div class="form-group">
+          <label>ราคา (บาท) *</label>
+          <input type="number" id="fontPrice" placeholder="149" min="0">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Badge</label>
+        <select id="fontBadge">
+          <option value="✨ ใหม่">✨ ใหม่</option>
+          <option value="✍️ ลายมือ">✍️ ลายมือ</option>
+          <option value="🖌️ บรัชดินสอ">🖌️ บรัชดินสอ</option>
+          <option value="😊 อิโมจิ">😊 อิโมจิ</option>
+          <option value="🔥 ขายดี">🔥 ขายดี</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Tags</label>
+        <div class="tags-group">
+          <input type="checkbox" class="tag-checkbox" id="tag-thai" value="ไทย"><label class="tag-label" for="tag-thai">ไทย</label>
+          <input type="checkbox" class="tag-checkbox" id="tag-eng" value="อังกฤษ"><label class="tag-label" for="tag-eng">อังกฤษ</label>
+          <input type="checkbox" class="tag-checkbox" id="tag-handwriting" value="ลายมือ"><label class="tag-label" for="tag-handwriting">ลายมือ</label>
+          <input type="checkbox" class="tag-checkbox" id="tag-brush" value="บรัชดินสอ"><label class="tag-label" for="tag-brush">บรัชดินสอ</label>
+          <input type="checkbox" class="tag-checkbox" id="tag-minimal" value="มินิมอล"><label class="tag-label" for="tag-minimal">มินิมอล</label>
+          <input type="checkbox" class="tag-checkbox" id="tag-emoji" value="สัญลักษณ์พิเศษ"><label class="tag-label" for="tag-emoji">สัญลักษณ์พิเศษ</label>
+          <input type="checkbox" class="tag-checkbox" id="tag-number" value="ตัวเลข"><label class="tag-label" for="tag-number">ตัวเลข</label>
+        </div>
+      </div>
+
+      <!-- Image Upload -->
+      <div class="form-group">
+        <label>ภาพตัวอย่างสินค้า *</label>
+        <div class="drop-zone" id="imgDropZone">
+          <input type="file" id="imgInput" accept="image/*">
+          <div class="dz-icon">🖼️</div>
+          <div class="dz-text">คลิกหรือลากไฟล์ภาพมาวางที่นี่</div>
+          <div class="dz-sub">รองรับ JPG, PNG, WebP</div>
+        </div>
+        <img class="img-preview" id="imgPreview" alt="preview">
+      </div>
+
+      <!-- Font Files Upload -->
+      <div class="form-group">
+        <label>ไฟล์ฟอนต์ (.ttf / .otf) *</label>
+        <div class="drop-zone" id="fontDropZone">
+          <input type="file" id="fontInput" accept=".ttf,.otf" multiple>
+          <div class="dz-icon">Aa</div>
+          <div class="dz-text">คลิกหรือลากไฟล์ฟอนต์มาวางที่นี่</div>
+          <div class="dz-sub">เลือกได้หลายไฟล์ (Regular, Bold, Thin ฯลฯ)</div>
+        </div>
+        <div class="existing-files" id="existingFontFiles"></div>
+        <div class="file-list" id="fontFileList"></div>
+      </div>
+
+      <!-- Progress -->
+      <div class="progress-wrap" id="progressWrap">
+        <div class="progress-label" id="progressLabel">กำลังอัปโหลด...</div>
+        <div class="progress-bar-bg"><div class="progress-bar" id="progressBar"></div></div>
+      </div>
+
+      <div class="alert" id="formAlert"></div>
+
+      <button class="submit-btn" id="submitBtn" onclick="submitProduct()">
+        อัปโหลดสินค้า
+      </button>
+    </div>
+
+    <!-- Product List -->
+    <div class="card">
+      <div class="card-title">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+        สินค้าที่อัปโหลดแล้ว
+        <span id="productCount" style="font-size:0.78rem;font-weight:500;color:var(--text-muted);margin-left:4px;"></span>
+      </div>
+      <div class="product-grid" id="productGrid">
+        <div class="empty-state" style="grid-column:1/-1;">กำลังโหลด...</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script>
+// ══════════════════════════════════════════
+// ⚙️ ตั้งค่า: ใส่ email แอดมินของคุณด้านล่าง
+// ══════════════════════════════════════════
+const ADMIN_EMAILS = [
+  'hathaiphatsriphathet@gmail.com',
+];
+
+// ─── Auth Guard ───────────────────────────
+const auth = firebase.auth();
+// db และ storage ถูกสร้างใน firebase-config.js แล้ว
+
+auth.onAuthStateChanged(user => {
+  const gate = document.getElementById('gate');
+  const app  = document.getElementById('adminApp');
+
+  if (!user) {
+    stopIdleWatcher();
+    gate.querySelector('.gate-icon').textContent = '🔒';
+    gate.querySelector('.gate-title').textContent = 'Admin Login';
+    gate.querySelector('.gate-sub').textContent = 'กรุณาเข้าสู่ระบบเพื่อเข้าใช้งาน';
+    document.getElementById('gateLoginSection').style.display = 'flex';
+    checkLockoutOnLoad();
+    return;
+  }
+
+  if (!ADMIN_EMAILS.includes(user.email)) {
+    gate.querySelector('.gate-icon').textContent = '⛔';
+    gate.querySelector('.gate-title').textContent = 'ไม่มีสิทธิ์เข้าถึง';
+    gate.querySelector('.gate-sub').textContent = `(${user.email}) ไม่ใช่ account แอดมิน`;
+    gate.innerHTML += `<button class="gate-btn" onclick="firebase.auth().signOut().then(()=>location.href='index.html')">ออกจากระบบ</button>`;
+    return;
+  }
+
+  // ✅ Admin confirmed
+  gate.style.display = 'none';
+  app.style.display = 'block';
+  document.getElementById('adminEmailDisplay').textContent = user.email;
+  clearRateData();
+  startIdleWatcher();
+  loadProducts();
+});
+
+// ─── Rate Limiting ────────────────────────
+const RATE_KEY      = 'dsiin_admin_attempts';
+const MAX_ATTEMPTS  = 5;
+const LOCKOUT_MS    = 15 * 60 * 1000; // 15 นาที
+
+function getRateData() {
+  try { return JSON.parse(localStorage.getItem(RATE_KEY)) || { count: 0, lockedUntil: 0 }; }
+  catch { return { count: 0, lockedUntil: 0 }; }
+}
+function setRateData(d) { localStorage.setItem(RATE_KEY, JSON.stringify(d)); }
+function clearRateData() { localStorage.removeItem(RATE_KEY); }
+
+function isLockedOut() {
+  const d = getRateData();
+  if (d.lockedUntil && Date.now() < d.lockedUntil) return d.lockedUntil;
+  return false;
+}
+
+function recordFailedAttempt() {
+  const d = getRateData();
+  d.count = (d.count || 0) + 1;
+  if (d.count >= MAX_ATTEMPTS) {
+    d.lockedUntil = Date.now() + LOCKOUT_MS;
+    d.count = 0;
+  }
+  setRateData(d);
+  return d;
+}
+
+function showLockout(until) {
+  const banner = document.getElementById('lockoutBanner');
+  const loginBtn = document.getElementById('loginBtn');
+  const googleBtn = document.getElementById('googleLoginBtn');
+  const remaining = Math.ceil((until - Date.now()) / 60000);
+  banner.textContent = `บัญชีถูกล็อกชั่วคราว กรุณารอ ${remaining} นาที (พยายามล็อกอินผิดหลายครั้งเกินไป)`;
+  banner.style.display = 'block';
+  loginBtn.disabled = true;
+  googleBtn.disabled = true;
+  document.getElementById('gateEmail').disabled = true;
+  document.getElementById('gatePassword').disabled = true;
+}
+
+function checkLockoutOnLoad() {
+  const until = isLockedOut();
+  if (until) {
+    showLockout(until);
+    const interval = setInterval(() => {
+      if (Date.now() >= until) {
+        clearInterval(interval);
+        clearRateData();
+        location.reload();
+      }
+    }, 10000);
+  }
+}
+
+// ─── Google Sign-In ───────────────────────
+const googleProvider = new firebase.auth.GoogleAuthProvider();
+
+window.doGoogleLogin = function() {
+  const until = isLockedOut();
+  if (until) { showLockout(until); return; }
+
+  const msg = document.getElementById('gateLoginMsg');
+  const btn = document.getElementById('googleLoginBtn');
+  msg.textContent = '';
+  btn.disabled = true;
+  btn.textContent = 'กำลังเปิด Google...';
+
+  auth.signInWithPopup(googleProvider)
+    .then(() => { clearRateData(); })
+    .catch(err => {
+      btn.disabled = false;
+      btn.innerHTML = '<img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" style="width:18px;height:18px;"> เข้าสู่ระบบด้วย Google';
+      if (err.code === 'auth/popup-blocked') {
+        msg.textContent = 'Popup ถูกบล็อก — กรุณาอนุญาต Popup สำหรับเว็บนี้แล้วลองใหม่';
+      } else if (err.code === 'auth/popup-closed-by-user') {
+        // ผู้ใช้ปิดเอง ไม่ต้องแสดง error
+      } else if (err.code === 'auth/cancelled-popup-request') {
+        // request ซ้อน ไม่ต้องแสดง error
+      } else {
+        msg.textContent = 'Google login ล้มเหลว (' + err.code + ')';
+      }
+    });
+};
+
+// ─── Gate Login ───────────────────────────
+window.doGateLogin = function() {
+  const until = isLockedOut();
+  if (until) { showLockout(until); return; }
+
+  const email = document.getElementById('gateEmail').value.trim();
+  const pass  = document.getElementById('gatePassword').value;
+  const msg   = document.getElementById('gateLoginMsg');
+  msg.textContent = '';
+
+  if (!email || !pass) { msg.textContent = 'กรุณาใส่อีเมลและรหัสผ่าน'; return; }
+
+  const btn = document.getElementById('loginBtn');
+  btn.disabled = true;
+  btn.textContent = 'กำลังตรวจสอบ...';
+
+  auth.signInWithEmailAndPassword(email, pass)
+    .then(() => { clearRateData(); })
+    .catch(() => {
+      const d = recordFailedAttempt();
+      const lockedUntil = isLockedOut();
+      if (lockedUntil) {
+        showLockout(lockedUntil);
+      } else {
+        const left = MAX_ATTEMPTS - (d.count || 0);
+        msg.textContent = 'อีเมลหรือรหัสผ่านไม่ถูกต้อง';
+        if (left <= 2) {
+          document.getElementById('attemptsWarning').textContent =
+            `เหลืออีก ${left} ครั้ง ก่อนถูกล็อก 15 นาที`;
+        }
+        btn.disabled = false;
+        btn.textContent = 'เข้าสู่ระบบ';
+      }
+    });
+};
+
+// ─── Auto Logout (30 min inactivity) ─────
+const IDLE_TIMEOUT = 30 * 60 * 1000;
+let idleTimer;
+
+function resetIdleTimer() {
+  clearTimeout(idleTimer);
+  idleTimer = setTimeout(() => {
+    auth.signOut();
+    alert('ออกจากระบบอัตโนมัติ เนื่องจากไม่มีการใช้งาน 30 นาที');
+    location.reload();
+  }, IDLE_TIMEOUT);
+}
+
+function startIdleWatcher() {
+  ['mousemove','keydown','click','scroll','touchstart'].forEach(ev =>
+    document.addEventListener(ev, resetIdleTimer, { passive: true })
+  );
+  resetIdleTimer();
+}
+
+function stopIdleWatcher() {
+  ['mousemove','keydown','click','scroll','touchstart'].forEach(ev =>
+    document.removeEventListener(ev, resetIdleTimer)
+  );
+  clearTimeout(idleTimer);
+}
+
+// ─── Image Preview ────────────────────────
+let selectedImageFile = null;
+let selectedFontFiles = [];
+
+const imgInput   = document.getElementById('imgInput');
+const imgPreview = document.getElementById('imgPreview');
+const imgDZ      = document.getElementById('imgDropZone');
+
+imgInput.addEventListener('change', () => {
+  const file = imgInput.files[0];
+  if (!file) return;
+  selectedImageFile = file;
+  const url = URL.createObjectURL(file);
+  imgPreview.src = url;
+  imgPreview.classList.add('visible');
+  imgDZ.querySelector('.dz-text').textContent = file.name;
+});
+['dragover','dragleave','drop'].forEach(ev => {
+  imgDZ.addEventListener(ev, e => {
+    e.preventDefault();
+    if (ev === 'dragover') imgDZ.classList.add('drag-over');
+    else imgDZ.classList.remove('drag-over');
+    if (ev === 'drop') {
+      const file = e.dataTransfer.files[0];
+      if (file && file.type.startsWith('image/')) {
+        selectedImageFile = file;
+        imgPreview.src = URL.createObjectURL(file);
+        imgPreview.classList.add('visible');
+        imgDZ.querySelector('.dz-text').textContent = file.name;
+      }
+    }
+  });
+});
+
+// ─── Font Files ───────────────────────────
+const fontInput   = document.getElementById('fontInput');
+const fontFileList = document.getElementById('fontFileList');
+const fontDZ      = document.getElementById('fontDropZone');
+
+function renderFontFileList() {
+  fontFileList.innerHTML = selectedFontFiles.map((f, i) => `
+    <div class="file-item">
+      <span>Aa &nbsp;${f.name}</span>
+      <button class="file-remove" onclick="removeFontFile(${i})">✕</button>
+    </div>`).join('');
+  fontDZ.querySelector('.dz-text').textContent =
+    selectedFontFiles.length > 0 ? `${selectedFontFiles.length} ไฟล์ที่เลือก` : 'คลิกหรือลากไฟล์ฟอนต์มาวางที่นี่';
+}
+
+window.removeFontFile = function(i) {
+  selectedFontFiles.splice(i, 1);
+  renderFontFileList();
+};
+
+fontInput.addEventListener('change', () => {
+  Array.from(fontInput.files).forEach(f => {
+    if (!selectedFontFiles.find(x => x.name === f.name)) selectedFontFiles.push(f);
+  });
+  renderFontFileList();
+  fontInput.value = '';
+});
+['dragover','dragleave','drop'].forEach(ev => {
+  fontDZ.addEventListener(ev, e => {
+    e.preventDefault();
+    if (ev === 'dragover') fontDZ.classList.add('drag-over');
+    else fontDZ.classList.remove('drag-over');
+    if (ev === 'drop') {
+      Array.from(e.dataTransfer.files).forEach(f => {
+        if ((f.name.endsWith('.ttf') || f.name.endsWith('.otf')) &&
+            !selectedFontFiles.find(x => x.name === f.name)) {
+          selectedFontFiles.push(f);
+        }
+      });
+      renderFontFileList();
+    }
+  });
+});
+
+// ─── Upload Helpers ───────────────────────
+function showAlert(type, msg) {
+  const el = document.getElementById('formAlert');
+  el.className = `alert ${type} visible`;
+  el.textContent = msg;
+}
+
+function setProgress(pct, label) {
+  document.getElementById('progressBar').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = label;
+  document.getElementById('progressWrap').classList.toggle('visible', pct > 0 && pct < 100);
+}
+
+function uploadFile(file, path) {
+  return new Promise((resolve, reject) => {
+    const ref = storage.ref(path);
+    const task = ref.put(file);
+    task.on('state_changed',
+      snap => {
+        const pct = Math.round((snap.bytesTransferred / snap.totalBytes) * 100);
+        setProgress(pct, `กำลังอัปโหลด ${file.name}... ${pct}%`);
+      },
+      reject,
+      () => task.snapshot.ref.getDownloadURL().then(resolve).catch(reject)
+    );
+  });
+}
+
+// ─── Edit State ───────────────────────────
+let editingDocId = null;
+let existingImageUrl = null;
+let existingImagePath = null;
+let existingFontFileNames = [];
+
+window.editProduct = async function(docId) {
+  const snap = await db.collection('products').doc(docId).get();
+  if (!snap.exists) return alert('ไม่พบสินค้านี้');
+  const d = snap.data();
+
+  // เลื่อนขึ้นไปหาฟอร์ม
+  document.querySelector('.card').scrollIntoView({ behavior: 'smooth' });
+
+  // ตั้งค่า edit state
+  editingDocId = docId;
+  existingImageUrl  = d.imageUrl  || null;
+  existingImagePath = d.imagePath || null;
+  existingFontFileNames = d.fontFiles || [];
+
+  // ใส่ข้อมูลลงฟอร์ม
+  document.getElementById('fontName').value  = d.name  || '';
+  document.getElementById('fontPrice').value = d.price || '';
+  document.getElementById('fontBadge').value = d.badge || '✨ ใหม่';
+  document.querySelectorAll('.tag-checkbox').forEach(c => {
+    c.checked = (d.tags || []).includes(c.value);
+  });
+
+  // แสดงรูปเดิม
+  selectedImageFile = null;
+  if (d.imageUrl) {
+    imgPreview.src = d.imageUrl;
+    imgPreview.classList.add('visible');
+    imgDZ.querySelector('.dz-text').textContent = 'รูปภาพปัจจุบัน (เลือกใหม่เพื่อเปลี่ยน)';
+  }
+
+  // แสดงไฟล์ฟอนต์เดิม
+  selectedFontFiles = [];
+  renderFontFileList();
+  const existingEl = document.getElementById('existingFontFiles');
+  existingEl.innerHTML = existingFontFileNames.length
+    ? '<div style="font-size:0.8rem;color:var(--text-muted);margin-bottom:4px;">ไฟล์ฟอนต์ปัจจุบัน (เพิ่มไฟล์ใหม่ได้ด้านล่าง):</div>' +
+      existingFontFileNames.map(f => `<div class="existing-file-item">Aa &nbsp;${f}</div>`).join('')
+    : '';
+
+  // แสดง banner และเปลี่ยน UI
+  document.getElementById('editingBanner').classList.add('visible');
+  document.getElementById('editingBannerText').textContent = `📝 กำลังแก้ไข: ${d.name}`;
+  document.getElementById('formTitle').textContent = 'แก้ไขสินค้า';
+  document.getElementById('submitBtn').textContent = 'บันทึกการแก้ไข';
+  document.getElementById('formAlert').className = 'alert';
+};
+
+window.cancelEdit = function() {
+  editingDocId = null;
+  existingImageUrl = existingImagePath = null;
+  existingFontFileNames = [];
+  selectedImageFile = null;
+  selectedFontFiles = [];
+
+  document.getElementById('fontName').value  = '';
+  document.getElementById('fontPrice').value = '';
+  document.querySelectorAll('.tag-checkbox').forEach(c => c.checked = false);
+  imgPreview.classList.remove('visible');
+  imgPreview.src = '';
+  imgDZ.querySelector('.dz-text').textContent = 'คลิกหรือลากไฟล์ภาพมาวางที่นี่';
+  document.getElementById('existingFontFiles').innerHTML = '';
+  renderFontFileList();
+
+  document.getElementById('editingBanner').classList.remove('visible');
+  document.getElementById('formTitle').textContent = 'เพิ่มสินค้าใหม่';
+  document.getElementById('submitBtn').textContent = 'อัปโหลดสินค้า';
+  document.getElementById('formAlert').className = 'alert';
+};
+
+// ─── Submit ───────────────────────────────
+window.submitProduct = async function() {
+  const name  = document.getElementById('fontName').value.trim();
+  const price = parseInt(document.getElementById('fontPrice').value, 10);
+  const badge = document.getElementById('fontBadge').value;
+  const tags  = Array.from(document.querySelectorAll('.tag-checkbox:checked')).map(c => c.value);
+
+  const formAlert = document.getElementById('formAlert');
+  formAlert.className = 'alert';
+
+  if (!name)               return showAlert('error', 'กรุณาใส่ชื่อฟอนต์');
+  if (!price || price < 0) return showAlert('error', 'กรุณาใส่ราคา');
+
+  const isEditing = !!editingDocId;
+
+  if (!isEditing && !selectedImageFile)
+    return showAlert('error', 'กรุณาเลือกภาพสินค้า');
+  if (!isEditing && selectedFontFiles.length === 0)
+    return showAlert('error', 'กรุณาเลือกไฟล์ฟอนต์อย่างน้อย 1 ไฟล์');
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.textContent = isEditing ? 'กำลังบันทึก...' : 'กำลังอัปโหลด...';
+
+  try {
+    // 1. อัปโหลดภาพ (ถ้ามีใหม่ หรือเป็น add ใหม่)
+    let imageUrl  = existingImageUrl  || '';
+    let imagePath = existingImagePath || '';
+    if (selectedImageFile) {
+      const imgExt = selectedImageFile.name.split('.').pop();
+      imagePath = `product-images/${Date.now()}_${name}.${imgExt}`;
+      imageUrl  = await uploadFile(selectedImageFile, imagePath);
+      // ลบรูปเดิม (ถ้าแก้ไข)
+      if (isEditing && existingImagePath) {
+        await storage.ref(existingImagePath).delete().catch(() => {});
+      }
+    }
+
+    // 2. อัปโหลดไฟล์ฟอนต์ใหม่ (ถ้ามี)
+    const fontFileNames = isEditing ? [...existingFontFileNames] : [];
+    for (let i = 0; i < selectedFontFiles.length; i++) {
+      const f = selectedFontFiles[i];
+      setProgress(
+        Math.round((i / selectedFontFiles.length) * 100),
+        `กำลังอัปโหลดฟอนต์ ${i+1}/${selectedFontFiles.length}: ${f.name}`
+      );
+      await uploadFile(f, `TK studio/${f.name}`);
+      if (!fontFileNames.includes(f.name)) fontFileNames.push(f.name);
+    }
+
+    // 3. บันทึกลง Firestore
+    setProgress(95, 'กำลังบันทึกข้อมูล...');
+    const data = { name, price, badge, tags, imageUrl, imagePath, fontFiles: fontFileNames };
+
+    if (isEditing) {
+      await db.collection('products').doc(editingDocId).update(data);
+      showAlert('success', `✓ แก้ไข "${name}" สำเร็จ!`);
+      cancelEdit();
+    } else {
+      data.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+      await db.collection('products').add(data);
+      showAlert('success', `✓ อัปโหลด "${name}" สำเร็จ! (${fontFileNames.length} ไฟล์ฟอนต์)`);
+      // Reset form
+      document.getElementById('fontName').value = '';
+      document.getElementById('fontPrice').value = '';
+      document.querySelectorAll('.tag-checkbox').forEach(c => c.checked = false);
+      selectedImageFile = null;
+      selectedFontFiles = [];
+      imgPreview.classList.remove('visible');
+      imgPreview.src = '';
+      imgDZ.querySelector('.dz-text').textContent = 'คลิกหรือลากไฟล์ภาพมาวางที่นี่';
+      renderFontFileList();
+    }
+
+    setProgress(0, '');
+    loadProducts();
+  } catch (err) {
+    console.error(err);
+    setProgress(0, '');
+    showAlert('error', 'เกิดข้อผิดพลาด: ' + (err.message || err));
+  }
+
+  btn.disabled = false;
+  btn.textContent = editingDocId ? 'บันทึกการแก้ไข' : 'อัปโหลดสินค้า';
+};
+
+// ─── Load Products ────────────────────────
+function loadProducts() {
+  const grid = document.getElementById('productGrid');
+  grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;">กำลังโหลด...</div>';
+
+  db.collection('products').orderBy('createdAt', 'desc').get().then(snap => {
+    document.getElementById('productCount').textContent = `(${snap.size} รายการ)`;
+    if (snap.empty) {
+      grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;">ยังไม่มีสินค้า</div>';
+      return;
+    }
+    grid.innerHTML = '';
+    snap.forEach(doc => {
+      const d = doc.data();
+      const div = document.createElement('div');
+      div.className = 'product-card';
+
+      const editBtn = document.createElement('button');
+      editBtn.className = 'product-card-edit';
+      editBtn.textContent = '✏️ แก้ไข';
+      editBtn.addEventListener('click', () => editProduct(doc.id));
+
+      const delBtn = document.createElement('button');
+      delBtn.className = 'product-card-del';
+      delBtn.title = 'ลบ';
+      delBtn.textContent = '✕';
+      delBtn.addEventListener('click', () => deleteProduct(doc.id, d.imagePath || ''));
+
+      const img = document.createElement('img');
+      img.src = d.imageUrl || '';
+      img.alt = d.name || '';
+      img.onerror = function() { this.style.background = '#f0ede8'; this.src = ''; };
+
+      const body = document.createElement('div');
+      body.className = 'product-card-body';
+
+      const nameEl = document.createElement('div');
+      nameEl.className = 'product-card-name';
+      nameEl.textContent = d.name || '';
+
+      const priceEl = document.createElement('div');
+      priceEl.className = 'product-card-price';
+      priceEl.textContent = `฿${d.price || 0}`;
+
+      const filesEl = document.createElement('div');
+      filesEl.className = 'product-card-files';
+      filesEl.textContent = `${(d.fontFiles||[]).length} ไฟล์ฟอนต์`;
+
+      body.appendChild(nameEl);
+      body.appendChild(priceEl);
+      body.appendChild(filesEl);
+      div.appendChild(editBtn);
+      div.appendChild(delBtn);
+      div.appendChild(img);
+      div.appendChild(body);
+      grid.appendChild(div);
+    });
+  }).catch(err => {
+    grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;color:var(--red);">โหลดไม่ได้: ${err.message}</div>`;
+  });
+}
+
+// ─── Delete Product ───────────────────────
+window.deleteProduct = async function(id, imagePath) {
+  if (!confirm('ลบสินค้านี้ออกจาก Firestore?\n(ไฟล์ฟอนต์ใน Storage จะไม่ถูกลบ)')) return;
+  try {
+    if (imagePath) await storage.ref(imagePath).delete().catch(() => {});
+    await db.collection('products').doc(id).delete();
+    loadProducts();
+  } catch(err) {
+    alert('ลบไม่ได้: ' + err.message);
+  }
+};
+</script>
+</body>
+</html>
