@@ -251,44 +251,17 @@
       });
   };
 
-  var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
   window.doGoogleLogin = function () {
     var msg = document.getElementById('loginMsg');
     if (msg) { msg.style.color = '#888'; msg.textContent = 'กำลังเชื่อมต่อ Google...'; }
-
-    if (isMobile) {
-      // iOS/Android: ใช้ redirect — authDomain=dsiinstodio.com ทำให้ /__/auth/ อยู่ใน domain เดิม
-      auth.signInWithRedirect(googleProvider).catch(function(err) {
-        console.error('[auth] redirect err:', err.code, err.message);
-        if (msg) { msg.style.color = '#e11d48'; msg.textContent = 'เกิดข้อผิดพลาด: ' + err.code; }
-      });
-    } else {
-      // Desktop: ใช้ popup
-      auth.signInWithPopup(googleProvider).then(function(result) {
-        if (result && result.user) {
-          var overlay = document.getElementById('authOverlay');
-          if (overlay) overlay.style.display = 'none';
-        }
-      }).catch(function(err) {
-        console.error('[auth] popup err:', err.code, err.message);
-        if (msg) {
-          msg.style.color = '#e11d48';
-          if (err.code === 'auth/popup-blocked') {
-            msg.textContent = 'กรุณาอนุญาต Popup ในเบราว์เซอร์ แล้วลองใหม่';
-          } else if (err.code === 'auth/popup-closed-by-user' || err.code === 'auth/cancelled-popup-request') {
-            msg.textContent = 'ยกเลิกการเข้าสู่ระบบ';
-          } else {
-            msg.textContent = 'เกิดข้อผิดพลาด: ' + err.code;
-          }
-        }
-      });
-    }
+    auth.signInWithRedirect(googleProvider).catch(function(err) {
+      console.error('[auth] redirect err:', err.code, err.message);
+      if (msg) { msg.style.color = '#e11d48'; msg.textContent = 'เกิดข้อผิดพลาด: ' + err.code; }
+    });
   };
 
-  // รับผลลัพธ์หลัง redirect กลับจาก Google (mobile)
+  // รับผลลัพธ์หลัง redirect กลับจาก Google
   auth.getRedirectResult().then(function(result) {
-    console.log('[auth] getRedirectResult:', result ? (result.user ? 'user ok' : 'no user') : 'null');
     if (result && result.user) {
       var overlay = document.getElementById('authOverlay');
       if (overlay) overlay.style.display = 'none';
