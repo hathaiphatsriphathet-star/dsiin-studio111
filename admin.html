@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700;800&display=swap" rel="stylesheet"></noscript>
-  <link rel="stylesheet" href="styles.css?v=12">
+  <link rel="stylesheet" href="styles.css?v=13">
   <style>
     :root {
       --red: #FF6B6B;
@@ -433,7 +433,10 @@
         <textarea id="faqAnswer" rows="3" placeholder="คำตอบ..." style="width:100%;padding:10px 14px;border:1px solid var(--border-color);border-radius:8px;font-family:inherit;font-size:0.9rem;resize:vertical;background:var(--bg-input);color:var(--text-primary);"></textarea>
       </div>
       <div class="alert" id="faqAlert"></div>
-      <button class="submit-btn" id="faqSubmitBtn" onclick="submitFAQ()" style="margin-bottom:24px;">เพิ่มคำถาม</button>
+      <div style="display:flex;gap:10px;margin-bottom:24px;">
+        <button class="submit-btn" id="faqSubmitBtn" onclick="submitFAQ()" style="margin-bottom:0;">เพิ่มคำถาม</button>
+        <button id="faqCancelBtn" onclick="cancelFAQEdit()" style="display:none;padding:10px 20px;border:1px solid var(--border-color);border-radius:8px;background:transparent;color:var(--text-secondary);cursor:pointer;font-size:0.9rem;">ยกเลิก</button>
+      </div>
 
       <div id="faqList" style="display:flex;flex-direction:column;gap:10px;">
         <div style="color:var(--text-muted);font-size:0.88rem;">กำลังโหลด...</div>
@@ -1030,13 +1033,14 @@ const DEFAULT_FAQS = [
 ];
 
 let faqEditId = null;
+const faqDataMap = {}; // เก็บข้อมูล FAQ ใน memory แทน encodeURIComponent
 
 function loadFAQList() {
   const list = document.getElementById('faqList');
   if (!list) return;
+  list.innerHTML = '<div style="color:var(--text-muted);font-size:0.88rem;">กำลังโหลด...</div>';
   db.collection('faqs').orderBy('order','asc').get().then(async snap => {
     if (snap.empty) {
-      // seed default FAQs on first load
       const batch = db.batch();
       DEFAULT_FAQS.forEach((f, i) => {
         batch.set(db.collection('faqs').doc(), { ...f, order: i, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
@@ -1045,30 +1049,53 @@ function loadFAQList() {
       loadFAQList();
       return;
     }
-    list.innerHTML = snap.docs.map((doc, i) => {
+    // เก็บข้อมูลใน map
+    snap.docs.forEach(doc => { faqDataMap[doc.id] = doc.data(); });
+
+    list.innerHTML = snap.docs.map((doc) => {
       const f = doc.data();
-      return `<div style="padding:14px 16px;background:var(--bg-input);border:1px solid var(--border-color);border-radius:10px;">
+      return `<div id="faq-row-${doc.id}" style="padding:14px 16px;background:var(--bg-input);border:1px solid var(--border-color);border-radius:10px;">
         <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
           <div style="flex:1;min-width:0;">
             <div style="font-weight:700;font-size:0.9rem;color:var(--text-primary);margin-bottom:4px;">${f.question}</div>
             <div style="font-size:0.85rem;color:var(--text-secondary);line-height:1.5;">${f.answer}</div>
           </div>
           <div style="display:flex;gap:6px;flex-shrink:0;">
-            <button onclick="editFAQ('${doc.id}','${encodeURIComponent(f.question)}','${encodeURIComponent(f.answer)}')" style="background:#fef9c3;border:none;color:#854d0e;padding:6px 12px;border-radius:6px;font-size:0.82rem;cursor:pointer;font-weight:600;">แก้ไข</button>
+            <button onclick="editFAQ('${doc.id}')" style="background:#fef9c3;border:none;color:#854d0e;padding:6px 12px;border-radius:6px;font-size:0.82rem;cursor:pointer;font-weight:600;">แก้ไข</button>
             <button onclick="deleteFAQ('${doc.id}')" style="background:#fee2e2;border:none;color:#b91c1c;padding:6px 12px;border-radius:6px;font-size:0.82rem;cursor:pointer;font-weight:600;">ลบ</button>
           </div>
         </div>
       </div>`;
     }).join('');
+  }).catch(e => {
+    list.innerHTML = '<div style="color:#b91c1c;font-size:0.88rem;">โหลดไม่ได้: ' + e.message + '</div>';
   });
 }
 
-function editFAQ(id, question, answer) {
+function editFAQ(id) {
+  const f = faqDataMap[id];
+  if (!f) return;
   faqEditId = id;
-  document.getElementById('faqQuestion').value = decodeURIComponent(question);
-  document.getElementById('faqAnswer').value = decodeURIComponent(answer);
+  document.getElementById('faqQuestion').value = f.question;
+  document.getElementById('faqAnswer').value = f.answer;
   document.getElementById('faqSubmitBtn').textContent = 'บันทึกการแก้ไข';
+  // highlight row ที่กำลังแก้
+  document.querySelectorAll('[id^="faq-row-"]').forEach(el => el.style.border = '1px solid var(--border-color)');
+  const row = document.getElementById('faq-row-' + id);
+  if (row) row.style.border = '2px solid #854d0e';
   document.getElementById('faqQuestion').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  document.getElementById('faqQuestion').focus();
+  document.getElementById('faqCancelBtn').style.display = 'block';
+}
+
+function cancelFAQEdit() {
+  faqEditId = null;
+  document.getElementById('faqQuestion').value = '';
+  document.getElementById('faqAnswer').value = '';
+  document.getElementById('faqSubmitBtn').textContent = 'เพิ่มคำถาม';
+  document.getElementById('faqCancelBtn').style.display = 'none';
+  document.getElementById('faqSubmitBtn').textContent = 'เพิ่มคำถาม';
+  document.querySelectorAll('[id^="faq-row-"]').forEach(el => el.style.border = '1px solid var(--border-color)');
 }
 
 async function submitFAQ() {
@@ -1083,19 +1110,17 @@ async function submitFAQ() {
     return;
   }
   alertEl.style.display = 'none';
+  const isEdit = !!faqEditId;
   try {
-    if (faqEditId) {
+    if (isEdit) {
       await db.collection('faqs').doc(faqEditId).update({ question, answer });
-      faqEditId = null;
-      document.getElementById('faqSubmitBtn').textContent = 'เพิ่มคำถาม';
     } else {
       const snap = await db.collection('faqs').orderBy('order','desc').limit(1).get();
       const lastOrder = snap.empty ? 0 : (snap.docs[0].data().order || 0) + 1;
       await db.collection('faqs').add({ question, answer, order: lastOrder, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
     }
-    document.getElementById('faqQuestion').value = '';
-    document.getElementById('faqAnswer').value = '';
-    alertEl.textContent = faqEditId ? 'บันทึกแล้ว!' : 'เพิ่มคำถามสำเร็จ!';
+    cancelFAQEdit();
+    alertEl.textContent = isEdit ? 'บันทึกแล้ว!' : 'เพิ่มคำถามสำเร็จ!';
     alertEl.style.display = 'block';
     alertEl.style.background = '#dcfce7';
     alertEl.style.color = '#166534';
@@ -1110,6 +1135,7 @@ async function submitFAQ() {
 async function deleteFAQ(id) {
   if (!confirm('ลบคำถามนี้?')) return;
   await db.collection('faqs').doc(id).delete();
+  if (faqEditId === id) cancelFAQEdit();
   loadFAQList();
 }
 

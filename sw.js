@@ -2,7 +2,7 @@
 // Cache-first สำหรับ fonts และ images
 // Network-first สำหรับ HTML
 
-const CACHE_NAME = 'dsiin-v12';
+const CACHE_NAME = 'dsiin-v13';
 
 const PRECACHE_ASSETS = [
   '/',
