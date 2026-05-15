@@ -252,19 +252,23 @@
   };
 
   window.doGoogleLogin = function () {
-    auth.signInWithPopup(googleProvider)
-      .then(() => {
-        document.getElementById('authOverlay').style.display = 'none';
-      })
-      .catch(err => {
-        console.error('Google login error:', err);
-        const msg = document.getElementById('loginMsg');
-        if (msg) {
-          msg.style.color = '#e11d48';
-          msg.textContent = 'ไม่สามารถเข้าสู่ระบบด้วย Google ได้ กรุณาลองใหม่';
-        }
-      });
+    auth.signInWithRedirect(googleProvider);
   };
+
+  // รับผล redirect กลับจาก Google
+  auth.getRedirectResult().then(result => {
+    if (result && result.user) {
+      const overlay = document.getElementById('authOverlay');
+      if (overlay) overlay.style.display = 'none';
+    }
+  }).catch(err => {
+    console.error('Google redirect error:', err);
+    const msg = document.getElementById('loginMsg');
+    if (msg) {
+      msg.style.color = '#e11d48';
+      msg.textContent = 'เข้าสู่ระบบด้วย Google ไม่สำเร็จ: ' + (err.message || err.code);
+    }
+  });
 
   window.doForgot = function () {
     const email = document.getElementById('forgotEmail').value.trim();
