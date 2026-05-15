@@ -251,26 +251,78 @@
       });
   };
 
+  // Google Identity Services (GSI) — ทำงานได้ทุก browser รวม iOS Safari
+  var GSI_CLIENT_ID = '68791849791-g3dl6vji9ln4ljuvv88p7qdqcsqb1o8q.apps.googleusercontent.com';
+
+  function gsiCallback(response) {
+    var msg = document.getElementById('loginMsg');
+    if (msg) { msg.style.color = '#888'; msg.textContent = 'กำลังเข้าสู่ระบบ...'; }
+    var credential = firebase.auth.GoogleAuthProvider.credential(response.credential);
+    auth.signInWithCredential(credential)
+      .then(function () {
+        var overlay = document.getElementById('authOverlay');
+        if (overlay) overlay.style.display = 'none';
+      })
+      .catch(function (err) {
+        console.error('[auth] signInWithCredential err:', err.code, err.message);
+        if (msg) { msg.style.color = '#e11d48'; msg.textContent = 'เกิดข้อผิดพลาด: ' + (err.code || err.message); }
+      });
+  }
+
+  function initGSI() {
+    if (typeof google === 'undefined' || !google.accounts) return false;
+    google.accounts.id.initialize({
+      client_id: GSI_CLIENT_ID,
+      callback: gsiCallback,
+      use_fedcm_for_prompt: false,
+      cancel_on_tap_outside: false
+    });
+    return true;
+  }
+
   window.doGoogleLogin = function () {
     var msg = document.getElementById('loginMsg');
     if (msg) { msg.style.color = '#888'; msg.textContent = 'กำลังเชื่อมต่อ Google...'; }
-    auth.signInWithRedirect(googleProvider).catch(function(err) {
-      console.error('[auth] redirect err:', err.code, err.message);
-      if (msg) { msg.style.color = '#e11d48'; msg.textContent = 'เกิดข้อผิดพลาด: ' + err.code; }
+
+    if (!initGSI()) {
+      // GSI ยังโหลดไม่เสร็จ ลอง signInWithRedirect แทน
+      auth.signInWithRedirect(googleProvider).catch(function (err) {
+        if (msg) { msg.style.color = '#e11d48'; msg.textContent = 'เกิดข้อผิดพลาด: ' + err.code; }
+      });
+      return;
+    }
+
+    google.accounts.id.prompt(function (notification) {
+      if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+        // One Tap ถูกบล็อก → ใช้ token client (popup)
+        var tokenClient = google.accounts.oauth2.initTokenClient({
+          client_id: GSI_CLIENT_ID,
+          scope: 'email profile openid',
+          callback: function (tokenResp) {
+            if (tokenResp.error) {
+              if (msg) { msg.style.color = '#e11d48'; msg.textContent = 'เกิดข้อผิดพลาด: ' + tokenResp.error; }
+              return;
+            }
+            var credential = firebase.auth.GoogleAuthProvider.credential(null, tokenResp.access_token);
+            auth.signInWithCredential(credential)
+              .then(function () {
+                var overlay = document.getElementById('authOverlay');
+                if (overlay) overlay.style.display = 'none';
+              })
+              .catch(function (err) {
+                if (msg) { msg.style.color = '#e11d48'; msg.textContent = 'เกิดข้อผิดพลาด: ' + (err.code || err.message); }
+              });
+          }
+        });
+        tokenClient.requestAccessToken({ prompt: 'select_account' });
+      }
     });
   };
 
-  // รับผลลัพธ์หลัง redirect กลับจาก Google
-  auth.getRedirectResult().then(function(result) {
-    if (result && result.user) {
-      var overlay = document.getElementById('authOverlay');
-      if (overlay) overlay.style.display = 'none';
-    }
-  }).catch(function(err) {
-    console.error('[auth] getRedirectResult err:', err.code, err.message);
+  // ยังคง handle redirect result เผื่อมีการ redirect เก่าค้างอยู่
+  auth.getRedirectResult().catch(function (err) {
     if (err.code && err.code !== 'auth/no-auth-event') {
-      var msg = document.getElementById('loginMsg');
-      if (msg) { msg.style.color = '#e11d48'; msg.textContent = 'เกิดข้อผิดพลาด: ' + err.code; }
+      console.warn('[auth] getRedirectResult err:', err.code);
     }
   });
 

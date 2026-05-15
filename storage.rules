@@ -1,10 +1,32 @@
 rules_version = '2';
 service firebase.storage {
   match /b/{bucket}/o {
-    // ไฟล์ฟอนต์: อ่านได้เฉพาะ authenticated users เท่านั้น
+
+    // Admin emails ที่อนุญาตให้เขียน Storage ได้
+    function isAdmin() {
+      return request.auth != null &&
+             request.auth.token.email in [
+               'hathaiphatsriphathet@gmail.com'
+             ];
+    }
+
+    // ภาพสินค้า: อ่านได้ทุกคน, เขียนได้เฉพาะ admin
+    match /product-images/{file} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Profile photos: อ่าน/เขียนได้เฉพาะเจ้าของ
+    match /profile-photos/{userId}/{file} {
+      allow read:  if request.auth != null;
+      allow write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // ไฟล์ทั้งหมดที่เหลือ (รวมถึง "TK studio/"):
+    // อ่านได้เฉพาะ authenticated, เขียนได้เฉพาะ admin
     match /{allPaths=**} {
       allow read: if request.auth != null;
-      allow write: if false;
+      allow write: if isAdmin();
     }
   }
 }
