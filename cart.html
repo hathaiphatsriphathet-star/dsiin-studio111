@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://www.gstatic.com">
   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Thai:wght@300;400;700;900&family=Sarabun:wght@300;400;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Thai:wght@300;400;700;900&family=Sarabun:wght@300;400;600;700;800&display=swap" rel="stylesheet"></noscript>
-  <link rel="stylesheet" href="styles.css?v=13">
+  <link rel="stylesheet" href="styles.css?v=14">
   <script src="https://cdn.omise.co/omise.js"></script>
   <style>
     #card-element {
@@ -464,6 +464,7 @@ async function handlePromptPay() {
           localStorage.removeItem('dsiin_cart');
           cartUpdateBadge();
           if (typeof savePurchaseHistory === 'function') savePurchaseHistory(cartItems);
+          addLoyaltyPoints(cartItems);
           const _ppSubtotal = cartItems.reduce((s, i) => s + i.price, 0);
           const _ppDiscount = cartItems.length >= 10 ? Math.round(_ppSubtotal * 0.10) : 0;
           _receiptData = { items: cartItems, email, chargeId: currentChargeId, subtotal: _ppSubtotal, discount: _ppDiscount, total: _ppSubtotal - _ppDiscount };
@@ -534,6 +535,7 @@ async function handlePayment() {
       localStorage.removeItem('dsiin_cart');
       cartUpdateBadge();
       if (typeof savePurchaseHistory === 'function') savePurchaseHistory(cartItems);
+      addLoyaltyPoints(cartItems);
       const _cSubtotal = cartItems.reduce((s, i) => s + i.price, 0);
       const _cDiscount = cartItems.length >= 10 ? Math.round(_cSubtotal * 0.10) : 0;
       _receiptData = { items: cartItems, email, chargeId: currentChargeId, subtotal: _cSubtotal, discount: _cDiscount, total: _cSubtotal - _cDiscount };
@@ -648,6 +650,36 @@ function generateReceipt() {
   w.document.write(html);
   w.document.close();
   setTimeout(() => w.print(), 600);
+}
+
+async function addLoyaltyPoints(cartItems) {
+  const user = firebase.auth().currentUser;
+  if (!user || !cartItems || !cartItems.length) return;
+  const LICENSE_MAP = {
+    'Personal & Commercial Use': 'personal',
+    'Freelance Use': 'freelance',
+    'Sticker Line Use': 'sticker',
+    'Company & Organization Use': 'company'
+  };
+  const counts = {};
+  cartItems.forEach(item => {
+    const k = LICENSE_MAP[item.license];
+    if (k) counts[k] = (counts[k] || 0) + 1;
+  });
+  if (!Object.keys(counts).length) return;
+  const ref = db.collection('users').doc(user.uid).collection('loyalty').doc('points');
+  try {
+    await db.runTransaction(async tx => {
+      const snap = await tx.get(ref);
+      const data = snap.exists ? snap.data() : {};
+      const update = {};
+      ['personal','freelance','sticker','company'].forEach(k => {
+        const cur = data[k] || { total: 0, redeemed: 0 };
+        update[k] = { total: (cur.total||0) + (counts[k]||0), redeemed: cur.redeemed||0 };
+      });
+      snap.exists ? tx.update(ref, update) : tx.set(ref, update);
+    });
+  } catch(e) { console.warn('loyalty:', e); }
 }
 
 function showDownloads(downloadLinks, items) {
