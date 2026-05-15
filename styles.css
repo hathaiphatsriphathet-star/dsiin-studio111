@@ -27,11 +27,11 @@
   --text-mid: #3d1a1c;
   --text-light: #7a5050;
 
-  /* ── Base: Warm Cream ── */
-  --bg-soft: #f0ebe3;
-  --bg: #faf6f0;
+  /* ── Base: Light Red Tint ── */
+  --bg-soft: #f5e0e0;
+  --bg: #fdf0f0;
   --bg-card: #FFFFFF;
-  --border: #e0cece;
+  --border: #e8cccc;
   --shadow: 0 1px 8px rgba(0, 0, 0, 0.07);
   --shadow-hover: 0 4px 20px rgba(0, 0, 0, 0.10);
   --radius: 12px;
@@ -1810,8 +1810,8 @@ section { padding: 80px 0; }
   stroke-linecap: round; stroke-linejoin: round;
   transition: stroke 0.15s;
 }
-.mobile-nav-links a:hover { background: #faf9f7; color: #1a1a1a; }
-.mobile-nav-links a:hover .mob-icon { background: #ede9e4; }
+.mobile-nav-links a:hover { background: #fdf5f5; color: #1a0a0b; }
+.mobile-nav-links a:hover .mob-icon { background: #f0e0e0; }
 .mobile-nav-links a.active {
   background: #fdf0f0;
   color: #8b181d;
