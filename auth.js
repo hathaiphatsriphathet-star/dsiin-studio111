@@ -251,12 +251,17 @@
       });
   };
 
+  let googleLoginInProgress = false;
   window.doGoogleLogin = function () {
+    if (googleLoginInProgress) return;
+    googleLoginInProgress = true;
     auth.signInWithPopup(googleProvider)
       .then(function () {
+        googleLoginInProgress = false;
         document.getElementById('authOverlay').style.display = 'none';
       })
       .catch(function (err) {
+        googleLoginInProgress = false;
         console.error('Google login error:', err.code, err.message);
         console.error('Full error:', JSON.stringify(err));
         console.error('serverResponse:', err.serverResponse || err.customData);
