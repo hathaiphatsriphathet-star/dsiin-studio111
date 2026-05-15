@@ -2,15 +2,41 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Orders collection: อ่านได้เฉพาะเจ้าของ, สร้างได้เฉพาะ Cloud Functions (admin SDK)
+    // Admin emails ที่อนุญาตให้จัดการสินค้าได้
+    function isAdmin() {
+      return request.auth != null &&
+             request.auth.token.email in [
+               'hathaiphatsriphathet@gmail.com'
+             ];
+    }
+
+    // Products collection: อ่านได้ทุกคน, เขียนได้เฉพาะ admin
+    match /products/{productId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Orders collection: อ่านได้เฉพาะเจ้าของ, สร้างได้เฉพาะ Cloud Functions
     match /orders/{orderId} {
       allow read: if request.auth != null && resource.data.userId == request.auth.uid;
-      allow write: if false; // Cloud Functions ใช้ admin SDK เท่านั้น
+      allow write: if false;
     }
 
     // Users collection: อ่าน/เขียนได้เฉพาะเจ้าของ
     match /users/{userId}/{document=**} {
       allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // FAQs collection: อ่านได้ทุกคน, เขียนได้เฉพาะ admin
+    match /faqs/{faqId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Reviews collection: อ่านได้ทุกคน, เขียนได้เฉพาะ admin
+    match /reviews/{reviewId} {
+      allow read: if true;
+      allow write: if isAdmin();
     }
 
     // Rate limit records: Cloud Functions จัดการผ่าน admin SDK เท่านั้น
