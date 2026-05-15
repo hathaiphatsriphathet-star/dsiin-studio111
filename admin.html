@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700;800&display=swap" rel="stylesheet"></noscript>
-  <link rel="stylesheet" href="styles.css?v=11">
+  <link rel="stylesheet" href="styles.css?v=12">
   <style>
     :root {
       --red: #FF6B6B;
@@ -414,6 +414,29 @@
       </div>
       <div class="product-grid" id="productGrid">
         <div class="empty-state" style="grid-column:1/-1;">กำลังโหลด...</div>
+      </div>
+    </div>
+
+    <!-- FAQ Management -->
+    <div class="card">
+      <div class="card-title">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        จัดการคำถามที่พบบ่อย (FAQ)
+      </div>
+
+      <div class="form-group" style="margin-bottom:12px;">
+        <label>คำถาม *</label>
+        <input type="text" id="faqQuestion" placeholder="เช่น ซื้อฟอนต์แล้วใช้ได้กี่เครื่อง?">
+      </div>
+      <div class="form-group" style="margin-bottom:12px;">
+        <label>คำตอบ *</label>
+        <textarea id="faqAnswer" rows="3" placeholder="คำตอบ..." style="width:100%;padding:10px 14px;border:1px solid var(--border-color);border-radius:8px;font-family:inherit;font-size:0.9rem;resize:vertical;background:var(--bg-input);color:var(--text-primary);"></textarea>
+      </div>
+      <div class="alert" id="faqAlert"></div>
+      <button class="submit-btn" id="faqSubmitBtn" onclick="submitFAQ()" style="margin-bottom:24px;">เพิ่มคำถาม</button>
+
+      <div id="faqList" style="display:flex;flex-direction:column;gap:10px;">
+        <div style="color:var(--text-muted);font-size:0.88rem;">กำลังโหลด...</div>
       </div>
     </div>
 
@@ -996,6 +1019,100 @@ window.deleteProduct = async function(id, imagePath) {
   }
 };
 
+// ===== FAQ =====
+const DEFAULT_FAQS = [
+  { question: 'ซื้อฟอนต์แล้วใช้ได้กี่เครื่อง?', answer: 'ลิขสิทธิ์มาตรฐาน 1 ใบอนุญาต = ติดตั้งได้ 1 เครื่อง หากต้องการใช้หลายเครื่องสามารถซื้อเพิ่มได้ หรือติดต่อเราเพื่อรับใบอนุญาตองค์กร' },
+  { question: 'นำฟอนต์ไปใช้เชิงพาณิชย์ได้ไหม?', answer: 'ได้เลย ฟอนต์ทุกตัวใน DSIIN Studio รองรับการใช้งานเชิงพาณิชย์ เช่น งานพิมพ์ โลโก้ โซเชียลมีเดีย และสิ่งพิมพ์ต่างๆ' },
+  { question: 'ชำระเงินแล้วรับไฟล์ฟอนต์ยังไง?', answer: 'หลังชำระเงินสำเร็จ ระบบจะส่งลิงก์ดาวน์โหลดไปยังอีเมลที่ลงทะเบียนไว้ภายใน 5 นาที สามารถดาวน์โหลดได้ทันที' },
+  { question: 'รองรับช่องทางชำระเงินอะไรบ้าง?', answer: 'รองรับบัตรเครดิต/เดบิต Visa, Mastercard และ QR Code พร้อมเพย์ ผ่านระบบ Omise ที่ปลอดภัยและได้มาตรฐาน PCI-DSS' },
+  { question: 'มีการอัปเดตฟอนต์ในอนาคตไหม?', answer: 'ฟอนต์ที่ซื้อไปแล้วจะได้รับอัปเดตเวอร์ชันใหม่ฟรีตลอด เพียงดาวน์โหลดไฟล์ใหม่จากลิงก์เดิมที่ได้รับ' },
+  { question: 'ดาวน์โหลดไม่ได้ หรือมีปัญหาหลังซื้อ?', answer: 'ติดต่อทีมงานได้ที่อีเมล dsiin.studio@gmail.com หรือ LINE: @dsiin.studio เราพร้อมช่วยเหลือภายใน 24 ชั่วโมง' },
+];
+
+let faqEditId = null;
+
+function loadFAQList() {
+  const list = document.getElementById('faqList');
+  if (!list) return;
+  db.collection('faqs').orderBy('order','asc').get().then(async snap => {
+    if (snap.empty) {
+      // seed default FAQs on first load
+      const batch = db.batch();
+      DEFAULT_FAQS.forEach((f, i) => {
+        batch.set(db.collection('faqs').doc(), { ...f, order: i, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+      });
+      await batch.commit();
+      loadFAQList();
+      return;
+    }
+    list.innerHTML = snap.docs.map((doc, i) => {
+      const f = doc.data();
+      return `<div style="padding:14px 16px;background:var(--bg-input);border:1px solid var(--border-color);border-radius:10px;">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
+          <div style="flex:1;min-width:0;">
+            <div style="font-weight:700;font-size:0.9rem;color:var(--text-primary);margin-bottom:4px;">${f.question}</div>
+            <div style="font-size:0.85rem;color:var(--text-secondary);line-height:1.5;">${f.answer}</div>
+          </div>
+          <div style="display:flex;gap:6px;flex-shrink:0;">
+            <button onclick="editFAQ('${doc.id}','${encodeURIComponent(f.question)}','${encodeURIComponent(f.answer)}')" style="background:#fef9c3;border:none;color:#854d0e;padding:6px 12px;border-radius:6px;font-size:0.82rem;cursor:pointer;font-weight:600;">แก้ไข</button>
+            <button onclick="deleteFAQ('${doc.id}')" style="background:#fee2e2;border:none;color:#b91c1c;padding:6px 12px;border-radius:6px;font-size:0.82rem;cursor:pointer;font-weight:600;">ลบ</button>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+  });
+}
+
+function editFAQ(id, question, answer) {
+  faqEditId = id;
+  document.getElementById('faqQuestion').value = decodeURIComponent(question);
+  document.getElementById('faqAnswer').value = decodeURIComponent(answer);
+  document.getElementById('faqSubmitBtn').textContent = 'บันทึกการแก้ไข';
+  document.getElementById('faqQuestion').scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+async function submitFAQ() {
+  const question = document.getElementById('faqQuestion').value.trim();
+  const answer = document.getElementById('faqAnswer').value.trim();
+  const alertEl = document.getElementById('faqAlert');
+  if (!question || !answer) {
+    alertEl.textContent = 'กรุณากรอกคำถามและคำตอบ';
+    alertEl.style.display = 'block';
+    alertEl.style.background = '#fee2e2';
+    alertEl.style.color = '#b91c1c';
+    return;
+  }
+  alertEl.style.display = 'none';
+  try {
+    if (faqEditId) {
+      await db.collection('faqs').doc(faqEditId).update({ question, answer });
+      faqEditId = null;
+      document.getElementById('faqSubmitBtn').textContent = 'เพิ่มคำถาม';
+    } else {
+      const snap = await db.collection('faqs').orderBy('order','desc').limit(1).get();
+      const lastOrder = snap.empty ? 0 : (snap.docs[0].data().order || 0) + 1;
+      await db.collection('faqs').add({ question, answer, order: lastOrder, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+    }
+    document.getElementById('faqQuestion').value = '';
+    document.getElementById('faqAnswer').value = '';
+    alertEl.textContent = faqEditId ? 'บันทึกแล้ว!' : 'เพิ่มคำถามสำเร็จ!';
+    alertEl.style.display = 'block';
+    alertEl.style.background = '#dcfce7';
+    alertEl.style.color = '#166534';
+    setTimeout(() => { alertEl.style.display = 'none'; }, 3000);
+    loadFAQList();
+  } catch(e) {
+    alertEl.textContent = 'เกิดข้อผิดพลาด: ' + e.message;
+    alertEl.style.display = 'block';
+  }
+}
+
+async function deleteFAQ(id) {
+  if (!confirm('ลบคำถามนี้?')) return;
+  await db.collection('faqs').doc(id).delete();
+  loadFAQList();
+}
+
 // ===== REVIEWS =====
 function loadReviewList() {
   const list = document.getElementById('reviewList');
@@ -1063,7 +1180,7 @@ async function deleteReview(id) {
 
 // โหลดรีวิวหลังจาก admin login
 const _origOnAuth = typeof onAuthStateChanged === 'function' ? onAuthStateChanged : null;
-auth.onAuthStateChanged(u => { if (u) loadReviewList(); });
+auth.onAuthStateChanged(u => { if (u) { loadFAQList(); loadReviewList(); } });
 </script>
 </body>
 </html>

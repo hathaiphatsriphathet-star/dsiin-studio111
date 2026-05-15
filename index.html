@@ -27,7 +27,7 @@
   <link rel="preconnect" href="https://www.gstatic.com">
   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Thai:wght@300;400;700;900&family=Sarabun:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Thai:wght@300;400;700;900&family=Sarabun:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet"></noscript>
-  <link rel="stylesheet" href="styles.css?v=11">
+  <link rel="stylesheet" href="styles.css?v=12">
   <style>
     /* Hero font showcase fonts */
     .font-hero-sarabun { font-family: 'Sarabun', sans-serif; }
@@ -2555,68 +2555,8 @@
   <div class="container">
     <h2 class="section-title">คำถามที่พบบ่อย</h2>
     <p class="section-sub">มีข้อสงสัยเพิ่มเติม ติดต่อเราได้เลย</p>
-    <div class="faq-grid">
-
-      <div class="faq-item">
-        <button class="faq-question" onclick="this.closest('.faq-item').classList.toggle('open')">
-          ซื้อฟอนต์แล้วใช้ได้กี่เครื่อง?
-          <span class="faq-icon">+</span>
-        </button>
-        <div class="faq-answer">
-          <div class="faq-answer-inner">ลิขสิทธิ์มาตรฐาน 1 ใบอนุญาต = ติดตั้งได้ 1 เครื่อง หากต้องการใช้หลายเครื่องสามารถซื้อเพิ่มได้ หรือติดต่อเราเพื่อรับใบอนุญาตองค์กร</div>
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-question" onclick="this.closest('.faq-item').classList.toggle('open')">
-          นำฟอนต์ไปใช้เชิงพาณิชย์ได้ไหม?
-          <span class="faq-icon">+</span>
-        </button>
-        <div class="faq-answer">
-          <div class="faq-answer-inner">ได้เลย ฟอนต์ทุกตัวใน DSIIN Studio รองรับการใช้งานเชิงพาณิชย์ เช่น งานพิมพ์ โลโก้ โซเชียลมีเดีย และสิ่งพิมพ์ต่างๆ</div>
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-question" onclick="this.closest('.faq-item').classList.toggle('open')">
-          ชำระเงินแล้วรับไฟล์ฟอนต์ยังไง?
-          <span class="faq-icon">+</span>
-        </button>
-        <div class="faq-answer">
-          <div class="faq-answer-inner">หลังชำระเงินสำเร็จ ระบบจะส่งลิงก์ดาวน์โหลดไปยังอีเมลที่ลงทะเบียนไว้ภายใน 5 นาที สามารถดาวน์โหลดได้ทันที</div>
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-question" onclick="this.closest('.faq-item').classList.toggle('open')">
-          รองรับช่องทางชำระเงินอะไรบ้าง?
-          <span class="faq-icon">+</span>
-        </button>
-        <div class="faq-answer">
-          <div class="faq-answer-inner">รองรับบัตรเครดิต/เดบิต Visa, Mastercard และ QR Code พร้อมเพย์ ผ่านระบบ Omise ที่ปลอดภัยและได้มาตรฐาน PCI-DSS</div>
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-question" onclick="this.closest('.faq-item').classList.toggle('open')">
-          มีการอัปเดตฟอนต์ในอนาคตไหม?
-          <span class="faq-icon">+</span>
-        </button>
-        <div class="faq-answer">
-          <div class="faq-answer-inner">ฟอนต์ที่ซื้อไปแล้วจะได้รับอัปเดตเวอร์ชันใหม่ฟรีตลอด เพียงดาวน์โหลดไฟล์ใหม่จากลิงก์เดิมที่ได้รับ</div>
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-question" onclick="this.closest('.faq-item').classList.toggle('open')">
-          ดาวน์โหลดไม่ได้ หรือมีปัญหาหลังซื้อ?
-          <span class="faq-icon">+</span>
-        </button>
-        <div class="faq-answer">
-          <div class="faq-answer-inner">ติดต่อทีมงานได้ที่อีเมล dsiin.studio@gmail.com หรือ LINE: @dsiin.studio เราพร้อมช่วยเหลือภายใน 24 ชั่วโมง</div>
-        </div>
-      </div>
-
+    <div class="faq-grid" id="faqGrid">
+      <div style="grid-column:1/-1;text-align:center;color:var(--text-light);padding:40px 0;">กำลังโหลด...</div>
     </div>
   </div>
 </section>
@@ -2704,6 +2644,27 @@ if (homeFontSearch) {
     homeFontSearchResult.textContent = q ? `พบ ${visible} ฟอนต์` : '';
   });
 }
+
+// ===== FAQ =====
+(function loadFAQ() {
+  const grid = document.getElementById('faqGrid');
+  if (!grid || typeof db === 'undefined') return;
+  db.collection('faqs').orderBy('order','asc').get().then(snap => {
+    if (snap.empty) { grid.innerHTML = ''; return; }
+    grid.innerHTML = snap.docs.map(doc => {
+      const f = doc.data();
+      return `<div class="faq-item">
+        <button class="faq-question" onclick="this.closest('.faq-item').classList.toggle('open')">
+          ${f.question}
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">${f.answer}</div>
+        </div>
+      </div>`;
+    }).join('');
+  }).catch(() => { grid.innerHTML = ''; });
+})();
 
 // ===== REVIEWS =====
 (function loadReviews() {
