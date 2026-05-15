@@ -252,23 +252,28 @@
   };
 
   window.doGoogleLogin = function () {
-    auth.signInWithRedirect(googleProvider);
-  };
-
-  // รับผล redirect กลับจาก Google
-  auth.getRedirectResult().then(result => {
-    if (result && result.user) {
-      const overlay = document.getElementById('authOverlay');
-      if (overlay) overlay.style.display = 'none';
-    }
-  }).catch(err => {
-    console.error('Google redirect error:', err);
     const msg = document.getElementById('loginMsg');
-    if (msg) {
-      msg.style.color = '#e11d48';
-      msg.textContent = 'เข้าสู่ระบบด้วย Google ไม่สำเร็จ: ' + (err.message || err.code);
-    }
-  });
+    if (msg) { msg.textContent = 'กำลังเปิด Google...'; msg.style.color = '#888'; }
+    auth.signInWithPopup(googleProvider)
+      .then(() => {
+        document.getElementById('authOverlay').style.display = 'none';
+      })
+      .catch(err => {
+        console.error('Google login error:', err.code, err.message);
+        if (msg) {
+          msg.style.color = '#e11d48';
+          if (err.code === 'auth/popup-blocked') {
+            msg.textContent = 'Popup ถูกบล็อก — กรุณาอนุญาต popup ในเบราว์เซอร์';
+          } else if (err.code === 'auth/popup-closed-by-user') {
+            msg.textContent = 'ปิด popup ก่อนเสร็จ กรุณาลองใหม่';
+          } else if (err.code === 'auth/unauthorized-domain') {
+            msg.textContent = 'Domain ไม่ได้รับอนุญาต กรุณาใช้อีเมล/รหัสผ่านแทน';
+          } else {
+            msg.textContent = 'Google: ' + (err.code || err.message);
+          }
+        }
+      });
+  };
 
   window.doForgot = function () {
     const email = document.getElementById('forgotEmail').value.trim();
