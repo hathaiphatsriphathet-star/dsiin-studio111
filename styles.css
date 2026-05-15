@@ -1894,7 +1894,7 @@ section { padding: 80px 0; }
   justify-content: center;
   flex-direction: column;
   gap: 20px;
-  transition: opacity 0.4s ease;
+  transition: opacity 0.15s ease;
 }
 
 .page-loader.hidden { opacity: 0; pointer-events: none; }
@@ -2438,28 +2438,7 @@ a.hero-specimen-card:hover .hero-specimen-buy {
   animation: cardFadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-/* ===== PAGE TRANSITION ===== */
-.page-transition-overlay {
-  position: fixed;
-  inset: 0;
-  background: var(--pink-dark);
-  z-index: 9999;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.25s ease;
-}
-
-.page-transition-overlay.fade-out {
-  opacity: 0.6;
-  pointer-events: all;
-}
-
-/* ===== BFCACHE SAFETY =====
-   ป้องกัน overlay ค้างเมื่อ browser คืนหน้าจาก back-forward cache */
-:root[data-page-restored] .page-transition-overlay {
-  opacity: 0 !important;
-  pointer-events: none !important;
-}
+/* Page transition overlay removed — caused back button hang on mobile/iPad */
 
 /* ===== CATEGORY CARD COLORS ===== */
 .category-card:nth-child(1),

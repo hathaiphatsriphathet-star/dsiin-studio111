@@ -54,10 +54,14 @@ function cartUpdateBadge() {
 document.addEventListener('DOMContentLoaded', cartUpdateBadge);
 
 // ===== PAGE LOADER =====
-document.addEventListener('DOMContentLoaded', () => {
+// ซ่อนทันทีที่ script.js รันได้ (ท้ายหน้า) ไม่ต้องรอ DOMContentLoaded
+(function() {
   const loader = document.getElementById('pageLoader');
-  if (loader) loader.classList.add('hidden');
-});
+  if (!loader) return;
+  loader.classList.add('hidden');
+  // ตั้ง display:none หลัง transition สั้น ๆ
+  setTimeout(function() { loader.style.display = 'none'; }, 200);
+})();
 
 // ===== MOBILE NAV =====
 const hamburger = document.getElementById('hamburger');
@@ -718,22 +722,9 @@ window.addEventListener('pageshow', function(event) {
   }
 });
 
-// ===== PAGE TRANSITION =====
-(function() {
-  const overlay = document.createElement('div');
-  overlay.className = 'page-transition-overlay';
-  document.body.appendChild(overlay);
-
-  document.querySelectorAll('a[href]').forEach(link => {
-    const href = link.getAttribute('href');
-    if (!href || href.startsWith('#') || href.startsWith('http') || href.startsWith('mailto') || link.target === '_blank') return;
-    link.addEventListener('click', e => {
-      e.preventDefault();
-      overlay.classList.add('fade-out');
-      setTimeout(() => { window.location.href = href; }, 240);
-    });
-  });
-})();
+// Page transition overlay removed — it blocked pointer events for 240ms on every
+// tap and conflicted with browser back navigation (pending setTimeout could
+// re-navigate even after the user pressed back).
 
 // ===== FONT CARD STAGGER ENTRANCE =====
 (function() {
