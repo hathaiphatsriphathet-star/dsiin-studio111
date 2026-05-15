@@ -251,30 +251,54 @@
       });
   };
 
+  var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
   window.doGoogleLogin = function () {
     var msg = document.getElementById('loginMsg');
     if (msg) { msg.style.color = '#888'; msg.textContent = 'กำลังเชื่อมต่อ Google...'; }
-    auth.signInWithPopup(googleProvider).then(function(result) {
-      if (result && result.user) {
-        var overlay = document.getElementById('authOverlay');
-        if (overlay) overlay.style.display = 'none';
-      }
-    }).catch(function(err) {
-      console.error('popup err:', err.code, err.message);
-      if (msg) {
-        msg.style.color = '#e11d48';
-        if (err.code === 'auth/popup-blocked') {
-          msg.textContent = 'กรุณาอนุญาต Popup ในเบราว์เซอร์ แล้วลองใหม่';
-        } else if (err.code === 'auth/popup-closed-by-user' || err.code === 'auth/cancelled-popup-request') {
-          msg.textContent = 'ยกเลิกการเข้าสู่ระบบ';
-        } else if (err.code === 'auth/unauthorized-domain') {
-          msg.textContent = 'โดเมนไม่ได้รับอนุญาต กรุณาติดต่อผู้ดูแลระบบ';
-        } else {
-          msg.textContent = 'เกิดข้อผิดพลาด: ' + err.code;
+
+    if (isMobile) {
+      // iOS/Android: ใช้ redirect เพราะ popup ไม่รองรับ
+      auth.signInWithRedirect(googleProvider).catch(function(err) {
+        console.error('redirect err:', err.code, err.message);
+        if (msg) { msg.style.color = '#e11d48'; msg.textContent = 'เกิดข้อผิดพลาด: ' + err.code; }
+      });
+    } else {
+      // Desktop: ใช้ popup
+      auth.signInWithPopup(googleProvider).then(function(result) {
+        if (result && result.user) {
+          var overlay = document.getElementById('authOverlay');
+          if (overlay) overlay.style.display = 'none';
         }
-      }
-    });
+      }).catch(function(err) {
+        console.error('popup err:', err.code, err.message);
+        if (msg) {
+          msg.style.color = '#e11d48';
+          if (err.code === 'auth/popup-blocked') {
+            msg.textContent = 'กรุณาอนุญาต Popup ในเบราว์เซอร์ แล้วลองใหม่';
+          } else if (err.code === 'auth/popup-closed-by-user' || err.code === 'auth/cancelled-popup-request') {
+            msg.textContent = 'ยกเลิกการเข้าสู่ระบบ';
+          } else {
+            msg.textContent = 'เกิดข้อผิดพลาด: ' + err.code;
+          }
+        }
+      });
+    }
   };
+
+  // รับผลลัพธ์หลัง redirect (สำหรับ mobile)
+  auth.getRedirectResult().then(function(result) {
+    if (result && result.user) {
+      var overlay = document.getElementById('authOverlay');
+      if (overlay) overlay.style.display = 'none';
+    }
+  }).catch(function(err) {
+    console.error('getRedirectResult err:', err.code, err.message);
+    if (err.code && err.code !== 'auth/no-auth-event') {
+      var msg = document.getElementById('loginMsg');
+      if (msg) { msg.style.color = '#e11d48'; msg.textContent = 'เกิดข้อผิดพลาด: ' + err.code; }
+    }
+  });
 
   window.doForgot = function () {
     const email = document.getElementById('forgotEmail').value.trim();
