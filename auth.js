@@ -258,9 +258,9 @@
     if (msg) { msg.style.color = '#888'; msg.textContent = 'กำลังเชื่อมต่อ Google...'; }
 
     if (isMobile) {
-      // iOS/Android: ใช้ redirect เพราะ popup ไม่รองรับ
+      // iOS/Android: ใช้ redirect — authDomain=dsiinstodio.com ทำให้ /__/auth/ อยู่ใน domain เดิม
       auth.signInWithRedirect(googleProvider).catch(function(err) {
-        console.error('redirect err:', err.code, err.message);
+        console.error('[auth] redirect err:', err.code, err.message);
         if (msg) { msg.style.color = '#e11d48'; msg.textContent = 'เกิดข้อผิดพลาด: ' + err.code; }
       });
     } else {
@@ -271,7 +271,7 @@
           if (overlay) overlay.style.display = 'none';
         }
       }).catch(function(err) {
-        console.error('popup err:', err.code, err.message);
+        console.error('[auth] popup err:', err.code, err.message);
         if (msg) {
           msg.style.color = '#e11d48';
           if (err.code === 'auth/popup-blocked') {
@@ -286,14 +286,15 @@
     }
   };
 
-  // รับผลลัพธ์หลัง redirect (สำหรับ mobile)
+  // รับผลลัพธ์หลัง redirect กลับจาก Google (mobile)
   auth.getRedirectResult().then(function(result) {
+    console.log('[auth] getRedirectResult:', result ? (result.user ? 'user ok' : 'no user') : 'null');
     if (result && result.user) {
       var overlay = document.getElementById('authOverlay');
       if (overlay) overlay.style.display = 'none';
     }
   }).catch(function(err) {
-    console.error('getRedirectResult err:', err.code, err.message);
+    console.error('[auth] getRedirectResult err:', err.code, err.message);
     if (err.code && err.code !== 'auth/no-auth-event') {
       var msg = document.getElementById('loginMsg');
       if (msg) { msg.style.color = '#e11d48'; msg.textContent = 'เกิดข้อผิดพลาด: ' + err.code; }
