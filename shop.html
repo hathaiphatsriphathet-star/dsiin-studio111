@@ -17,6 +17,7 @@
   <meta name="twitter:image" content="รูปโปร/LOGO.png">
   <link rel="icon" type="image/png" href="รูปโปร/LOGO.png">
   <link rel="apple-touch-icon" href="รูปโปร/LOGO.png">
+  <script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(() => {});</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://www.gstatic.com">
@@ -2521,12 +2522,10 @@
       document.getElementById('shopPreviewCanvas').scrollIntoView({ behavior: 'smooth', block: 'center' });
     });
 
-    // Font search — filters pills + main grid
-    fontSearch.addEventListener('input', () => {
+    // Font search — debounced to reduce DOM thrashing on mobile
+    function doFontSearch() {
       const q = fontSearch.value.trim().toLowerCase();
       const normQ = shopNorm(q);
-
-      // filter pills
       let pillCount = 0;
       document.querySelectorAll('.shop-font-pill').forEach(function(pill) {
         const label = pill.dataset.label.toLowerCase();
@@ -2534,12 +2533,10 @@
         pill.style.display = show ? '' : 'none';
         if (show) pillCount++;
       });
-
-      // filter main grid
-      const gridCount = filterFontsGrid(q);
-
+      filterFontsGrid(q);
       document.getElementById('shopFontSearchResult').textContent = q ? 'พบ ' + pillCount + ' ฟอนต์' : '';
-    });
+    }
+    fontSearch.addEventListener('input', typeof debounce === 'function' ? debounce(doFontSearch, 200) : doFontSearch);
 
     // Size slider
     sizeSlider.addEventListener('input', () => {
@@ -2621,6 +2618,12 @@
 </footer>
 
 <button class="scroll-top" id="scrollTop">↑</button>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="fonts-data.js"></script>
 <script src="script.js"></script>
 <script>
 // ===== FILTER FROM URL (category & search) =====
@@ -2838,13 +2841,148 @@ document.getElementById('sortSelect')?.addEventListener('change', function() {
   cards.forEach(c => grid.appendChild(c));
 });
 
-// ===== LIVE SEARCH (shop main grid via #searchInput) =====
+// ===== LIVE SEARCH (shop main grid via #searchInput) — debounced =====
 (function() {
   const shopInput = document.getElementById('searchInput');
   if (!shopInput || !document.getElementById('fontsGrid')) return;
-  shopInput.addEventListener('input', function() {
-    filterFontsGrid(this.value.trim().toLowerCase());
+  const debouncedFilter = typeof debounce === 'function'
+    ? debounce(function() { filterFontsGrid(shopInput.value.trim().toLowerCase()); }, 200)
+    : function() { filterFontsGrid(shopInput.value.trim().toLowerCase()); };
+  shopInput.addEventListener('input', debouncedFilter);
+})();
+</script>
+
+<script>
+// ===== โหลดสินค้าจาก Firestore (real-time) =====
+(function() {
+  if (typeof db === 'undefined') return;
+
+  const grid = document.getElementById('fontsGrid');
+  if (!grid) return;
+
+  // เก็บชื่อฟอนต์ที่ hardcode ไว้แล้ว เพื่อกัน duplicate
+  function getExistingNames() {
+    const names = new Set();
+    grid.querySelectorAll('.font-card-name').forEach(el => {
+      names.add(el.textContent.trim());
+    });
+    return names;
+  }
+
+  // escape สำหรับ attribute values
+  function esc(str) {
+    return String(str).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  // สร้างการ์ดฟอนต์จากข้อมูล Firestore (ปลอดภัยจาก XSS)
+  function createFontCard(data) {
+    const name     = String(data.name  || '');
+    const price    = Number(data.price || 0);
+    const badge    = String(data.badge || '✨ ใหม่');
+    const imageUrl = String(data.imageUrl || '');
+    const tags     = Array.isArray(data.tags) ? data.tags : [];
+
+    const card = document.createElement('a');
+    card.href = 'product.html';
+    card.className = 'font-card';
+    card.dataset.firestoreId = data.id || '';
+
+    // preview
+    const preview = document.createElement('div');
+    preview.className = 'font-card-preview';
+    preview.dataset.bg = imageUrl;
+    preview.style.cssText = `background-image:url("${esc(imageUrl)}");background-size:cover;background-position:center;`;
+    const badgeWrap = document.createElement('div');
+    badgeWrap.className = 'card-badge';
+    const badgeSpan = document.createElement('span');
+    badgeSpan.className = 'badge badge-mint';
+    badgeSpan.textContent = badge;
+    badgeWrap.appendChild(badgeSpan);
+    preview.appendChild(badgeWrap);
+
+    // body
+    const body = document.createElement('div');
+    body.className = 'font-card-body';
+
+    const nameEl = document.createElement('div');
+    nameEl.className = 'font-card-name';
+    nameEl.textContent = name;
+
+    const tagsEl = document.createElement('div');
+    tagsEl.className = 'font-card-tags';
+    tags.forEach(t => {
+      const s = document.createElement('span');
+      s.className = 'font-card-tag';
+      s.textContent = String(t);
+      tagsEl.appendChild(s);
+    });
+
+    const footer = document.createElement('div');
+    footer.className = 'font-card-footer';
+
+    const priceEl = document.createElement('div');
+    priceEl.className = 'font-price';
+    priceEl.textContent = `฿${price}`;
+    const perFile = document.createElement('span');
+    perFile.textContent = ' / ไฟล์';
+    priceEl.appendChild(perFile);
+
+    const btn = document.createElement('button');
+    btn.className = 'btn btn-pink btn-card btn-add-cart';
+    btn.dataset.name  = name;
+    btn.dataset.price = price;
+    btn.textContent = '+ ตะกร้า';
+
+    footer.appendChild(priceEl);
+    footer.appendChild(btn);
+    body.appendChild(nameEl);
+    body.appendChild(tagsEl);
+    body.appendChild(footer);
+    card.appendChild(preview);
+    card.appendChild(body);
+    return card;
+  }
+
+  // ฟัง real-time จาก Firestore (พร้อม cleanup)
+  const unsubscribeShop = db.collection('products').orderBy('createdAt', 'desc').onSnapshot(function(snapshot) {
+    const existing = getExistingNames();
+
+    snapshot.docChanges().forEach(function(change) {
+      const data = { id: change.doc.id, ...change.doc.data() };
+
+      if (change.type === 'added') {
+        // ข้ามถ้ามีอยู่แล้วใน hardcode
+        if (existing.has(data.name)) return;
+        const card = createFontCard(data);
+        // เพิ่มที่ต้นสุด (ใหม่ขึ้นก่อน)
+        grid.insertBefore(card, grid.firstChild);
+
+        // ลงทะเบียน lazy-load สำหรับรูปภาพ
+        const preview = card.querySelector('[data-bg]');
+        if (preview && window._bgObserver) window._bgObserver.observe(preview);
+
+        // ลงทะเบียนปุ่ม + ตะกร้า
+        const btn = card.querySelector('.btn-add-cart');
+        if (btn) {
+          btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            cartAdd(data.name, data.price, 'Personal Use');
+            btn.textContent = '✓ เพิ่มแล้ว';
+            setTimeout(() => { btn.textContent = '+ ตะกร้า'; }, 1200);
+          });
+        }
+      }
+
+      if (change.type === 'removed') {
+        const el = grid.querySelector(`[data-firestore-id="${data.id}"]`);
+        if (el) el.remove();
+      }
+    });
+  }, function(err) {
+    console.warn('Firestore load error:', err.message);
   });
+
+  window.addEventListener('beforeunload', function() { unsubscribeShop(); });
 })();
 </script>
 </body>

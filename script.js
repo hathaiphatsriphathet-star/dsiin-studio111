@@ -7,7 +7,7 @@
     });
     return;
   }
-  const bgObserver = new IntersectionObserver(function(entries) {
+  const bgObserver = window._bgObserver = new IntersectionObserver(function(entries) {
     entries.forEach(function(entry) {
       if (entry.isIntersecting) {
         const el = entry.target;
@@ -15,12 +15,21 @@
         bgObserver.unobserve(el);
       }
     });
-  }, { rootMargin: '200px' });
+  }, { rootMargin: '50px' });
 
   document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('[data-bg]').forEach(el => bgObserver.observe(el));
   });
 })();
+
+// ===== DEBOUNCE UTILITY =====
+function debounce(fn, delay) {
+  let timer;
+  return function() {
+    clearTimeout(timer);
+    timer = setTimeout(() => fn.apply(this, arguments), delay);
+  };
+}
 
 // ===== CART UTILITIES =====
 function cartGet() { return JSON.parse(localStorage.getItem('dsiin_cart') || '[]'); }
@@ -607,7 +616,8 @@ document.querySelectorAll('a.font-card').forEach(card => {
     }, 360);
   }
 
-  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  const isMobile = window.matchMedia('(max-width: 768px)').matches;
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && !isMobile) {
     setInterval(next, 2800);
   }
 })();
