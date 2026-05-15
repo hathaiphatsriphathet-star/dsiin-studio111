@@ -262,22 +262,27 @@
       })
       .catch(function (err) {
         googleLoginInProgress = false;
-        console.error('Google login error:', err.code, err.message);
-        console.error('Full error:', JSON.stringify(err));
-        console.error('serverResponse:', err.serverResponse || err.customData);
+        if (err.code === 'auth/popup-closed-by-user' || err.code === 'auth/cancelled-popup-request') {
+          return;
+        }
+        if (err.code === 'auth/popup-blocked') {
+          auth.signInWithRedirect(googleProvider);
+          return;
+        }
         const msg = document.getElementById('loginMsg');
         if (msg) {
           msg.style.color = '#e11d48';
-          if (err.code === 'auth/popup-closed-by-user' || err.code === 'auth/cancelled-popup-request') {
-            msg.textContent = '';
-          } else if (err.code === 'auth/popup-blocked') {
-            msg.textContent = 'เบราว์เซอร์บล็อก Popup กรุณาอนุญาต Popup แล้วลองใหม่';
-          } else {
-            msg.textContent = 'เกิดข้อผิดพลาด: ' + err.code;
-          }
+          msg.textContent = 'เกิดข้อผิดพลาดในการเข้าสู่ระบบด้วย Google กรุณาลองใหม่';
         }
       });
   };
+
+  auth.getRedirectResult().then(function (result) {
+    if (result && result.user) {
+      const overlay = document.getElementById('authOverlay');
+      if (overlay) overlay.style.display = 'none';
+    }
+  }).catch(function () {});
 
   window.doForgot = function () {
     const email = document.getElementById('forgotEmail').value.trim();
