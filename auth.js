@@ -64,13 +64,13 @@
     <div id="authCloseBtn" style="position:absolute;top:16px;right:16px;background:none;border:none;font-size:1.2rem;cursor:pointer;color:#888;display:none;" onclick="authClose()">✕</div>
 
     <div style="text-align:center;margin-bottom:24px;">
-      <div style="font-size:1.5rem;font-weight:800;color:#1a1a2e;">สถานีฟอนต์</div>
+      <div style="font-size:1.5rem;font-weight:800;color:#1a0a0b;">สถานีฟอนต์</div>
       <div style="font-size:0.8rem;color:#888;">Dsiin Studio</div>
-      <div id="authRequiredNote" style="font-size:0.78rem;color:#C4956A;margin-top:6px;display:none;">กรุณาเข้าสู่ระบบเพื่อใช้งาน</div>
+      <div id="authRequiredNote" style="font-size:0.78rem;color:#8b181d;margin-top:6px;display:none;">กรุณาเข้าสู่ระบบเพื่อใช้งาน</div>
     </div>
 
     <div style="display:flex;border-radius:12px;background:#f5f5f5;padding:4px;margin-bottom:20px;">
-      <button id="tabLogin" onclick="authTab('login')" style="flex:1;padding:9px;border:none;border-radius:9px;font-size:0.9rem;font-weight:600;cursor:pointer;background:white;color:#1a1a2e;box-shadow:0 2px 6px rgba(0,0,0,0.08);">เข้าสู่ระบบ</button>
+      <button id="tabLogin" onclick="authTab('login')" style="flex:1;padding:9px;border:none;border-radius:9px;font-size:0.9rem;font-weight:600;cursor:pointer;background:white;color:#1a0a0b;box-shadow:0 2px 6px rgba(0,0,0,0.08);">เข้าสู่ระบบ</button>
       <button id="tabRegister" onclick="authTab('register')" style="flex:1;padding:9px;border:none;border-radius:9px;font-size:0.9rem;font-weight:600;cursor:pointer;background:transparent;color:#888;">สมัครสมาชิก</button>
     </div>
 
@@ -90,17 +90,17 @@
     <div id="formLogin">
       <div style="margin-bottom:14px;">
         <label style="font-size:0.82rem;color:#666;display:block;margin-bottom:6px;">อีเมล</label>
-        <input id="loginEmail" type="email" placeholder="your@email.com" style="width:100%;padding:11px 14px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:0.9rem;font-family:inherit;box-sizing:border-box;outline:none;" onfocus="this.style.borderColor='#E8D5C0'" onblur="this.style.borderColor='#e5e7eb'">
+        <input id="loginEmail" type="email" placeholder="your@email.com" style="width:100%;padding:11px 14px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:0.9rem;font-family:inherit;box-sizing:border-box;outline:none;" onfocus="this.style.borderColor='#8b181d'" onblur="this.style.borderColor='#e5e7eb'">
       </div>
       <div style="margin-bottom:20px;">
         <label style="font-size:0.82rem;color:#666;display:block;margin-bottom:6px;">รหัสผ่าน</label>
-        <input id="loginPassword" type="password" placeholder="รหัสผ่าน" style="width:100%;padding:11px 14px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:0.9rem;font-family:inherit;box-sizing:border-box;outline:none;" onfocus="this.style.borderColor='#E8D5C0'" onblur="this.style.borderColor='#e5e7eb'" onkeydown="if(event.key==='Enter')doLogin()">
+        <input id="loginPassword" type="password" placeholder="รหัสผ่าน" style="width:100%;padding:11px 14px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:0.9rem;font-family:inherit;box-sizing:border-box;outline:none;" onfocus="this.style.borderColor='#8b181d'" onblur="this.style.borderColor='#e5e7eb'" onkeydown="if(event.key==='Enter')doLogin()">
       </div>
       <div id="loginMsg" style="font-size:0.82rem;text-align:center;margin-bottom:12px;min-height:18px;"></div>
-      <button onclick="doLogin()" style="width:100%;padding:13px;background:linear-gradient(135deg,#E8D5C0,#D4B896);border:none;border-radius:12px;font-size:0.95rem;font-weight:700;color:#1a1a2e;cursor:pointer;">เข้าสู่ระบบ</button>
+      <button onclick="doLogin()" style="width:100%;padding:13px;background:linear-gradient(135deg,#8b181d,#6f0f11);border:none;border-radius:12px;font-size:0.95rem;font-weight:700;color:#ffffff;cursor:pointer;">เข้าสู่ระบบ</button>
       <p style="text-align:center;font-size:0.82rem;color:#888;margin-top:10px;">
-        <a href="#" onclick="authTab('forgot');return false;" style="color:#C4956A;font-weight:600;text-decoration:none;">ลืมรหัสผ่าน?</a>
-        &nbsp;·&nbsp; ยังไม่มีบัญชี? <a href="#" onclick="authTab('register');return false;" style="color:#C4956A;font-weight:600;text-decoration:none;">สมัครสมาชิก</a>
+        <a href="#" onclick="authTab('forgot');return false;" style="color:#8b181d;font-weight:600;text-decoration:none;">ลืมรหัสผ่าน?</a>
+        &nbsp;·&nbsp; ยังไม่มีบัญชี? <a href="#" onclick="authTab('register');return false;" style="color:#8b181d;font-weight:600;text-decoration:none;">สมัครสมาชิก</a>
       </p>
     </div>
 
@@ -109,30 +109,30 @@
       <div style="text-align:center;margin-bottom:16px;font-size:0.88rem;color:#555;">ใส่อีเมลของคุณ เราจะส่งลิงก์รีเซ็ตรหัสผ่านให้</div>
       <div style="margin-bottom:20px;">
         <label style="font-size:0.82rem;color:#666;display:block;margin-bottom:6px;">อีเมล</label>
-        <input id="forgotEmail" type="email" placeholder="your@email.com" style="width:100%;padding:11px 14px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:0.9rem;font-family:inherit;box-sizing:border-box;outline:none;" onfocus="this.style.borderColor='#E8D5C0'" onblur="this.style.borderColor='#e5e7eb'">
+        <input id="forgotEmail" type="email" placeholder="your@email.com" style="width:100%;padding:11px 14px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:0.9rem;font-family:inherit;box-sizing:border-box;outline:none;" onfocus="this.style.borderColor='#8b181d'" onblur="this.style.borderColor='#e5e7eb'">
       </div>
       <div id="forgotMsg" style="font-size:0.82rem;text-align:center;margin-bottom:12px;min-height:18px;"></div>
-      <button onclick="doForgot()" style="width:100%;padding:13px;background:linear-gradient(135deg,#E8D5C0,#D4B896);border:none;border-radius:12px;font-size:0.95rem;font-weight:700;color:#1a1a2e;cursor:pointer;">ส่งลิงก์รีเซ็ต</button>
-      <p style="text-align:center;font-size:0.82rem;color:#888;margin-top:14px;"><a href="#" onclick="authTab('login');return false;" style="color:#C4956A;font-weight:600;text-decoration:none;">← กลับเข้าสู่ระบบ</a></p>
+      <button onclick="doForgot()" style="width:100%;padding:13px;background:linear-gradient(135deg,#8b181d,#6f0f11);border:none;border-radius:12px;font-size:0.95rem;font-weight:700;color:#ffffff;cursor:pointer;">ส่งลิงก์รีเซ็ต</button>
+      <p style="text-align:center;font-size:0.82rem;color:#888;margin-top:14px;"><a href="#" onclick="authTab('login');return false;" style="color:#8b181d;font-weight:600;text-decoration:none;">← กลับเข้าสู่ระบบ</a></p>
     </div>
 
     <!-- Register Form -->
     <div id="formRegister" style="display:none;">
       <div style="margin-bottom:14px;">
         <label style="font-size:0.82rem;color:#666;display:block;margin-bottom:6px;">ชื่อ-นามสกุล</label>
-        <input id="regName" type="text" placeholder="ชื่อของคุณ" style="width:100%;padding:11px 14px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:0.9rem;font-family:inherit;box-sizing:border-box;outline:none;" onfocus="this.style.borderColor='#E8D5C0'" onblur="this.style.borderColor='#e5e7eb'">
+        <input id="regName" type="text" placeholder="ชื่อของคุณ" style="width:100%;padding:11px 14px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:0.9rem;font-family:inherit;box-sizing:border-box;outline:none;" onfocus="this.style.borderColor='#8b181d'" onblur="this.style.borderColor='#e5e7eb'">
       </div>
       <div style="margin-bottom:14px;">
         <label style="font-size:0.82rem;color:#666;display:block;margin-bottom:6px;">อีเมล</label>
-        <input id="regEmail" type="email" placeholder="your@email.com" style="width:100%;padding:11px 14px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:0.9rem;font-family:inherit;box-sizing:border-box;outline:none;" onfocus="this.style.borderColor='#E8D5C0'" onblur="this.style.borderColor='#e5e7eb'">
+        <input id="regEmail" type="email" placeholder="your@email.com" style="width:100%;padding:11px 14px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:0.9rem;font-family:inherit;box-sizing:border-box;outline:none;" onfocus="this.style.borderColor='#8b181d'" onblur="this.style.borderColor='#e5e7eb'">
       </div>
       <div style="margin-bottom:20px;">
         <label style="font-size:0.82rem;color:#666;display:block;margin-bottom:6px;">รหัสผ่าน (อย่างน้อย 6 ตัว)</label>
-        <input id="regPassword" type="password" placeholder="รหัสผ่าน" style="width:100%;padding:11px 14px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:0.9rem;font-family:inherit;box-sizing:border-box;outline:none;" onfocus="this.style.borderColor='#E8D5C0'" onblur="this.style.borderColor='#e5e7eb'" onkeydown="if(event.key==='Enter')doRegister()">
+        <input id="regPassword" type="password" placeholder="รหัสผ่าน" style="width:100%;padding:11px 14px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:0.9rem;font-family:inherit;box-sizing:border-box;outline:none;" onfocus="this.style.borderColor='#8b181d'" onblur="this.style.borderColor='#e5e7eb'" onkeydown="if(event.key==='Enter')doRegister()">
       </div>
       <div id="registerMsg" style="font-size:0.82rem;text-align:center;margin-bottom:12px;min-height:18px;"></div>
-      <button onclick="doRegister()" style="width:100%;padding:13px;background:linear-gradient(135deg,#E8D5C0,#D4B896);border:none;border-radius:12px;font-size:0.95rem;font-weight:700;color:#1a1a2e;cursor:pointer;">สมัครสมาชิก</button>
-      <p style="text-align:center;font-size:0.82rem;color:#888;margin-top:14px;">มีบัญชีอยู่แล้ว? <a href="#" onclick="authTab('login');return false;" style="color:#C4956A;font-weight:600;text-decoration:none;">เข้าสู่ระบบ</a></p>
+      <button onclick="doRegister()" style="width:100%;padding:13px;background:linear-gradient(135deg,#8b181d,#6f0f11);border:none;border-radius:12px;font-size:0.95rem;font-weight:700;color:#ffffff;cursor:pointer;">สมัครสมาชิก</button>
+      <p style="text-align:center;font-size:0.82rem;color:#888;margin-top:14px;">มีบัญชีอยู่แล้ว? <a href="#" onclick="authTab('login');return false;" style="color:#8b181d;font-weight:600;text-decoration:none;">เข้าสู่ระบบ</a></p>
     </div>
   </div>
 </div>`;
@@ -149,8 +149,8 @@
       const name = user.displayName || user.email.split('@')[0];
       const initial = name[0].toUpperCase();
       const avatarHTML = user.photoURL
-        ? `<img src="${escapeHtml(user.photoURL)}" style="width:34px;height:34px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,0.5);" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span style="display:none;width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#E8D5C0,#D4B896);align-items:center;justify-content:center;font-size:0.85rem;font-weight:700;color:#1a1a2e;">${escapeHtml(initial)}</span>`
-        : `<span style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#E8D5C0,#D4B896);display:flex;align-items:center;justify-content:center;font-size:0.85rem;font-weight:700;color:#1a1a2e;">${escapeHtml(initial)}</span>`;
+        ? `<img src="${escapeHtml(user.photoURL)}" style="width:34px;height:34px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,0.5);" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span style="display:none;width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#8b181d,#6f0f11);align-items:center;justify-content:center;font-size:0.85rem;font-weight:700;color:#1a0a0b;">${escapeHtml(initial)}</span>`
+        : `<span style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#8b181d,#6f0f11);display:flex;align-items:center;justify-content:center;font-size:0.85rem;font-weight:700;color:#1a0a0b;">${escapeHtml(initial)}</span>`;
       if (navLinks) {
         const el = document.createElement('li');
         el.className = 'nav-auth-item';
@@ -208,8 +208,8 @@
     document.getElementById('formLogin').style.display = isLogin ? '' : 'none';
     document.getElementById('formRegister').style.display = isRegister ? '' : 'none';
     document.getElementById('formForgot').style.display = isForgot ? '' : 'none';
-    document.getElementById('tabLogin').style.cssText += isLogin ? ';background:white;color:#1a1a2e;box-shadow:0 2px 6px rgba(0,0,0,0.08)' : ';background:transparent;color:#888;box-shadow:none';
-    document.getElementById('tabRegister').style.cssText += isRegister ? ';background:white;color:#1a1a2e;box-shadow:0 2px 6px rgba(0,0,0,0.08)' : ';background:transparent;color:#888;box-shadow:none';
+    document.getElementById('tabLogin').style.cssText += isLogin ? ';background:white;color:#1a0a0b;box-shadow:0 2px 6px rgba(0,0,0,0.08)' : ';background:transparent;color:#888;box-shadow:none';
+    document.getElementById('tabRegister').style.cssText += isRegister ? ';background:white;color:#1a0a0b;box-shadow:0 2px 6px rgba(0,0,0,0.08)' : ';background:transparent;color:#888;box-shadow:none';
   };
 
   window.doLogin = function () {
@@ -288,7 +288,7 @@
     const name = user.displayName || user.email.split('@')[0];
     document.getElementById('profileContent').innerHTML = `
       <div style="display:flex;align-items:center;gap:14px;margin-bottom:24px;">
-        <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#E8D5C0,#D4B896);display:flex;align-items:center;justify-content:center;font-size:1.3rem;font-weight:800;color:#1a1a2e;flex-shrink:0;">${escapeHtml(name[0].toUpperCase())}</div>
+        <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#8b181d,#6f0f11);display:flex;align-items:center;justify-content:center;font-size:1.3rem;font-weight:800;color:#1a0a0b;flex-shrink:0;">${escapeHtml(name[0].toUpperCase())}</div>
         <div>
           <div style="font-weight:700;font-size:1.05rem;">${escapeHtml(name)}</div>
           <div style="font-size:0.82rem;color:#888;">${escapeHtml(user.email)}</div>
@@ -298,7 +298,7 @@
         <div style="font-weight:700;font-size:0.95rem;margin-bottom:12px;">📦 ประวัติการซื้อ</div>
         <div id="ordersContainer"><p style="color:#aaa;font-size:0.85rem;text-align:center;padding:16px 0;">กำลังโหลด...</p></div>
       </div>
-      <a href="dashboard.html" style="display:block;text-align:center;padding:11px;background:linear-gradient(135deg,#E8D5C0,#D4B896);border-radius:10px;font-size:0.9rem;font-weight:600;color:#1a1a2e;text-decoration:none;margin-bottom:10px;">ไปหน้า Dashboard</a>
+      <a href="dashboard.html" style="display:block;text-align:center;padding:11px;background:linear-gradient(135deg,#8b181d,#6f0f11);border-radius:10px;font-size:0.9rem;font-weight:600;color:#1a0a0b;text-decoration:none;margin-bottom:10px;">ไปหน้า Dashboard</a>
       <button onclick="authLogout()" style="width:100%;padding:11px;background:#f5f5f5;border:none;border-radius:10px;font-size:0.9rem;font-weight:600;color:#e11d48;cursor:pointer;">ออกจากระบบ</button>`;
     document.getElementById('profileOverlay').style.display = 'flex';
 
@@ -312,7 +312,7 @@
           <div style="border:1px solid #f0f0f0;border-radius:12px;padding:14px;margin-bottom:10px;">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
               <span style="font-size:0.78rem;color:#888;">${o.date}</span>
-              <span style="font-weight:700;color:#C4956A;">฿${o.total.toLocaleString()}</span>
+              <span style="font-weight:700;color:#8b181d;">฿${o.total.toLocaleString()}</span>
             </div>
             ${o.items.map(i => `<div style="font-size:0.85rem;color:#333;padding:2px 0;">• ${escapeHtml(i.name)}</div>`).join('')}
           </div>`).join('');
