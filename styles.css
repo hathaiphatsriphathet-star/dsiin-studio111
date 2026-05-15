@@ -94,10 +94,10 @@ section { padding: 80px 0; }
   position: sticky;
   top: 0;
   z-index: 100;
-  background: #6f0f11;
+  background: #a01f25;
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid #4a0a0c;
+  border-bottom: 1px solid #8b181d;
 }
 
 .navbar-inner {
