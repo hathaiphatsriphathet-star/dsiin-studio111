@@ -294,27 +294,11 @@
 
     google.accounts.id.prompt(function (notification) {
       if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
-        // One Tap ถูกบล็อก → ใช้ token client (popup)
-        var tokenClient = google.accounts.oauth2.initTokenClient({
-          client_id: GSI_CLIENT_ID,
-          scope: 'email profile openid',
-          callback: function (tokenResp) {
-            if (tokenResp.error) {
-              if (msg) { msg.style.color = '#e11d48'; msg.textContent = 'เกิดข้อผิดพลาด: ' + tokenResp.error; }
-              return;
-            }
-            var credential = firebase.auth.GoogleAuthProvider.credential(null, tokenResp.access_token);
-            auth.signInWithCredential(credential)
-              .then(function () {
-                var overlay = document.getElementById('authOverlay');
-                if (overlay) overlay.style.display = 'none';
-              })
-              .catch(function (err) {
-                if (msg) { msg.style.color = '#e11d48'; msg.textContent = 'เกิดข้อผิดพลาด: ' + (err.code || err.message); }
-              });
-          }
+        // One Tap ไม่แสดง → ใช้ signInWithRedirect (ไม่ต้องการ JS origin ใน OAuth client)
+        auth.signInWithRedirect(googleProvider).catch(function (err) {
+          console.error('[auth] redirect err:', err.code, err.message);
+          if (msg) { msg.style.color = '#e11d48'; msg.textContent = 'เกิดข้อผิดพลาด: ' + err.code; }
         });
-        tokenClient.requestAccessToken({ prompt: 'select_account' });
       }
     });
   };
