@@ -2982,7 +2982,28 @@ document.getElementById('sortSelect')?.addEventListener('change', function() {
     console.warn('Firestore load error:', err.message);
   });
 
-  window.addEventListener('beforeunload', function() { unsubscribeShop(); });
+  // ใช้ pagehide แทน beforeunload เพื่อให้ bfcache ทำงานได้
+  // beforeunload จะบล็อก bfcache ทำให้กดย้อนกลับต้องโหลดหน้าใหม่ทุกครั้ง
+  window.addEventListener('pagehide', function() { unsubscribeShop(); });
+
+  // re-subscribe เมื่อ browser คืนหน้าจาก bfcache
+  window.addEventListener('pageshow', function(e) {
+    if (e.persisted) {
+      // หน้าถูกคืนจาก bfcache — เปิด Firestore listener ใหม่
+      unsubscribeShop = db.collection('products').orderBy('createdAt', 'desc').onSnapshot(function(snapshot) {
+        const existing = getExistingNames();
+        snapshot.docChanges().forEach(function(change) {
+          if (change.type !== 'added') return;
+          const data = { id: change.doc.id, ...change.doc.data() };
+          if (existing.has(data.name)) return;
+          const card = createFontCard(data);
+          grid.insertBefore(card, grid.firstChild);
+          const preview = card.querySelector('[data-bg]');
+          if (preview && window._bgObserver) window._bgObserver.observe(preview);
+        });
+      }, function() {});
+    }
+  });
 })();
 </script>
 </body>

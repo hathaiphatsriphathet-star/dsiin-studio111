@@ -702,6 +702,22 @@ if (loaderEl) {
   });
 }
 
+// ===== FIX BACK BUTTON / BFCACHE RESTORE =====
+// เมื่อกดย้อนกลับบนมือถือ บางครั้งหน้าถูกคืนจาก bfcache
+// overlay และ loader อาจยังค้าง state เก่าอยู่ → หน้าค้าง
+window.addEventListener('pageshow', function(event) {
+  // รีเซ็ต page-transition-overlay ที่อาจค้าง pointer-events: all
+  const overlay = document.querySelector('.page-transition-overlay');
+  if (overlay) overlay.classList.remove('fade-out');
+
+  // ซ่อน loader ถ้ายังแสดงอยู่
+  const loader = document.getElementById('pageLoader');
+  if (loader) {
+    loader.classList.add('hidden');
+    loader.style.display = 'none';
+  }
+});
+
 // ===== PAGE TRANSITION =====
 (function() {
   const overlay = document.createElement('div');

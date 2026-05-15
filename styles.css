@@ -2454,6 +2454,13 @@ a.hero-specimen-card:hover .hero-specimen-buy {
   pointer-events: all;
 }
 
+/* ===== BFCACHE SAFETY =====
+   ป้องกัน overlay ค้างเมื่อ browser คืนหน้าจาก back-forward cache */
+:root[data-page-restored] .page-transition-overlay {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
 /* ===== CATEGORY CARD COLORS ===== */
 .category-card:nth-child(1),
 .category-card:nth-child(2),
