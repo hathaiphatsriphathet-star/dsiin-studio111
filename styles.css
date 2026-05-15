@@ -6,34 +6,34 @@
 }
 
 :root {
-  /* ── PRIMARY: Bright Accent (readable on dark bg) ── */
-  --pink: #e6be9a;
-  --pink-light: #3d1518;
-  --pink-dark: #f0d0b0;
+  /* ── PRIMARY: Deep Red Accent ── */
+  --pink: #8b181d;
+  --pink-light: #fde8e8;
+  --pink-dark: #6f0f11;
 
   /* ── Supporting: Forest Green ── */
-  --blue: #4a8050;
-  --blue-light: #1a2e1a;
-  --blue-dark: #325632;
-  --mint: #4a8050;
-  --mint-light: #1a2e1a;
-  --lavender: #4a8050;
-  --lavender-light: #1a2e1a;
-  --yellow: #e6be9a;
-  --yellow-light: #2a1010;
+  --blue: #325632;
+  --blue-light: #e8f2e8;
+  --blue-dark: #1d351d;
+  --mint: #325632;
+  --mint-light: #e8f2e8;
+  --lavender: #325632;
+  --lavender-light: #e8f2e8;
+  --yellow: #8b181d;
+  --yellow-light: #fde8e8;
 
-  /* ── Text (light for dark bg) ── */
-  --text-dark: #f5e8e8;
-  --text-mid: #d4a8a8;
-  --text-light: #9a7070;
+  /* ── Text (dark for light bg) ── */
+  --text-dark: #2a0a0c;
+  --text-mid: #6b2c30;
+  --text-light: #9a5a5e;
 
-  /* ── Base: Dark Red ── */
-  --bg-soft: #260b0e;
-  --bg: #1d0608;
-  --bg-card: #2d0e11;
-  --border: #4a1c20;
-  --shadow: 0 1px 8px rgba(0, 0, 0, 0.4);
-  --shadow-hover: 0 4px 20px rgba(0, 0, 0, 0.6);
+  /* ── Base: Light Red ── */
+  --bg-soft: #fce4e4;
+  --bg: #fdf0f0;
+  --bg-card: #ffffff;
+  --border: #f0c8c8;
+  --shadow: 0 1px 8px rgba(139, 24, 29, 0.1);
+  --shadow-hover: 0 4px 20px rgba(139, 24, 29, 0.2);
   --radius: 12px;
   --radius-sm: 8px;
   --radius-lg: 16px;
