@@ -257,11 +257,11 @@
         document.getElementById('authOverlay').style.display = 'none';
       })
       .catch(function (err) {
-        console.error('Google login error:', err);
+        console.error('Google login error:', err.code, err.message, JSON.stringify(err));
         const msg = document.getElementById('loginMsg');
         if (msg) {
           msg.style.color = '#e11d48';
-          msg.textContent = 'ไม่สามารถเข้าสู่ระบบด้วย Google ได้ กรุณาลองใหม่';
+          msg.textContent = err.code + ': ' + (err.message || '').substring(0, 80);
         }
       });
   };
