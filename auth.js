@@ -257,7 +257,9 @@
         document.getElementById('authOverlay').style.display = 'none';
       })
       .catch(function (err) {
-        console.error('Google login error:', err.code, err.message, JSON.stringify(err));
+        console.error('Google login error:', err.code, err.message);
+        console.error('Full error:', JSON.stringify(err));
+        console.error('serverResponse:', err.serverResponse || err.customData);
         const msg = document.getElementById('loginMsg');
         if (msg) {
           msg.style.color = '#e11d48';
@@ -266,7 +268,7 @@
           } else if (err.code === 'auth/popup-blocked') {
             msg.textContent = 'เบราว์เซอร์บล็อก Popup กรุณาอนุญาต Popup แล้วลองใหม่';
           } else {
-            msg.textContent = 'เกิดข้อผิดพลาดในการเข้าสู่ระบบด้วย Google กรุณาลองใหม่';
+            msg.textContent = 'เกิดข้อผิดพลาด: ' + err.code;
           }
         }
       });
