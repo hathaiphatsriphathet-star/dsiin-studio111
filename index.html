@@ -27,7 +27,7 @@
   <link rel="preconnect" href="https://www.gstatic.com">
   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Thai:wght@300;400;700;900&family=Sarabun:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Thai:wght@300;400;700;900&family=Sarabun:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet"></noscript>
-  <link rel="stylesheet" href="styles.css?v=10">
+  <link rel="stylesheet" href="styles.css?v=11">
   <style>
     /* Hero font showcase fonts */
     .font-hero-sarabun { font-family: 'Sarabun', sans-serif; }
@@ -2527,51 +2527,8 @@
       <h2 class="section-title">ลูกค้าพูดถึงเรา 💬</h2>
       <p class="section-sub">รีวิวจากนักออกแบบและครีเอเตอร์ที่ใช้ฟอนต์ของเรา</p>
     </div>
-    <div class="testimonials-grid">
-      <div class="testimonial-card">
-        <div class="stars" aria-label="5 ดาวจาก 5 ดาว" role="img">⭐⭐⭐⭐⭐</div>
-        <p class="testimonial-text">"ฟอนต์ร้านนี้คือแต่งปกวิดีโอน่ารักมากๆแล้วราคาถูกมากด้วย"</p>
-        <div class="testimonial-author">
-          <div class="author-avatar" style="background:linear-gradient(135deg,var(--pink),var(--lavender));">ก</div>
-          <div>
-            <div class="author-name">กัลยา ศิริวัฒน์</div>
-            <div class="author-role">Graphic Designer</div>
-          </div>
-        </div>
-      </div>
-      <div class="testimonial-card">
-        <div class="stars" aria-label="5 ดาวจาก 5 ดาว" role="img">⭐⭐⭐⭐⭐</div>
-        <p class="testimonial-text">"แวะมารีวิวด้วยเลยค้าบ เราชอบฟอนต์ของร้านนี้มากเลย ใช้ได้น่ารักสุดๆทุกๆงานเราใช้ฟอนต์ของร้านนี้มาตลอดเลย ขอบคุณนะครับที่ทำฟอนต์สวยๆมาให้ใช้"</p>
-        <div class="testimonial-author">
-          <div class="author-avatar" style="background:linear-gradient(135deg,var(--blue),var(--mint));">น</div>
-          <div>
-            <div class="author-name">นพดล ชาญวิทย์</div>
-            <div class="author-role">Content Creator</div>
-          </div>
-        </div>
-      </div>
-      <div class="testimonial-card">
-        <div class="stars" aria-label="5 ดาวจาก 5 ดาว" role="img">⭐⭐⭐⭐⭐</div>
-        <p class="testimonial-text">"เราซื้อมา 3 ฟอนต์ แต่งรูปเยอะขึ้น แฟนชม พี่ชม ว่าทำงานน่ารักมากๆ"</p>
-        <div class="testimonial-author">
-          <div class="author-avatar" style="background:linear-gradient(135deg,var(--yellow),var(--pink));">พ</div>
-          <div>
-            <div class="author-name">พรทิพย์ มีสุข</div>
-            <div class="author-role">Brand Designer</div>
-          </div>
-        </div>
-      </div>
-      <div class="testimonial-card">
-        <div class="stars" aria-label="5 ดาวจาก 5 ดาว" role="img">⭐⭐⭐⭐⭐</div>
-        <p class="testimonial-text">"ฟอนต์ที่ร้านน่ารักมากเลยค่ะเอามาทำป้ายที่ร้าน น่ารักไปอีกเอามาทำป้ายที่ร้านเยอะเลยค่ะ ชอบมากฟอนต์น่ารักทุกตัวฟอนต์ทำให้สื่อสวยน่ารักขึ้น100เท่า😊"</p>
-        <div class="testimonial-author">
-          <div class="author-avatar" style="background:none;padding:0;overflow:hidden;"><img loading="lazy" src="รูปสินค้า 3/puky_profile.jpeg" alt="puky" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"></div>
-          <div>
-            <div class="author-name">puky</div>
-            <div class="author-role">เจ้าของร้านชอบเบเกอรี่เฮ้าส์</div>
-          </div>
-        </div>
-      </div>
+    <div class="testimonials-grid" id="reviewsGrid">
+      <div style="grid-column:1/-1;text-align:center;color:var(--text-light);padding:40px 0;">กำลังโหลดรีวิว...</div>
     </div>
   </div>
 </section>
@@ -2747,6 +2704,38 @@ if (homeFontSearch) {
     homeFontSearchResult.textContent = q ? `พบ ${visible} ฟอนต์` : '';
   });
 }
+
+// ===== REVIEWS =====
+(function loadReviews() {
+  const grid = document.getElementById('reviewsGrid');
+  if (!grid || typeof db === 'undefined') return;
+  const COLORS = [
+    'linear-gradient(135deg,#8b181d,#6f0f11)',
+    'linear-gradient(135deg,#325632,#1d351d)',
+    'linear-gradient(135deg,#a01f25,#8b181d)',
+    'linear-gradient(135deg,#4a8050,#325632)',
+  ];
+  db.collection('reviews').orderBy('createdAt','asc').get().then(snap => {
+    if (snap.empty) { grid.innerHTML = ''; return; }
+    const stars = n => '⭐'.repeat(Math.max(1, Math.min(5, n || 5)));
+    grid.innerHTML = snap.docs.map((doc, i) => {
+      const r = doc.data();
+      const initial = (r.name || '?').charAt(0).toUpperCase();
+      const color = COLORS[i % COLORS.length];
+      return `<div class="testimonial-card">
+        <div class="stars">${stars(r.stars)}</div>
+        <p class="testimonial-text">"${r.text}"</p>
+        <div class="testimonial-author">
+          <div class="author-avatar" style="background:${color};">${initial}</div>
+          <div>
+            <div class="author-name">${r.name}</div>
+            <div class="author-role">${r.role || ''}</div>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+  }).catch(() => { grid.innerHTML = ''; });
+})();
 </script>
 </body>
 </html>
