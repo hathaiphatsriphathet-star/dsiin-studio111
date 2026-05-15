@@ -1,7 +1,7 @@
 // Firebase Configuration - Dsiin Studio
 const firebaseConfig = {
   apiKey: "AIzaSyCd7j3TnUYvHA9tqrjdjG-gpH0OWljIdpQ",
-  authDomain: "dsiinstodio.firebaseapp.com",
+  authDomain: "dsiinstodio.com",
   projectId: "dsiinstodio",
   storageBucket: "dsiinstodio.firebasestorage.app",
   messagingSenderId: "68791849791",

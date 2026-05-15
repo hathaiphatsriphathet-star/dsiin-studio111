@@ -252,23 +252,25 @@
   };
 
   window.doGoogleLogin = function () {
-    const btn = document.querySelector('[onclick="doGoogleLogin()"]');
-    if (btn) { btn.disabled = true; btn.textContent = 'กำลังเชื่อมต่อ Google...'; }
-    auth.signInWithRedirect(googleProvider);
+    auth.signInWithRedirect(googleProvider).catch(function(err) {
+      console.error('redirect err:', err);
+      var msg = document.getElementById('loginMsg');
+      if (msg) { msg.style.color='#e11d48'; msg.textContent='เกิดข้อผิดพลาด: ' + err.code; }
+    });
   };
 
   // รับผลลัพธ์หลัง redirect กลับจาก Google
-  auth.getRedirectResult().then(result => {
+  auth.getRedirectResult().then(function(result) {
     if (result && result.user) {
-      const overlay = document.getElementById('authOverlay');
+      var overlay = document.getElementById('authOverlay');
       if (overlay) overlay.style.display = 'none';
     }
-  }).catch(err => {
-    console.error('Google redirect result error:', err.code, err.message);
-    const msg = document.getElementById('loginMsg');
-    if (msg) {
+  }).catch(function(err) {
+    console.error('getRedirectResult err:', err.code, err.message);
+    var msg = document.getElementById('loginMsg');
+    if (msg && err.code !== 'auth/no-auth-event') {
       msg.style.color = '#e11d48';
-      msg.textContent = 'เข้าสู่ระบบ Google ไม่สำเร็จ (' + (err.code || err.message) + ')';
+      msg.textContent = 'Google: ' + (err.code || err.message);
     }
   });
 
