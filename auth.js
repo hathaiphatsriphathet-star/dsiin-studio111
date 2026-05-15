@@ -261,7 +261,13 @@
         const msg = document.getElementById('loginMsg');
         if (msg) {
           msg.style.color = '#e11d48';
-          msg.textContent = err.code + ': ' + (err.message || '').substring(0, 80);
+          if (err.code === 'auth/popup-closed-by-user' || err.code === 'auth/cancelled-popup-request') {
+            msg.textContent = '';
+          } else if (err.code === 'auth/popup-blocked') {
+            msg.textContent = 'เบราว์เซอร์บล็อก Popup กรุณาอนุญาต Popup แล้วลองใหม่';
+          } else {
+            msg.textContent = 'เกิดข้อผิดพลาดในการเข้าสู่ระบบด้วย Google กรุณาลองใหม่';
+          }
         }
       });
   };
