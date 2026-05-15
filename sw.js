@@ -2,7 +2,7 @@
 // Cache-first สำหรับ fonts และ images
 // Network-first สำหรับ HTML
 
-const CACHE_NAME = 'dsiin-v1';
+const CACHE_NAME = 'dsiin-v3';
 
 const PRECACHE_ASSETS = [
   '/',
@@ -46,8 +46,8 @@ self.addEventListener('fetch', event => {
   const isJS  = /\.js$/.test(url.pathname);
   const isHTML = request.headers.get('accept')?.includes('text/html');
 
-  if (isFontOrImage || isCSS || isJS) {
-    // Cache-first: ดีที่สุดสำหรับ fonts และ static assets
+  if (isFontOrImage) {
+    // Cache-first สำหรับ font/image ที่ไม่เปลี่ยนบ่อย
     event.respondWith(
       caches.match(request).then(cached => {
         if (cached) return cached;
@@ -58,6 +58,19 @@ self.addEventListener('fetch', event => {
           return response;
         }).catch(() => cached);
       })
+    );
+    return;
+  }
+
+  if (isCSS || isJS) {
+    // Network-first สำหรับ CSS/JS เพื่อให้รับ update ได้ทันที
+    event.respondWith(
+      fetch(request).then(response => {
+        if (!response || response.status !== 200) return response;
+        const clone = response.clone();
+        caches.open(CACHE_NAME).then(cache => cache.put(request, clone));
+        return response;
+      }).catch(() => caches.match(request))
     );
     return;
   }
