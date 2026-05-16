@@ -632,6 +632,7 @@ document.querySelectorAll('a.font-card').forEach(card => {
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   if (!window.matchMedia('(hover: hover)').matches) return;
 
+  const grid = document.querySelector('.fonts-grid') || document.body;
   let activeCard = null;
   let rafId = null;
 
