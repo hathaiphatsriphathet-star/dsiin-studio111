@@ -2,7 +2,7 @@
 // Cache-first สำหรับ fonts และ images
 // Network-first สำหรับ HTML
 
-const CACHE_NAME = 'dsiin-v17';
+const CACHE_NAME = 'dsiin-v18';
 
 const PRECACHE_ASSETS = [
   '/',
@@ -38,8 +38,8 @@ self.addEventListener('fetch', event => {
   // ข้ามคำขอที่ไม่ใช่ GET
   if (request.method !== 'GET') return;
 
-  // ข้าม Firebase / Google APIs
-  if (url.hostname.includes('firebase') || url.hostname.includes('googleapis') || url.hostname.includes('gstatic') || url.hostname.includes('google.com') || url.hostname.includes('omise.co')) return;
+  // ข้าม Firebase / Google APIs / Omise / AWS
+  if (url.hostname.includes('firebase') || url.hostname.includes('googleapis') || url.hostname.includes('gstatic') || url.hostname.includes('google.com') || url.hostname.includes('omise.co') || url.hostname.includes('amazonaws.com')) return;
 
   const isFontOrImage = /\.(ttf|woff|woff2|otf|png|jpg|jpeg|gif|webp|svg|PNG|JPG|JPEG)$/.test(url.pathname);
   const isCSS = /\.css$/.test(url.pathname);
