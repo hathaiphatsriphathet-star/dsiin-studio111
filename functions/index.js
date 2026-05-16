@@ -228,9 +228,25 @@ exports.createPaymentIntent = functions
           createdAt: getAdmin().firestore.FieldValue.serverTimestamp(),
         });
 
+        const qrImageUrl = charge.source.scannable_code.image.download_uri;
+        let qrCodeData = qrImageUrl;
+        try {
+          const imgBuffer = await new Promise((resolve, reject) => {
+            https.get(qrImageUrl, (res) => {
+              const chunks = [];
+              res.on('data', chunk => chunks.push(chunk));
+              res.on('end', () => resolve(Buffer.concat(chunks)));
+              res.on('error', reject);
+            }).on('error', reject);
+          });
+          qrCodeData = 'data:image/svg+xml;base64,' + imgBuffer.toString('base64');
+        } catch (e) {
+          console.warn('QR image fetch failed, returning URL:', e.message);
+        }
+
         return {
           chargeId: charge.id,
-          qrCodeUrl: charge.source.scannable_code.image.download_uri,
+          qrCodeUrl: qrCodeData,
         };
       }
 
