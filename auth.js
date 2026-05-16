@@ -2,6 +2,7 @@
 (function () {
   const auth = firebase.auth();
   const googleProvider = new firebase.auth.GoogleAuthProvider();
+  googleProvider.setCustomParameters({ prompt: 'select_account' });
 
   function escapeHtml(str) {
     return String(str)
