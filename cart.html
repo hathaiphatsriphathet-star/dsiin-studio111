@@ -363,6 +363,11 @@ function formatExpiry(input) {
 function checkout() {
   const cart = cartGet();
   if (!cart.length) return;
+  if (!firebase.auth().currentUser) {
+    if (typeof window.showAuthOverlay === 'function') window.showAuthOverlay();
+    else document.getElementById('authOverlay').style.display = 'flex';
+    return;
+  }
   const subtotal = cart.reduce((sum, i) => sum + i.price, 0);
   const hasDiscount = cart.length >= 10;
   const discount = hasDiscount ? Math.round(subtotal * 0.10) : 0;
