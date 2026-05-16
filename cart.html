@@ -408,7 +408,29 @@ function switchTab(tab) {
 function downloadQR() {
   const img = document.getElementById('qrImage');
   if (!img || !img.src) return;
-  window.open(img.src, '_blank');
+  const canvas = document.createElement('canvas');
+  canvas.width = 400;
+  canvas.height = 400;
+  const ctx = canvas.getContext('2d');
+  const image = new Image();
+  image.crossOrigin = 'anonymous';
+  image.onload = function () {
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+    try {
+      const a = document.createElement('a');
+      a.href = canvas.toDataURL('image/jpeg', 0.95);
+      a.download = 'promptpay-qr.jpg';
+      a.click();
+    } catch (e) {
+      window.open(img.src, '_blank');
+    }
+  };
+  image.onerror = function () {
+    window.open(img.src, '_blank');
+  };
+  image.src = img.src;
 }
 
 function closePayment() {
