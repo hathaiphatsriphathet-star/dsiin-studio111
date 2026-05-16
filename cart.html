@@ -408,16 +408,7 @@ function switchTab(tab) {
 function downloadQR() {
   const img = document.getElementById('qrImage');
   if (!img || !img.src) return;
-  fetch(img.src)
-    .then(res => res.blob())
-    .then(blob => {
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'promptpay-qr.svg';
-      a.click();
-      URL.revokeObjectURL(url);
-    });
+  window.open(img.src, '_blank');
 }
 
 function closePayment() {
