@@ -232,6 +232,7 @@
               <span class="spinner"></span>
               <span id="qrStatusText">กำลังรอการชำระเงิน...</span>
             </div>
+            <button onclick="downloadQR()" style="margin-top:12px;padding:8px 20px;background:#f3f4f6;border:1px solid #e5e7eb;border-radius:10px;font-size:0.85rem;font-weight:600;color:#555;cursor:pointer;">⬇️ บันทึก QR Code</button>
           </div>
           <div style="font-size:0.75rem;color:#888;text-align:center;margin-top:8px;">
             🔒 ชำระเงินปลอดภัยด้วย Omise
@@ -402,6 +403,21 @@ function switchTab(tab) {
   document.getElementById('promptpaySection').style.display = tab === 'promptpay' ? 'block' : 'none';
   document.getElementById('tabCard').classList.toggle('active', tab === 'card');
   document.getElementById('tabPromptpay').classList.toggle('active', tab === 'promptpay');
+}
+
+function downloadQR() {
+  const img = document.getElementById('qrImage');
+  if (!img || !img.src) return;
+  fetch(img.src)
+    .then(res => res.blob())
+    .then(blob => {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'promptpay-qr.svg';
+      a.click();
+      URL.revokeObjectURL(url);
+    });
 }
 
 function closePayment() {
