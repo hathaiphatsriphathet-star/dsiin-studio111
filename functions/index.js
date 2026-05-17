@@ -121,6 +121,46 @@ function omiseRequest(secretKey, method, path, body) {
   });
 }
 
+// ดาวน์โหลดรูปจาก URL แล้วคืนเป็น data URI (ตาม redirect และอ่าน content-type จริง)
+function fetchAsDataUri(url, secretKey, redirectsLeft = 5) {
+  return new Promise((resolve, reject) => {
+    const u = new URL(url);
+    const options = {
+      hostname: u.hostname,
+      path: u.pathname + u.search,
+      method: 'GET',
+      headers: {},
+    };
+    // ส่ง auth เฉพาะตอนเรียก api.omise.co เท่านั้น (ปลายทาง S3 มี token ในตัวอยู่แล้ว)
+    if (u.hostname === 'api.omise.co') {
+      options.headers['Authorization'] = 'Basic ' + Buffer.from(secretKey + ':').toString('base64');
+    }
+    const req = https.request(options, (res) => {
+      if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
+        res.resume();
+        if (redirectsLeft <= 0) { reject(new Error('Too many redirects')); return; }
+        const next = new URL(res.headers.location, url).toString();
+        resolve(fetchAsDataUri(next, secretKey, redirectsLeft - 1));
+        return;
+      }
+      if (res.statusCode !== 200) {
+        res.resume();
+        reject(new Error('QR download HTTP ' + res.statusCode));
+        return;
+      }
+      const contentType = (res.headers['content-type'] || 'image/png').split(';')[0].trim();
+      const chunks = [];
+      res.on('data', chunk => chunks.push(chunk));
+      res.on('end', () => {
+        resolve('data:' + contentType + ';base64,' + Buffer.concat(chunks).toString('base64'));
+      });
+      res.on('error', reject);
+    });
+    req.on('error', reject);
+    req.end();
+  });
+}
+
 // ==============================
 // Rate Limiter (Firestore-based)
 // ==============================
@@ -231,15 +271,7 @@ exports.createPaymentIntent = functions
         const qrImageUrl = charge.source.scannable_code.image.download_uri;
         let qrCodeData = qrImageUrl;
         try {
-          const imgBuffer = await new Promise((resolve, reject) => {
-            https.get(qrImageUrl, (res) => {
-              const chunks = [];
-              res.on('data', chunk => chunks.push(chunk));
-              res.on('end', () => resolve(Buffer.concat(chunks)));
-              res.on('error', reject);
-            }).on('error', reject);
-          });
-          qrCodeData = 'data:image/svg+xml;base64,' + imgBuffer.toString('base64');
+          qrCodeData = await fetchAsDataUri(qrImageUrl, secretKey);
         } catch (e) {
           console.warn('QR image fetch failed, returning URL:', e.message);
         }
